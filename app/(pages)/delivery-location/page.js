@@ -38,7 +38,7 @@ function DeliveryLocation() {
   }, []);
 
   return (
-    <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-screen">
+    <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-">
       <div className="header flex justify-between items-center h-11 shadow border-b-2">
         <h2 className="px-3 py-2 ">CHOOSE THE DELIVERY LOCATION</h2>
         <Button

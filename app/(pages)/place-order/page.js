@@ -92,17 +92,21 @@ function PlaceOrder() {
                 className="form-checkbox border border-gray-300 rounded-md mr-2 px-2 py-2 text-secondry-0 focus:ring-secondry-0 outline-none focus:border-secondry-0"
                 onChange={handleCheckboxChange}
               />
-              <label className="text-sm font-ITC-BK pb-2">Schedule delivery ?</label>
+              <label className="text-sm font-ITC-BK pb-2">
+                Schedule delivery ?
+              </label>
             </div>
 
             {showTimePicker && (
               <input
                 type="time"
                 defaultValue={getCurrentTime()}
-                value={getCurrentTime()}
+                value={
+                  selectedTime === "" ? getCurrentTime() : selectedTime
+                }
                 onChange={handleTimeChange}
                 min={getCurrentTime()}
-                className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry-0 outline-none focus:border-secondry-0"
+                className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry-0 outline-none focus:border-secondry-0 w-full"
               />
             )}
           </div>
@@ -112,14 +116,27 @@ function PlaceOrder() {
             </label>
 
             <div className="flex items-center">
-              <input type="radio" id="cash" value="cash" name="payment" className="checked:text-secondry-0" defaultChecked={true} />
+              <input
+                type="radio"
+                id="cash"
+                value="cash"
+                name="payment"
+                className="checked:text-secondry-0"
+                defaultChecked={true}
+              />
               <label htmlFor="cash" className="ml-2">
                 Cash on Delivery
               </label>
             </div>
 
             <div className="flex items-center">
-              <input type="radio" id="card" value="card" className="checked:text-secondry-0" name="payment" />
+              <input
+                type="radio"
+                id="card"
+                value="card"
+                className="checked:text-secondry-0"
+                name="payment"
+              />
               <label htmlFor="card" className="ml-2">
                 Card on Delivery
               </label>
