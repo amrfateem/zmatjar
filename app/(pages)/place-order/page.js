@@ -58,7 +58,6 @@ function PlaceOrder() {
             <PhoneInput
               inputProps={{
                 required: true,
-                autoFocus: true,
               }}
               country={"ae"}
               enableSearch={true}
