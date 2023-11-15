@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "flowbite-react";
-import { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { userLocationState } from "../../atoms";
 
@@ -15,9 +15,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 
 import { useRouter } from "next/navigation";
 
-const MapWithNoSSR = dynamic(() => import("../../map"), {
-  ssr: false,
-});
+const MapWithNoSSR = React.lazy(() => import("../../map"));
 
 function DeliveryLocation() {
   const router = useRouter();
