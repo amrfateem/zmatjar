@@ -7,6 +7,7 @@ import { userLocationState } from "../../atoms";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
+import L from "leaflet";
 import "leaflet-defaulticon-compatibility";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +15,30 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 
 import { useRouter } from "next/navigation";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+const MapContainer = dynamic(
+  () => import("react-leaflet").then((module) => module.MapContainer),
+  {
+    ssr: false,
+  }
+);
+const TileLayer = dynamic(
+  () => import("react-leaflet").then((module) => module.TileLayer),
+  {
+    ssr: false,
+  }
+);
+const Marker = dynamic(
+  () => import("react-leaflet").then((module) => module.Marker),
+  {
+    ssr: false,
+  }
+);
+const Popup = dynamic(
+  () => import("react-leaflet").then((module) => module.Popup),
+  {
+    ssr: false,
+  }
+);
 
 function DeliveryLocation() {
   const router = useRouter();
@@ -37,6 +61,15 @@ function DeliveryLocation() {
       );
     }
   }, []);
+
+  const eventHandlers = {
+    dragend: (e) => {
+      const marker = e.target;
+      const position = marker.getLatLng();
+      setDraggedPosition(position);
+      setUserLocation(position);
+    },
+  };
 
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-screen">
@@ -63,15 +96,7 @@ function DeliveryLocation() {
             <Marker
               draggable={true}
               position={draggedPosition ? draggedPosition : localPosition}
-              eventHandlers={{
-                dragend: (e) => {
-                  const newPosition = e.target._latlng;
-                  setDraggedPosition(newPosition);
-                  setUserLocation(
-                    draggedPosition ? draggedPosition : localPosition
-                  );
-                },
-              }}
+              eventHandlers={eventHandlers}
             >
               <Popup>Your Location</Popup>
             </Marker>
