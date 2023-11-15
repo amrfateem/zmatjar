@@ -19,31 +19,25 @@ import { useMap } from "react-leaflet";
 // ... (other imports)
 
 const MapContainer = dynamic(
-  async () => import("react-leaflet").then((module) => module.MapContainer),
+  () => import("react-leaflet").then((module) => module.MapContainer),
   {
-    ssr: false,
-  }
-);
-const map = dynamic(
-  async () => import("react-leaflet").then((module) => module.useMap),
-  {
-    ssr: false,
+    ssr: false, // Disable server-side rendering for this component
   }
 );
 const TileLayer = dynamic(
-  async () => import("react-leaflet").then((module) => module.TileLayer),
+  () => import("react-leaflet").then((module) => module.TileLayer),
   {
     ssr: false,
   }
 );
 const Marker = dynamic(
-  async () => import("react-leaflet").then((module) => module.Marker),
+  () => import("react-leaflet").then((module) => module.Marker),
   {
     ssr: false,
   }
 );
 const Popup = dynamic(
-  async () => import("react-leaflet").then((module) => module.Popup),
+  () => import("react-leaflet").then((module) => module.Popup),
   {
     ssr: false,
   }
