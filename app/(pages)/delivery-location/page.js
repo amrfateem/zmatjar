@@ -14,59 +14,9 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 
 import { useRouter } from "next/navigation";
 
-const MapContainer = dynamic(
-  () => import("react-leaflet").then((module) => module.MapContainer),
-  {
-    ssr: false,
-  }
-);
-const TileLayer = dynamic(
-  () => import("react-leaflet").then((module) => module.TileLayer),
-  {
-    ssr: false,
-  }
-);
-const Marker = dynamic(
-  () => import("react-leaflet").then((module) => module.Marker),
-  {
-    ssr: false,
-  }
-);
-const Popup = dynamic(
-  () => import("react-leaflet").then((module) => module.Popup),
-  {
-    ssr: false,
-  }
-);
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 function DeliveryLocation() {
-  useEffect(() => {
-    const MapContainer = dynamic(
-      () => import("react-leaflet").then((module) => module.MapContainer),
-      {
-        ssr: false,
-      }
-    );
-    const TileLayer = dynamic(
-      () => import("react-leaflet").then((module) => module.TileLayer),
-      {
-        ssr: false,
-      }
-    );
-    const Marker = dynamic(
-      () => import("react-leaflet").then((module) => module.Marker),
-      {
-        ssr: false,
-      }
-    );
-    const Popup = dynamic(
-      () => import("react-leaflet").then((module) => module.Popup),
-      {
-        ssr: false,
-      }
-    );
-    // ... (other dynamic imports)
-  }, []);
   const router = useRouter();
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
   const [localPosition, setLocalPosition] = useState(null);
