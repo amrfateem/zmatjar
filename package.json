@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "zmatjar",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,11 +9,29 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "drupal-jsonapi-params": "^2.3.1",
+    "flowbite": "^2.0.0",
+    "flowbite-react": "^0.6.4",
+    "leaflet": "^1.9.4",
+    "leaflet-defaulticon-compatibility": "^0.1.2",
+    "leaflet-geosearch": "^3.10.2",
+    "next": "14.0.1",
+    "next-drupal": "^1.6.0",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.0.1"
+    "react-leaflet": "^4.2.1",
+    "react-phone-input-2": "^2.15.1",
+    "react-scroll": "^1.9.0",
+    "react-select": "^5.8.0",
+    "recoil": "^0.7.7"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
     "tailwindcss": "^3.3.0"
