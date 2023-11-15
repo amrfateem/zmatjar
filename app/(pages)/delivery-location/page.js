@@ -15,30 +15,9 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 
 import { useRouter } from "next/navigation";
 
-const MapContainer = dynamic(
-  () => import("react-leaflet").then((module) => module.MapContainer),
-  {
-    ssr: false,
-  }
-);
-const TileLayer = dynamic(
-  () => import("react-leaflet").then((module) => module.TileLayer),
-  {
-    ssr: false,
-  }
-);
-const Marker = dynamic(
-  () => import("react-leaflet").then((module) => module.Marker),
-  {
-    ssr: false,
-  }
-);
-const Popup = dynamic(
-  () => import("react-leaflet").then((module) => module.Popup),
-  {
-    ssr: false,
-  }
-);
+const MapWithNoSSR = dynamic(() => import("../../map"), {
+  ssr: false
+});
 
 function DeliveryLocation() {
   const router = useRouter();
@@ -62,14 +41,14 @@ function DeliveryLocation() {
     }
   }, []);
 
-  const eventHandlers = {
-    dragend: (e) => {
-      const marker = e.target;
-      const position = marker.getLatLng();
-      setDraggedPosition(position);
-      setUserLocation(position);
-    },
-  };
+  // const eventHandlers = {
+  //   dragend: (e) => {
+  //     const marker = e.target;
+  //     const position = marker.getLatLng();
+  //     setDraggedPosition(position);
+  //     setUserLocation(position);
+  //   },
+  // };
 
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-screen">
@@ -84,28 +63,7 @@ function DeliveryLocation() {
         </Button>
       </div>
       {localPosition && (
-        <Suspense fallback={<div>Loading...</div>}>
-          <MapContainer
-            center={draggedPosition ? draggedPosition : localPosition}
-            className="space-y-6"
-            scrollWheelZoom={false}
-            attributionControl={false}
-            zoom={12}
-            style={{ width: "100%", height: "84vh" }}
-          >
-            <Marker
-              draggable={true}
-              position={draggedPosition ? draggedPosition : localPosition}
-              eventHandlers={eventHandlers}
-            >
-              <Popup>Your Location</Popup>
-            </Marker>
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution=""
-            ></TileLayer>
-          </MapContainer>
-        </Suspense>
+       <MapWithNoSSR  />
       )}
       {!localPosition && (
         <p>
