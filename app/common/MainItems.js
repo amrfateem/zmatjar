@@ -293,7 +293,7 @@ function MainItems() {
                 </div>
               ) : (
                 <button
-                  className="btn btn-secondary bg-secondry-0 rounded shadow-sm text-white btn-sm p-1 px-3 w-20"
+                  className="btn btn-secondary bg-secondry-0 rounded shadow-sm text-white btn-sm p-1 px-3 w-30"
                   onClick={() => handleAddToCart(modalData)}
                 >
                   Add to cart +

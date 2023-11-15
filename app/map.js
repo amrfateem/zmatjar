@@ -47,7 +47,7 @@ const Map = () => {
       scrollWheelZoom={false}
       attributionControl={false}
       zoom={12}
-      style={{ width: "100%", height: "84vh" }}
+      style={{ width: "100%", height: "84dvh" }}
     >
       <Marker
         draggable={true}
