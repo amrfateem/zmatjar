@@ -56,17 +56,19 @@ function DeliveryLocation() {
   const [draggedPosition, setDraggedPosition] = useState(null);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setLocalPosition({ lat: latitude, lng: longitude });
-        setUserLocation({ lat: latitude, lng: longitude });
-      },
-      (error) => {
-        console.error("Error getting location:", error.message);
-        setLocalPosition(null);
-      }
-    );
+    if (typeof window !== 'undefined') {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocalPosition({ lat: latitude, lng: longitude });
+          setUserLocation({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          console.error("Error getting location:", error.message);
+          setLocalPosition(null);
+        }
+      );
+    }
   }, []);
 
   return (
