@@ -1,26 +1,25 @@
 "use client";
 import { Button } from "flowbite-react";
-import React, { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { userLocationState } from "../../atoms";
 
 import dynamic from "next/dynamic";
-import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
-import L from "leaflet";
-import "leaflet-defaulticon-compatibility";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
 import { useRouter } from "next/navigation";
 
-const MapWithNoSSR = React.lazy(() => import("../../map"));
+const Map = dynamic(() => import("../../map"), {
+  ssr: false,
+});
 
 function DeliveryLocation() {
   const router = useRouter();
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
   const [localPosition, setLocalPosition] = useState(null);
+  const [draggedPosition, setDraggedPosition] = useState(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -38,15 +37,6 @@ function DeliveryLocation() {
     }
   }, []);
 
-  // const eventHandlers = {
-  //   dragend: (e) => {
-  //     const marker = e.target;
-  //     const position = marker.getLatLng();
-  //     setDraggedPosition(position);
-  //     setUserLocation(position);
-  //   },
-  // };
-
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-screen">
       <div className="header flex justify-between items-center h-11 shadow border-b-2">
@@ -61,7 +51,7 @@ function DeliveryLocation() {
       </div>
       {localPosition && (
         <Suspense fallback={<div>Loading...</div>}>
-          <MapWithNoSSR />
+          <Map />
         </Suspense>
       )}
       {!localPosition && (
