@@ -1,48 +1,45 @@
 "use client";
 import { Button } from "flowbite-react";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { userLocationState } from "../../atoms";
 
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
-import L from "leaflet";
 import "leaflet-defaulticon-compatibility";
-import { useMapEvent } from "react-leaflet/hooks";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+
 import { useRouter } from "next/navigation";
-import { useMap } from "react-leaflet";
 
 // ... (other imports)
 
 const MapContainer = dynamic(
-  () => import("react-leaflet").then((module) => module.MapContainer),
+  async () => import("react-leaflet").then((module) => module.MapContainer),
   {
-    ssr: false, // Disable server-side rendering for this component
+    ssr: false,
   }
 );
 const TileLayer = dynamic(
-  () => import("react-leaflet").then((module) => module.TileLayer),
+  async () => import("react-leaflet").then((module) => module.TileLayer),
   {
     ssr: false,
   }
 );
 const Marker = dynamic(
-  () => import("react-leaflet").then((module) => module.Marker),
+  async () => import("react-leaflet").then((module) => module.Marker),
   {
     ssr: false,
   }
 );
 const Popup = dynamic(
-  () => import("react-leaflet").then((module) => module.Popup),
+  async () => import("react-leaflet").then((module) => module.Popup),
   {
     ssr: false,
   }
 );
-
 function DeliveryLocation() {
   const router = useRouter();
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
@@ -50,7 +47,7 @@ function DeliveryLocation() {
   const [draggedPosition, setDraggedPosition] = useState(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -71,41 +68,43 @@ function DeliveryLocation() {
         <h2 className="px-3 py-2 ">CHOOSE THE DELIVERY LOCATION</h2>
         <Button
           color="#b11f23"
-           className="btn btn-secondary rounded-none btn bg-secondry-0 h-11"
+          className="btn btn-secondary rounded-none btn bg-secondry-0 h-11"
           onClick={() => router.push("/")}
         >
           <FontAwesomeIcon icon={faX} fill="white" color="white" />
         </Button>
       </div>
       {localPosition && (
-        <MapContainer
-          center={draggedPosition ? draggedPosition : localPosition}
-          className="space-y-6"
-          scrollWheelZoom={false}
-          attributionControl={false}
-          zoom={12}
-          style={{ width: "100%", height: "84vh" }}
-        >
-          <Marker
-            draggable={true}
-            position={draggedPosition ? draggedPosition : localPosition}
-            eventHandlers={{
-              dragend: (e) => {
-                const newPosition = e.target._latlng;
-                setDraggedPosition(newPosition);
-                setUserLocation(
-                  draggedPosition ? draggedPosition : localPosition
-                );
-              },
-            }}
+        <Suspense fallback={<div>Loading...</div>}>
+          <MapContainer
+            center={draggedPosition ? draggedPosition : localPosition}
+            className="space-y-6"
+            scrollWheelZoom={false}
+            attributionControl={false}
+            zoom={12}
+            style={{ width: "100%", height: "84vh" }}
           >
-            <Popup>Your Location</Popup>
-          </Marker>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution=""
-          ></TileLayer>
-        </MapContainer>
+            <Marker
+              draggable={true}
+              position={draggedPosition ? draggedPosition : localPosition}
+              eventHandlers={{
+                dragend: (e) => {
+                  const newPosition = e.target._latlng;
+                  setDraggedPosition(newPosition);
+                  setUserLocation(
+                    draggedPosition ? draggedPosition : localPosition
+                  );
+                },
+              }}
+            >
+              <Popup>Your Location</Popup>
+            </Marker>
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution=""
+            ></TileLayer>
+          </MapContainer>
+        </Suspense>
       )}
       {!localPosition && (
         <p>
