@@ -16,14 +16,13 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 
 const MapWithNoSSR = dynamic(() => import("../../map"), {
-  ssr: false
+  ssr: false,
 });
 
 function DeliveryLocation() {
   const router = useRouter();
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
   const [localPosition, setLocalPosition] = useState(null);
-  const [draggedPosition, setDraggedPosition] = useState(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -63,7 +62,9 @@ function DeliveryLocation() {
         </Button>
       </div>
       {localPosition && (
-       <MapWithNoSSR  />
+        <Suspense fallback={<div>Loading...</div>}>
+          <MapWithNoSSR />
+        </Suspense>
       )}
       {!localPosition && (
         <p>
