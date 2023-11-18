@@ -7,10 +7,7 @@ import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "ZMatjar",
-  description: "ZMatjar App",
-};
+
 
 function saveOrUpdateUTMParameters() {
   if (typeof window !== "undefined") {
@@ -71,11 +68,16 @@ const pageData = await drupal.getResource(
   {
     params: {
       fields: {
-        "node--page": "field_primary_color",
+        "node--page": "field_primary_color,title",
       },
     },
   }
 );
+
+export const metadata = {
+  title: pageData.title,
+  description: "ZMatjar App",
+};
 
 export default function RootLayout({ children }) {
   return (

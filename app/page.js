@@ -98,6 +98,8 @@ const pageData = await drupal.getResource(
   }
 );
 
+console.log(pageData);
+
 export default function Home() {
   return (
     <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
@@ -126,8 +128,13 @@ export default function Home() {
       <MostSelling mostSelling={mostSellingProducts} />
 
       <MainItems data={categorizedMenu} />
-      
-      <Footer charges={pageData.field_delivery_charges} />
+
+      <Footer
+        charges={pageData.field_delivery_charges}
+        location={pageData.field_location.uri}
+        whatsapp={pageData.field_whatsapp}
+        phone={pageData.field_phone}
+      />
     </main>
   );
 }

@@ -5,7 +5,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { chargesState, countState, sumState } from "../atoms";
 import { useRouter } from "next/navigation";
 
-function Footer({ charges }) {
+function Footer({ charges , location, whatsapp, phone }) {
   const router = useRouter();
   const [offsetTop, setOffsetTop] = useState(0);
   const count = useRecoilValue(countState);
@@ -119,7 +119,7 @@ function Footer({ charges }) {
         )}
 
         <div className="flex py-4 justify-center text-center    ">
-          <Contacts />
+          <Contacts  location={location} whatsapp={whatsapp} phone={phone}  />
         </div>
       </div>
     </>
