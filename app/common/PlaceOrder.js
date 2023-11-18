@@ -21,7 +21,7 @@ function PlaceOrder() {
             <label className="text-sm font-ITC-BK">Name</label>
             <input
               type="text"
-              className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry-0 outline-none focus:border-secondry-0"
+              className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry"
             />
           </div>
           <div className="flex flex-col space-y-1">
@@ -33,14 +33,14 @@ function PlaceOrder() {
             <label className="text-sm font-ITC-BK">Address</label>
             <input
               type="text"
-              className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry-0 outline-none focus:border-secondry-0"
+              className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry"
             />
           </div>
           <div className="flex flex-col space-y-1">
             <label className="text-sm font-ITC-BK">Email</label>
             <input
               type="text"
-              className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry-0 outline-none focus:border-secondry-0"
+              className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry"
             />
           </div>
         
@@ -49,7 +49,7 @@ function PlaceOrder() {
       <Modal.Footer>
         <Button
           color="gray"
-          className="uppercase w-full bg-secondry-0 text-white font-ITC-BK"
+          className="uppercase w-full bg-secondry text-white font-ITC-BK"
         >
           place order
         </Button>

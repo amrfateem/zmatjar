@@ -113,7 +113,7 @@ function DeliveryLocation() {
       <Modal.Footer>
         <Button
           color="gray"
-          className="uppercase w-full bg-secondry-0 text-white font-ITC-BK" onClick={handleOpenModal}
+          className="uppercase w-full bg-secondry text-white font-ITC-BK" onClick={handleOpenModal}
         >
           Confirm Location
         </Button>

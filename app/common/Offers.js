@@ -9,11 +9,10 @@ function Offers() {
           <div className="offer-item w-72 min-w-[300px] px-2">
             <div className="offer-item_box bg-white py-3 items-center px-2 flex rounded-2xl shadow-custom">
               <div className="px-2">
-                <div className="offer-item_icon flex items-center justify-center w-9 h-9 rounded-full bg-fade-0 ">
+                <div className="offer-item_icon flex items-center justify-center w-9 h-9 rounded-full  bg-brand-faded active-svg">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 512 512"
-                    fill={process.env.NEXT_PUBLIC_THEME_COLOR}
                     width={16}
                     height={16}
                   >

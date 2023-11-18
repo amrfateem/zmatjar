@@ -2,12 +2,19 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { cartState, colStyleState, countState, sumState, filteredItemsState, itemsState, searchState, modalDataState, } from "../atoms";
+import {
+  cartState,
+  colStyleState,
+  countState,
+  sumState,
+  filteredItemsState,
+  itemsState,
+  searchState,
+  modalDataState,
+} from "../atoms";
 import { Modal } from "flowbite-react";
 
 function MainItems({ data }) {
-  const [items, setItems] = useRecoilState(itemsState);
-  const filteredItems = useRecoilValue(filteredItemsState);
   const colStyle = useRecoilValue(colStyleState);
   const [cart, setCart] = useRecoilState(cartState);
   const [count, setCount] = useRecoilState(countState);
@@ -17,8 +24,6 @@ function MainItems({ data }) {
   const [modalData, setModalData] = useRecoilState(modalDataState);
 
   const [searchTerm, setSearchTerm] = useRecoilState(searchState);
-
-  const itemsToRender = searchTerm ? filteredItems : data;
 
   const isItemInCart = (itemId) => {
     return cart[itemId] !== undefined;
@@ -94,126 +99,128 @@ function MainItems({ data }) {
   return (
     <div>
       <div className="bg-[#F5F5F5]">
-        {Object.entries(data).filter(([category, itemsToRender]) =>
-    itemsToRender.some(
-      (item) => item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  ).map(([category, itemsToRender], index) => (
-          <div key={index} id={`cat${index}`}>
-            <h2 className="leading-6 text-xl font-extrabold mb-1 px-4 pb-2 pt-4 font-ITC-BK float-left border-b-2 border-b-secondry-0">
-              {category}
-            </h2>
-            <div
-              className={`flex flex-wrap shrink-0 bg-black-100 w-full py-4 px-1 gap-1 justify-start`}
-            >
-              {itemsToRender.filter((item) =>
-          item.name.toLowerCase().includes(searchTerm.toLowerCase())
-        ).map((item, index) => (
-                <div
-                  className={`mx-2 bg-white mb-4 rounded-lg ${
-                    colStyle === "grid" ? "w-[44%]" : "w-full"
-                  }`}
-                  key={index}
-                >
-                  <div
-                    className={`product-item-selling h-full w-full shrink-0 bg-white rounded-lg border flex ${
-                      colStyle === "grid"
-                        ? "flex-col"
-                        : "flex-row-reverse gap-2 "
-                    } ${isItemInCart(item.id) && "border-secondry-0"} ${
-                      !item.inStock && "border-gray-950"
-                    }`}
-                  >
-                    <div className="product-item_content relative">
-                      <Image
-                        width={200}
-                        height={190}
-                        src={item.image}
-                        alt={item.name}
-                        onClick={() => handleQuickView(item)}
-                        className={`${
-                          colStyle === "grid" ? "rounded-t-lg" : "rounded-l-lg"
-                        }`}
-                      ></Image>
-                      <div
-                        className={`absolute  rounded-full bg-white px-1  border mx-3 cursor-pointer ${
-                          colStyle === "grid"
-                            ? "bottom-2 right-1 "
-                            : "-bottom-5 right-0 mb-2"
-                        }`}
-                      >
-                        {item.inStock ? (
-                          isItemInCart(item.id) ? (
-                            <div className="flex justify-between items-center gap-1 w-20">
-                              <button
-                                className="text-secondry-0 font-ITC-BK text-sm  py-1"
-                                onClick={() => handleDecrement(item.id)}
-                              >
-                                <svg
-                                  fill={process.env.NEXT_PUBLIC_THEME_COLOR}
-                                  height="24"
-                                  width="24"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
-                                </svg>
-                              </button>
-                              <span className="text-secondry-0 font-ITC-BK text-sm">
-                                {cart[item.id].quantity}
-                              </span>
-                              <button
-                                className="text-secondry-0 font-ITC-BK text-sm  py-1"
-                                onClick={() => handleIncrement(item.id)}
-                              >
-                                <svg
-                                  fill={process.env.NEXT_PUBLIC_THEME_COLOR}
-                                  height="24"
-                                  width="24"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM13.5 7V10.4999H17V13.5H13.5V17H10.5V13.5H7V10.4999H10.5V7H13.5Z"></path>
-                                </svg>
-                              </button>
-                            </div>
-                          ) : (
-                            <button
-                              className="btn btn-secondary btn-sm p-1 px-3 w-20"
-                              onClick={() => handleAddToCart(item)}
-                            >
-                              Add +
-                            </button>
-                          )
-                        ) : (
-                          <button className="btn btn-secondary text-sm btn-sm p-1 w-full">
-                            Out of stock
-                          </button>
-                        )}
-                      </div>
-                    </div>
+        {Object.entries(data)
+          .filter(([category, itemsToRender]) =>
+            itemsToRender.some((item) =>
+              item.name.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+          )
+          .map(([category, itemsToRender], index) => (
+            <div key={index} id={`cat${index}`}>
+              <h2 className="leading-6 text-xl font-extrabold mb-1 px-4 pb-2 pt-4 font-ITC-BK float-left border-b-2 border-b-secondry">
+                {category}
+              </h2>
+              <div
+                className={`flex flex-wrap shrink-0 bg-black-100 w-full py-4 px-1 gap-1 justify-start`}
+              >
+                {itemsToRender
+                  .filter((item) =>
+                    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                  )
+                  .map((item, index) => (
                     <div
-                      className={`product-details h-full w-full flex flex-col p-2 text-center ${
-                        colStyle === "grid"
-                          ? "justify-between"
-                          : "justify-center"
+                      className={`mx-2 bg-white mb-4 rounded-lg ${
+                        colStyle === "grid" ? "w-[44%]" : "w-full"
                       }`}
+                      key={index}
                     >
-                      <h3 className="title mt-0 mb-2  line-clamp-2  text-start text-base leading-5 font-ITC-BK float-left">
-                        {item.name}
-                      </h3>
-                      <p className=" line-clamp-2 mb-2 text-faded-0 text-start text-sm leading-6 font-ITC-BK">
-                        {item.description}
-                      </p>
-                      <div className="price float-left text-left text-secondry-0">
-                        <span>AED </span>
-                        <span>{item.price}</span>
+                      <div
+                        className={`product-item-selling h-full w-full shrink-0 bg-white rounded-lg border flex ${
+                          colStyle === "grid"
+                            ? "flex-col"
+                            : "flex-row-reverse gap-2 "
+                        } ${isItemInCart(item.id) ? "border-secondry" : ""}`}
+                      >
+                        <div className="product-item_content relative">
+                          <Image
+                            width={200}
+                            height={190}
+                            src={item.image}
+                            alt={item.name}
+                            onClick={() => handleQuickView(item)}
+                            className={`${
+                              colStyle === "grid"
+                                ? "rounded-t-lg"
+                                : "rounded-l-lg"
+                            }`}
+                          ></Image>
+                          <div
+                            className={`absolute  rounded-full bg-white px-1  border mx-3 cursor-pointer ${
+                              colStyle === "grid"
+                                ? "bottom-2 right-1 "
+                                : "-bottom-5 right-0 mb-2"
+                            }`}
+                          >
+                            {item.inStock ? (
+                              isItemInCart(item.id) ? (
+                                <div className="flex justify-between items-center gap-1 w-20">
+                                  <button
+                                    className="text-secondry font-ITC-BK text-sm  py-1 active-svg"
+                                    onClick={() => handleDecrement(item.id)}
+                                  >
+                                    <svg
+                                      height="24"
+                                      width="24"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
+                                    </svg>
+                                  </button>
+                                  <span className="font-ITC-BK text-sm text-secondry">
+                                    {cart[item.id].quantity}
+                                  </span>
+                                  <button
+                                    className=" font-ITC-BK text-sm  py-1 text-secondry  active-svg"
+                                    onClick={() => handleIncrement(item.id)}
+                                  >
+                                    <svg
+                                      height="24"
+                                      width="24"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM13.5 7V10.4999H17V13.5H13.5V17H10.5V13.5H7V10.4999H10.5V7H13.5Z"></path>
+                                    </svg>
+                                  </button>
+                                </div>
+                              ) : (
+                                <button
+                                  className="btn btn-secondary btn-sm p-1 px-3 w-20"
+                                  onClick={() => handleAddToCart(item)}
+                                >
+                                  Add +
+                                </button>
+                              )
+                            ) : (
+                              <button className="btn btn-secondary text-sm btn-sm p-1 w-full">
+                                Out of stock
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                        <div
+                          className={`product-details h-full w-full flex flex-col p-2 text-center ${
+                            colStyle === "grid"
+                              ? "justify-between"
+                              : "justify-center"
+                          }`}
+                        >
+                          <h3 className="title mt-0 mb-2  line-clamp-2  text-start text-base leading-5 font-ITC-BK float-left">
+                            {item.name}
+                          </h3>
+                          <p className=" line-clamp-2 mb-2 text-faded-0 text-start text-sm leading-6 font-ITC-BK">
+                            {item.description}
+                          </p>
+                          <div className="price float-left text-left text-secondry">
+                            <span>AED </span>
+                            <span>{item.price}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
       <div>
         <Modal
@@ -252,7 +259,7 @@ function MainItems({ data }) {
                 className={`rounded-lg pb-3 w-full h-full`}
               ></Image>
               {modalData?.name}
-              <p className="text-base leading-relaxed text-secondry-0">
+              <p className="text-base leading-relaxed text-secondry">
                 AED {modalData?.price}
               </p>
             </div>
@@ -269,38 +276,28 @@ function MainItems({ data }) {
               isItemInCart(modalData?.id) ? (
                 <div className="flex justify-between items-center gap-1 w-20">
                   <button
-                    className="text-secondry-0 font-ITC-BK text-sm px-1 py-2"
+                    className=" font-ITC-BK text-sm px-1 py-2 text-secondry active-svg"
                     onClick={() => handleDecrement(modalData?.id)}
                   >
-                    <svg
-                      fill={process.env.NEXT_PUBLIC_THEME_COLOR}
-                      height="24"
-                      width="24"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg height="24" width="24" viewBox="0 0 24 24">
                       <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
                     </svg>
                   </button>
-                  <span className="text-secondry-0 font-ITC-BK text-sm">
+                  <span className=" font-ITC-BK text-sm text-secondry">
                     {cart[modalData?.id].quantity}
                   </span>
                   <button
-                    className="text-secondry-0 font-ITC-BK text-sm px-1 py-2"
+                    className=" font-ITC-BK text-sm px-1 py-2 text-secondryactive-svg"
                     onClick={() => handleIncrement(modalData?.id)}
                   >
-                    <svg
-                      fill={process.env.NEXT_PUBLIC_THEME_COLOR}
-                      height="24"
-                      width="24"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg height="24" width="24" viewBox="0 0 24 24">
                       <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM13.5 7V10.4999H17V13.5H13.5V17H10.5V13.5H7V10.4999H10.5V7H13.5Z"></path>
                     </svg>
                   </button>
                 </div>
               ) : (
                 <button
-                  className="btn btn-secondary bg-secondry-0 rounded shadow-sm text-white btn-sm p-1 px-3 w-30"
+                  className="btn btn-secondary rounded shadow-sm text-white btn-sm p-1 px-3 w-30 bg-secondry"
                   onClick={() => handleAddToCart(modalData)}
                 >
                   Add to cart +

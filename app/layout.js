@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import RecoidContextProvider from "./recoilContextProvider";
+import { drupal } from "./lib/drupal";
+import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -63,10 +65,30 @@ function setCookie(name, value, days) {
   document.cookie = cookie; // Set the cookie in the browser environment
 }
 
+const pageData = await drupal.getResource(
+  "node--page",
+  process.env.NEXT_PUBLIC_DRUPAL_PAGE_UUID,
+  {
+    params: {
+      fields: {
+        "node--page": "field_primary_color",
+      },
+    },
+  }
+);
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: ` :root {
+                             --brand-color:  #${pageData.field_primary_color};
+                             --brand-color-bg:  #${pageData.field_primary_color}45;
+                           }`,
+          }}
+        />
         <RecoidContextProvider>{children}</RecoidContextProvider>
       </body>
     </html>

@@ -19,7 +19,6 @@ function DeliveryLocation() {
   const router = useRouter();
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
   const [localPosition, setLocalPosition] = useState(null);
-  const [draggedPosition, setDraggedPosition] = useState(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -42,8 +41,8 @@ function DeliveryLocation() {
       <div className="header flex justify-between items-center h-11 text-center shadow-custom border-b-2">
         <h2 className="px-3 py-2  w-full">CHOOSE THE DELIVERY LOCATION</h2>
         <Button
-          color={process.env.NEXT_PUBLIC_THEME_COLOR}
-          className="btn btn-secondary rounded-none btn bg-secondry-0 h-11"
+          color={"bg-secondry"}
+          className="btn btn-secondary rounded-none btn h-11 bg-secondry"
           onClick={() => router.push("/")}
         >
           <FontAwesomeIcon icon={faX} fill="white" color="white" />
@@ -62,8 +61,8 @@ function DeliveryLocation() {
       )}
       <div className="button-location w-full max-w-[460px] p-4 fixed bottom-0 z-500">
         <Button
-          color={process.env.NEXT_PUBLIC_THEME_COLOR}
-          className="uppercase w-full bg-secondry-0 text-white font-ITC-BK focus: focus:ring-secondry-0 focus:border-transparent "
+          color={"bg-secondry"}
+          className="uppercase w-full  text-white font-ITC-BK bg-secondry "
           onClick={() => router.push("/place-order")}
         >
           Confirm Location

@@ -1,7 +1,13 @@
 "use client";
-import { Button, Modal } from "flowbite-react";
-import { useRecoilState } from "recoil";
-import { cartState, countState, sumState } from "../../atoms";
+import { Button } from "flowbite-react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  cartState,
+  chargesState,
+  countState,
+  sumState,
+  totalState,
+} from "../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
@@ -11,6 +17,12 @@ function Cart() {
   const [cart, setCart] = useRecoilState(cartState);
   const [count, setCount] = useRecoilState(countState);
   const [sum, setSum] = useRecoilState(sumState);
+
+  const [total, setTotal] = useRecoilState(totalState);
+
+  const charges = Number(useRecoilValue(chargesState));
+
+  setTotal(sum + charges);
 
   const handleIncrement = (itemId) => {
     setCart((prevCart) => ({
@@ -52,18 +64,13 @@ function Cart() {
     setCount((prevCount) => prevCount - 1);
   };
 
-  const handleOpenModal = () => {
-    setModal({ isOpen: false });
-    setModalLocation({ isOpen: true });
-  };
-
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-screen">
       <div className="header flex justify-end p-0 items-center text-center  shadow-custom h-11 border-b-2">
         <h2 className="px-3 py-2 h-full w-full ">YOUR BASKET</h2>
         <Button
-          color={process.env.NEXT_PUBLIC_THEME_COLOR}
-          className="btn btn-secondary rounded-none btn bg-secondry-0 h-11"
+          color={"bg-secondry"}
+          className="btn btn-secondary rounded-none btn h-11 bg-secondry"
           onClick={() => router.push("/")}
         >
           <FontAwesomeIcon icon={faX} fill="white" color="white" />
@@ -90,29 +97,19 @@ function Cart() {
                 </div>
                 <div className="flex items-center">
                   <button
-                    className="btn btn-secondary btn-sm"
+                    className="btn btn-secondary btn-sm active-svg"
                     onClick={() => handleDecrement(key)}
                   >
-                    <svg
-                      fill={process.env.NEXT_PUBLIC_THEME_COLOR}
-                      height="18"
-                      width="18"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg height="18" width="18" viewBox="0 0 24 24">
                       <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
                     </svg>
                   </button>
                   <span className="mx-2">{cart[key].quantity}</span>
                   <button
-                    className="btn btn-secondary btn-sm"
+                    className="btn btn-secondary btn-sm active-svg"
                     onClick={() => handleIncrement(key)}
                   >
-                    <svg
-                      fill={process.env.NEXT_PUBLIC_THEME_COLOR}
-                      height="18"
-                      width="18"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg height="18" width="18" viewBox="0 0 24 24">
                       <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM13.5 7V10.4999H17V13.5H13.5V17H10.5V13.5H7V10.4999H10.5V7H13.5Z"></path>
                     </svg>
                   </button>
@@ -132,7 +129,7 @@ function Cart() {
             <div className="flex flex-col gap-2 pt-4 border-b pb-4">
               <label className=" font-ITC-BK">Special Instructions</label>
               <textarea
-                className="w-full border border-gray-300 rounded-md p-2  resize-none focus:outline-none focus:ring-2 focus:ring-secondry-0 focus:border-transparent"
+                className="w-full border border-gray-300 rounded-md p-2  resize-none focus:outline-none focus:ring-2 focus:ring-secondry focus:border-transparent"
                 rows={4}
               ></textarea>
             </div>
@@ -147,11 +144,13 @@ function Cart() {
             </div>
             <div className="flex justify-between items-center pb-2">
               <p className=" font-ITC-BK">Delivery charges</p>
-              <p className=" font-ITC-BK">Free</p>
+              <p className=" font-ITC-BK">
+                {charges == 0 ? "Free" : charges + " AED"}
+              </p>
             </div>
             <div className="flex justify-between items-center pt-3">
               <p className=" font-ITC-BK">Total</p>
-              <p className=" font-ITC-BK">{sum} AED</p>
+              <p className=" font-ITC-BK">{total} AED</p>
             </div>
           </div>
         </div>
@@ -159,8 +158,8 @@ function Cart() {
       {count == 0 ? null : (
         <div className="button-checkout w-full max-w-[460px] p-4 fixed bottom-0">
           <Button
-            color={process.env.NEXT_PUBLIC_THEME_COLOR}
-            className="uppercase w-full bg-secondry-0 text-white font-ITC-BK focus: focus:ring-secondry-0 focus:border-transparent "
+            color={"bg-secondry"}
+            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
             onClick={() => router.push("/delivery-location")}
           >
             Checkout

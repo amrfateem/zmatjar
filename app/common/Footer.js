@@ -2,15 +2,17 @@
 import { useEffect, useState } from "react";
 import Contacts from "./Contacts";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { countState, modalState, sumState } from "../atoms";
+import { chargesState, countState, sumState } from "../atoms";
 import { useRouter } from "next/navigation";
 
-function Footer() {
+function Footer({ charges }) {
   const router = useRouter();
   const [offsetTop, setOffsetTop] = useState(0);
-  const [modal, setModal] = useRecoilState(modalState);
   const count = useRecoilValue(countState);
   const sum = useRecoilValue(sumState);
+
+  const [deliveryCharges, setDeliveryCharges] = useRecoilState(chargesState);
+  setDeliveryCharges(!charges == null ? charges : 0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,9 +26,6 @@ function Footer() {
     };
   }, []);
 
-  const handleOpenModal = () => {
-    setModal({ isOpen: true });
-  };
   return (
     <>
       <div className="flex justify-center items-center ">
@@ -51,7 +50,7 @@ function Footer() {
       >
         {count > 0 && (
           <div
-            className="cart flex justify-between items-center  mx-3 my-2 px-4 py-2 bg-secondry-0 text-white rounded-md cursor-pointer"
+            className="cart flex justify-between items-center  mx-3 my-2 px-4 py-2 text-white rounded-md cursor-pointer bg-secondry"
             onClick={() => router.push("/cart")}
           >
             <div className="basket-txt font-ITC-BK text-xs uppercase">

@@ -1,6 +1,5 @@
 "use client";
 import { atom, selector } from "recoil";
-import Items from "./data";
 
 const localStorageEffect =
   (key) =>
@@ -51,6 +50,12 @@ export const sumState = atom({
   effects: [localStorageEffect("sumState")],
 });
 
+export const totalState = atom({
+  key: "totalState",
+  default: 0,
+  effects: [localStorageEffect("totalState")],
+});
+
 export const modalState = atom({
   key: "modalState",
   default: {
@@ -78,6 +83,12 @@ export const userLocationState = atom({
 export const searchState = atom({
   key: "searchState",
   default: "",
+});
+
+export const chargesState = atom({
+  key: "chargesState",
+  default: 0,
+  effects: [localStorageEffect("chargesState")],
 });
 
 export const filteredItemsState = selector({

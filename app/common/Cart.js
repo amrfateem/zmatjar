@@ -94,7 +94,7 @@ function Cart() {
                         onClick={() => handleDecrement(key)}
                       >
                         <svg
-                          fill={process.env.NEXT_PUBLIC_THEME_COLOR}
+                          fill={"#b11f23"}
                           height="18"
                           width="18"
                           viewBox="0 0 24 24"
@@ -108,7 +108,7 @@ function Cart() {
                         onClick={() => handleIncrement(key)}
                       >
                         <svg
-                          fill={process.env.NEXT_PUBLIC_THEME_COLOR}
+                          fill={"#b11f23"}
                           height="18"
                           width="18"
                           viewBox="0 0 24 24"
@@ -134,7 +134,7 @@ function Cart() {
                     Special Instructions
                   </label>
                   <textarea
-                    className="w-full border border-gray-300 rounded-md p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-secondry-0 focus:border-transparent"
+                    className="w-full border border-gray-300 rounded-md p-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-secondry focus:border-transparent"
                     rows={4}
                   ></textarea>
                 </div>
@@ -163,7 +163,7 @@ function Cart() {
           {count == 0 ? null : (
             <Button
               color="gray"
-              className="uppercase w-full bg-secondry-0 text-white font-ITC-BK focus: focus:ring-secondry-0 focus:border-transparent"
+              className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent"
               onClick={handleOpenModal}
             >
               Checkout

@@ -126,7 +126,8 @@ export default function Home() {
       <MostSelling mostSelling={mostSellingProducts} />
 
       <MainItems data={categorizedMenu} />
-      <Footer />
+      
+      <Footer charges={pageData.field_delivery_charges} />
     </main>
   );
 }

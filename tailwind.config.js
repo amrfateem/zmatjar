@@ -15,8 +15,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        secondry: [process.env.NEXT_PUBLIC_THEME_COLOR],
-        fade: [process.env.NEXT_PUBLIC_THEME_COLOR+"45"],
+        secondry: "var(--brand-color)",
         faded: ["#8C8C8C"],
       },
     },

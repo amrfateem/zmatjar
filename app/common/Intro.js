@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 function Intro({ title, logo, business, address }) {
-  const businessNames = business.map((item) => item.name).join(" .");
+  const businessNames = business.map((item) => item.name).join(".");
 
   return (
     <div className="container bg-white p-4 mb-4">
@@ -20,7 +20,7 @@ function Intro({ title, logo, business, address }) {
           <h1 className="name font-extrabold text-2xl mb-1 leading-3 font-ITC-bold">
             {title}
           </h1>
-          <small className="category leading-6  text-xs font-ITC-BK text-secondry-0">
+          <small className="category leading-6  text-xs font-ITC-BK text-brand">
             {businessNames}
           </small>
         </div>

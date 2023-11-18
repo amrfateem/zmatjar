@@ -32,8 +32,8 @@ function PlaceOrder() {
         <div className="header flex justify-between h-11 items-center text-center  shadow-custom border-b-2">
           <h2 className="px-3 py-2 w-full">PLACE ORDER</h2>
           <Button
-            color={process.env.NEXT_PUBLIC_THEME_COLOR}
-            className="btn btn-secondary rounded-none btn bg-secondry-0 h-11"
+            color={"bg-secondry"}
+            className="btn btn-secondary rounded-none btn bg-secondry h-11"
             onClick={() => router.push("/")}
           >
             <FontAwesomeIcon icon={faX} fill="white" color="white" />
@@ -48,7 +48,7 @@ function PlaceOrder() {
             <input
               required
               type="text"
-              className="border-x border-gray-300 rounded-md px-3 py-2 focus:ring-secondry-0 outline-none focus:border-secondry-0"
+              className="border-x border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry"
             />
           </div>
           <div className="flex flex-col space-y-1">
@@ -74,21 +74,21 @@ function PlaceOrder() {
             <input
               required
               type="text"
-              className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry-0 outline-none focus:border-secondry-0"
+              className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry"
             />
           </div>
           <div className="flex flex-col space-y-1">
             <label className="text-sm font-ITC-BK">Email</label>
             <input
               type="text"
-              className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry-0 outline-none focus:border-secondry-0"
+              className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry"
             />
           </div>
           <div className="flex flex-col space-y-1">
             <div className="flex ">
               <input
                 type="checkbox"
-                className="form-checkbox border border-gray-300 rounded-md mr-2 px-2 py-2 text-secondry-0 focus:ring-secondry-0 outline-none focus:border-secondry-0"
+                className="form-checkbox border border-gray-300 rounded-md mr-2 px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
                 onChange={handleCheckboxChange}
               />
               <label className="text-sm font-ITC-BK pb-2">
@@ -106,7 +106,7 @@ function PlaceOrder() {
                 }
                 onChange={handleTimeChange}
                 
-                className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry-0 outline-none focus:border-secondry-0 w-full"
+                className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full"
               />
             )}
           </div>
@@ -121,7 +121,7 @@ function PlaceOrder() {
                 id="cash"
                 value="cash"
                 name="payment"
-                className="checked:text-secondry-0"
+                className="checked:text-secondry"
                 defaultChecked={true}
               />
               <label htmlFor="cash" className="ml-2">
@@ -134,7 +134,7 @@ function PlaceOrder() {
                 type="radio"
                 id="card"
                 value="card"
-                className="checked:text-secondry-0"
+                className="checked:text-secondry"
                 name="payment"
               />
               <label htmlFor="card" className="ml-2">
@@ -147,11 +147,11 @@ function PlaceOrder() {
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
-              className="form-checkbox border border-gray-300 rounded-md px-2 py-2 text-secondry-0 focus:ring-secondry-0 outline-none focus:border-secondry-0"
+              className="form-checkbox border border-gray-300 rounded-md px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
             />
             <p className="text-xs font-ITC-BK">
               I acknowledge that I have read and agree to the{" "}
-              <a className="text-secondry-0" onClick={() => setOpenModal(true)}>
+              <a className="text-secondry" onClick={() => setOpenModal(true)}>
                 Terms and conditions
               </a>
             </p>
@@ -159,8 +159,8 @@ function PlaceOrder() {
         </div>
         <div className="button-checkout w-full max-w-[460px] p-4 fixed bottom-0">
           <Button
-            color={process.env.NEXT_PUBLIC_THEME_COLOR}
-            className="uppercase w-full bg-secondry-0 text-white font-ITC-BK focus: focus:ring-secondry-0 focus:border-transparent "
+            color={"bg-secondry"}
+            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
           >
             place order
           </Button>
