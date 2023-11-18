@@ -29,8 +29,8 @@ function PlaceOrder() {
   return (
     <>
       <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-x-[1px] h-screen">
-        <div className="header flex justify-between h-11 items-center shadow border-b-2">
-          <h2 className="px-3 py-2">PLACE ORDER</h2>
+        <div className="header flex justify-between h-11 items-center text-center  shadow-custom border-b-2">
+          <h2 className="px-3 py-2 w-full">PLACE ORDER</h2>
           <Button
             color="#b11f23"
             className="btn btn-secondary rounded-none btn bg-secondry-0 h-11"
@@ -99,12 +99,13 @@ function PlaceOrder() {
             {showTimePicker && (
               <input
                 type="time"
+                min="09:00" max="18:00"
                 defaultValue={getCurrentTime()}
                 value={
                   selectedTime === "" ? getCurrentTime() : selectedTime
                 }
                 onChange={handleTimeChange}
-                min={getCurrentTime()}
+                
                 className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry-0 outline-none focus:border-secondry-0 w-full"
               />
             )}

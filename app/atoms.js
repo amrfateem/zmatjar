@@ -26,16 +26,7 @@ const localStorageEffect =
 
 export const itemsState = atom({
   key: "itemsState",
-  default: Items,
-});
-
-
-export const selectedItemState =  (id) => selector({
-  key: 'selectedItemState',
-  get: ({ get }) => {
-    const itemList = get(itemsState);
-    return itemList.find((item) => item.id === id);
-  },
+  default: [],
 });
 
 export const categoriesState = atom({

@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { Button, Modal } from "flowbite-react";
 import { scrollToTop } from "react-scroll/modules/mixins/animate-scroll";
 
-function MostSelling() {
+function MostSelling({ mostSelling }) {
   const items = useRecoilValue(itemsState);
   const [cart, setCart] = useRecoilState(cartState);
   const [count, setCount] = useRecoilState(countState);
@@ -74,7 +74,7 @@ function MostSelling() {
       const updatedCart = {
         ...prevCart,
         [itemId]: {
-          title: item.name,
+          name: item.name,
           price: item.price,
           quantity: prevCart[itemId] ? prevCart[itemId].quantity + 1 : 1,
         },
@@ -115,19 +115,19 @@ function MostSelling() {
           Most Selling
         </h2>
         <div className="flex shrink-0 bg-black-100 overflow-auto w-full py-4 px-2 gap-2 scrollbar-hide">
-          {items.map((item, index) => (
+          {mostSelling.map((item, index) => (
             <div
               id={`item-${item.id}`}
               className={`product-item-selling w-[220px] shrink-0 bg-white rounded-lg flex flex-col ${
                 isItemInCart(item.id) && "border-secondry-0 border"
-              } ${!item.inStock && "border-gray-950 border"}`}
+              } `}
               key={index}
             >
               <div className="product-item_content relative">
                 <Image
                   width={200}
                   height={190}
-                  src={item.imageSrc}
+                  src={item.image}
                   alt={item.name}
                   className={`rounded-t-lg w-full`}
                   onClick={() => {
@@ -135,33 +135,41 @@ function MostSelling() {
                   }}
                 ></Image>
                 <div
-                  className={`absolute  rounded-[10px] bg-white  border mx-1 cursor-pointer bottom-2 right-1 `}
+                  className={`absolute  rounded-full bg-white  border mx-1 cursor-pointer bottom-2 right-1 `}
                 >
-                  {item.inStock && (
+                  {/* {item.inStock && (
                     <button
                       className="btn btn-secondary btn-sm p-1 px-3 w-30"
                       onClick={() => handleQuickView(item)}
                     >
                       Order Now
                     </button>
-                  )}
+                  )} */}
                 </div>
               </div>
-              <h3 className="title mt-0 mb-2 pt-1 px-2  text-start text-base leading-6 font-ITC-BK float-left">
-                {item.name}
-              </h3>
-              <p className=" px-2 line-clamp-2 text-faded-0 text-start mb-2">
-                {item.description}
-              </p>
-              <div className="price px-2 float-left text-left pb-3 text-secondry-0">
-                <span>AED </span>
-                <span>{item.price}</span>
+              <div className=" flex flex-col justify-between w-full h-full">
+                <h3 className="title mt-0 mb-2 pt-1 px-2  text-start text-base leading-6 font-ITC-BK float-left">
+                  {item.name}
+                </h3>
+                <p className=" px-2 line-clamp-2 text-faded-0 text-start mb-2 ">
+                  {item.description}
+                </p>
+                <div className="price px-2 float-left text-left pb-3 text-secondry-0">
+                  <span>AED </span>
+                  <span>{item.price}</span>
+                </div>
               </div>
             </div>
           ))}
         </div>
         <div>
           <Modal
+            theme={{
+              content: {
+                inner:
+                  "relative rounded-none bg-white shadow dark:bg-gray-700 flex flex-col max-w-[460px] max-h-[90vh] m-auto",
+              },
+            }}
             show={openModal}
             onClose={() => setOpenModal(false)}
             closable={true}
@@ -185,9 +193,9 @@ function MostSelling() {
                 <Image
                   width={250}
                   height={250}
-                  src={modalData?.imageSrc}
+                  src={modalData?.image}
                   alt={modalData?.name}
-                  className={`rounded-lg pb-3 w-full h-full`}
+                  className={`rounded-lg mb-3 w-full h-full`}
                 ></Image>
                 {modalData?.name}
                 <p className="text-base leading-relaxed text-secondry-0">
@@ -197,13 +205,13 @@ function MostSelling() {
             </Modal.Header>
             <Modal.Body className="">
               <div className="">
-                <p className="text-base leading-relaxe">
+                <p className="text-base leading-relaxe ">
                   {modalData?.description}
                 </p>
               </div>
             </Modal.Body>
             <Modal.Footer className="text-center items-center justify-center">
-              {modalData?.inStock ? (
+              {/* {modalData?.inStock ? (
                 isItemInCart(modalData?.id) ? (
                   <div className="flex justify-between items-center gap-1 w-20">
                     <button
@@ -251,7 +259,7 @@ function MostSelling() {
                 >
                   Out of Stock
                 </button>
-              )}
+              )} */}
             </Modal.Footer>
           </Modal>
         </div>

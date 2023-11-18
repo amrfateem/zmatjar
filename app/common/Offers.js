@@ -7,7 +7,7 @@ function Offers() {
       {Array.from({ length: 5 }, (_, index) => (
         <div key={index}>
           <div className="offer-item w-72 min-w-[300px] px-2">
-            <div className="offer-item_box bg-white py-3 items-center px-2 flex rounded-2xl shadow-sm drop-shadow-sm">
+            <div className="offer-item_box bg-white py-3 items-center px-2 flex rounded-2xl shadow-custom">
               <div className="px-2">
                 <div className="offer-item_icon flex items-center justify-center w-9 h-9 rounded-full bg-[#b11f2345] ">
                   <svg

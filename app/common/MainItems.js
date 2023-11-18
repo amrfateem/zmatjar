@@ -2,22 +2,11 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  cartState,
-  colStyleState,
-  countState,
-  sumState,
-  filteredItemsState,
-  itemsState,
-  categoriesState,
-  searchState,
-  modalDataState,
-} from "../atoms";
+import { cartState, colStyleState, countState, sumState, filteredItemsState, itemsState, searchState, modalDataState, } from "../atoms";
 import { Modal } from "flowbite-react";
 
-function MainItems() {
-  const items = useRecoilValue(itemsState);
-  const [categories, setCategories] = useRecoilState(categoriesState);
+function MainItems({ data }) {
+  const [items, setItems] = useRecoilState(itemsState);
   const filteredItems = useRecoilValue(filteredItemsState);
   const colStyle = useRecoilValue(colStyleState);
   const [cart, setCart] = useRecoilState(cartState);
@@ -27,9 +16,9 @@ function MainItems() {
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useRecoilState(modalDataState);
 
-  const search = useRecoilValue(searchState);
+  const [searchTerm, setSearchTerm] = useRecoilState(searchState);
 
-  const itemsToRender = search ? filteredItems : items;
+  const itemsToRender = searchTerm ? filteredItems : data;
 
   const isItemInCart = (itemId) => {
     return cart[itemId] !== undefined;
@@ -105,15 +94,21 @@ function MainItems() {
   return (
     <div>
       <div className="bg-[#F5F5F5]">
-        {Array.from({ length: 5 }, (_, index) => (
+        {Object.entries(data).filter(([category, itemsToRender]) =>
+    itemsToRender.some(
+      (item) => item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  ).map(([category, itemsToRender], index) => (
           <div key={index} id={`cat${index}`}>
             <h2 className="leading-6 text-xl font-extrabold mb-1 px-4 pb-2 pt-4 font-ITC-BK float-left border-b-2 border-b-secondry-0">
-              Hot Drinks
+              {category}
             </h2>
             <div
               className={`flex flex-wrap shrink-0 bg-black-100 w-full py-4 px-1 gap-1 justify-start`}
             >
-              {itemsToRender.map((item, index) => (
+              {itemsToRender.filter((item) =>
+          item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        ).map((item, index) => (
                 <div
                   className={`mx-2 bg-white mb-4 rounded-lg ${
                     colStyle === "grid" ? "w-[44%]" : "w-full"
@@ -133,7 +128,7 @@ function MainItems() {
                       <Image
                         width={200}
                         height={190}
-                        src={item.imageSrc}
+                        src={item.image}
                         alt={item.name}
                         onClick={() => handleQuickView(item)}
                         className={`${
@@ -141,23 +136,23 @@ function MainItems() {
                         }`}
                       ></Image>
                       <div
-                        className={`absolute  rounded-[10px] bg-white  border mx-3 cursor-pointer ${
+                        className={`absolute  rounded-full bg-white px-1  border mx-3 cursor-pointer ${
                           colStyle === "grid"
                             ? "bottom-2 right-1 "
-                            : "-bottom-5 right-3 mb-2"
+                            : "-bottom-5 right-0 mb-2"
                         }`}
                       >
-                        {item.inStock &&
-                          (isItemInCart(item.id) ? (
+                        {item.inStock ? (
+                          isItemInCart(item.id) ? (
                             <div className="flex justify-between items-center gap-1 w-20">
                               <button
-                                className="text-secondry-0 font-ITC-BK text-sm px-1 py-2"
+                                className="text-secondry-0 font-ITC-BK text-sm  py-1"
                                 onClick={() => handleDecrement(item.id)}
                               >
                                 <svg
                                   fill={"#b11f23"}
-                                  height="18"
-                                  width="18"
+                                  height="24"
+                                  width="24"
                                   viewBox="0 0 24 24"
                                 >
                                   <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
@@ -167,13 +162,13 @@ function MainItems() {
                                 {cart[item.id].quantity}
                               </span>
                               <button
-                                className="text-secondry-0 font-ITC-BK text-sm px-1 py-2"
+                                className="text-secondry-0 font-ITC-BK text-sm  py-1"
                                 onClick={() => handleIncrement(item.id)}
                               >
                                 <svg
                                   fill={"#b11f23"}
-                                  height="18"
-                                  width="18"
+                                  height="24"
+                                  width="24"
                                   viewBox="0 0 24 24"
                                 >
                                   <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM13.5 7V10.4999H17V13.5H13.5V17H10.5V13.5H7V10.4999H10.5V7H13.5Z"></path>
@@ -187,23 +182,28 @@ function MainItems() {
                             >
                               Add +
                             </button>
-                          ))}
+                          )
+                        ) : (
+                          <button className="btn btn-secondary text-sm btn-sm p-1 w-full">
+                            Out of stock
+                          </button>
+                        )}
                       </div>
                     </div>
                     <div
-                      className={`product-details h-full w-full flex flex-col  text-center ${
+                      className={`product-details h-full w-full flex flex-col p-2 text-center ${
                         colStyle === "grid"
                           ? "justify-between"
-                          : "justify-center gap-2"
+                          : "justify-center"
                       }`}
                     >
-                      <h3 className="title mt-0 pt-1 px-2 line-clamp-2  text-start text-base leading-6 font-ITC-BK float-left">
+                      <h3 className="title mt-0 mb-2  line-clamp-2  text-start text-base leading-5 font-ITC-BK float-left">
                         {item.name}
                       </h3>
-                      <p className=" px-2 line-clamp-2 text-faded-0 text-start">
+                      <p className=" line-clamp-2 mb-2 text-faded-0 text-start text-sm leading-6 font-ITC-BK">
                         {item.description}
                       </p>
-                      <div className="price px-2 float-left text-left pb-3 text-secondry-0">
+                      <div className="price float-left text-left text-secondry-0">
                         <span>AED </span>
                         <span>{item.price}</span>
                       </div>
@@ -217,16 +217,23 @@ function MainItems() {
       </div>
       <div>
         <Modal
+          theme={{
+            content: {
+              inner:
+                "relative rounded-none bg-white shadow dark:bg-gray-700 flex flex-col max-w-[460px] max-h-[90vh] m-auto",
+            },
+          }}
           show={openModal}
           onClose={() => setOpenModal(false)}
           closable={true}
           position={"bottom-center"}
-          className="w-full p-0"
+          className=" p-0 rounded-none "
           style={{
             height: "auto",
             bottom: "0",
             padding: "0",
             borderRadius: "0",
+            margin: "0 auto",
           }}
         >
           <Modal.Header
@@ -240,7 +247,7 @@ function MainItems() {
               <Image
                 width={250}
                 height={250}
-                src={modalData?.imageSrc}
+                src={modalData?.image}
                 alt={modalData?.name}
                 className={`rounded-lg pb-3 w-full h-full`}
               ></Image>
@@ -267,8 +274,8 @@ function MainItems() {
                   >
                     <svg
                       fill={"#b11f23"}
-                      height="18"
-                      width="18"
+                      height="24"
+                      width="24"
                       viewBox="0 0 24 24"
                     >
                       <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
@@ -283,8 +290,8 @@ function MainItems() {
                   >
                     <svg
                       fill={"#b11f23"}
-                      height="18"
-                      width="18"
+                      height="24"
+                      width="24"
                       viewBox="0 0 24 24"
                     >
                       <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM13.5 7V10.4999H17V13.5H13.5V17H10.5V13.5H7V10.4999H10.5V7H13.5Z"></path>

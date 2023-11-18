@@ -2,13 +2,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { useRecoilState } from "recoil";
-import { colStyleState, searchState } from "../atoms";
+import { categoriesState, colStyleState, searchState } from "../atoms";
 
-function NavBar() {
+function NavBar({ categories }) {
   const [activeSection, setActiveSection] = useState(null);
   const [show, setShow] = useState(false);
   const [colStyle, setColStyle] = useRecoilState(colStyleState);
   const [isSticky, setIsSticky] = useState(false);
+
+  const [cats, setCats] = useRecoilState(categoriesState);
+
+  setCats(categories);
 
   const [searchTerm, setSearchTerm] = useRecoilState(searchState);
 
@@ -58,7 +62,6 @@ function NavBar() {
           newActiveSection.link
         );
         if (activeSectionElement) {
-
           activeSectionElement.scrollIntoView();
         }
       }
@@ -72,7 +75,7 @@ function NavBar() {
   }, [isSticky, activeSection]);
 
   return (
-    <div id="nav" className="h-12 relative shadow-sm">
+    <div id="nav" className="h-12 relative shadow-custom">
       <div
         className={`bg-white flex py-2 px-2 gap-2 z-20 overflow-hidden w-full max-w-[460px] ${
           isSticky ? "fixed top-0" : ""
@@ -107,7 +110,7 @@ function NavBar() {
             </a>
 
             <div className="flex overflow-auto gap-2 scrollbar-hide">
-              {Array.from({ length: 5 }, (_, index) => (
+              {categories.map((cat, index) => (
                 <Link
                   id={`#link${index}`}
                   to={`cat${index}`}
@@ -123,7 +126,7 @@ function NavBar() {
                         : ""
                     }`}
                   >
-                    Hot Drinks
+                    {cat}
                   </span>
                 </Link>
               ))}
@@ -150,7 +153,12 @@ function NavBar() {
               onChange={handleSearch}
             />
 
-            <a className="self-center" onClick={() => {setShow(false), setSearchTerm("")}}>
+            <a
+              className="self-center"
+              onClick={() => {
+                setShow(false), setSearchTerm("");
+              }}
+            >
               <svg
                 version="1.1"
                 viewBox="0 0 512 512"
