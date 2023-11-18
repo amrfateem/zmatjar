@@ -1,11 +1,11 @@
 import Image from "next/image";
 import React from "react";
 
-function Contacts() {
+function Contacts({ location, whatsapp, phone }) {
   return (
     <>
       <a
-        href="https://goo.gl/maps/6Tyrp8ooZFfQZhL39"
+        href={location}
         className="font-ITC-BK text-sm flex flex-col text-center items-center  gap-1 w-full text-faded-0"
         target="_blank"
       >
@@ -18,7 +18,7 @@ function Contacts() {
         <span>Location</span>
       </a>
       <a
-        href="https://wa.me/971502385613"
+        href={`https://wa.me/${whatsapp}`}
         className=" font-ITC-BK text-sm flex flex-col text-center items-center gap-1 w-full text-faded-0"
         target="_blank"
       >
@@ -31,7 +31,7 @@ function Contacts() {
         <span>WhatsApp</span>
       </a>
       <a
-        href="tel:0502385613"
+        href={`tel:${phone}`}
         className="font-ITC-BK text-sm flex flex-col text-center items-center gap-1 w-full text-faded-0 "
         target="_blank"
       >

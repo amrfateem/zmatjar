@@ -32,7 +32,7 @@ function PlaceOrder() {
         <div className="header flex justify-between h-11 items-center text-center  shadow-custom border-b-2">
           <h2 className="px-3 py-2 w-full">PLACE ORDER</h2>
           <Button
-            color="#b11f23"
+            color={process.env.NEXT_PUBLIC_THEME_COLOR}
             className="btn btn-secondary rounded-none btn bg-secondry-0 h-11"
             onClick={() => router.push("/")}
           >
@@ -159,7 +159,7 @@ function PlaceOrder() {
         </div>
         <div className="button-checkout w-full max-w-[460px] p-4 fixed bottom-0">
           <Button
-            color="#b11f23"
+            color={process.env.NEXT_PUBLIC_THEME_COLOR}
             className="uppercase w-full bg-secondry-0 text-white font-ITC-BK focus: focus:ring-secondry-0 focus:border-transparent "
           >
             place order

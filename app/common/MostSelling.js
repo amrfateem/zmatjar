@@ -219,7 +219,7 @@ function MostSelling({ mostSelling }) {
                       onClick={() => handleDecrement(modalData?.id)}
                     >
                       <svg
-                        fill={"#b11f23"}
+                        fill={process.env.NEXT_PUBLIC_THEME_COLOR}
                         height="18"
                         width="18"
                         viewBox="0 0 24 24"
@@ -235,7 +235,7 @@ function MostSelling({ mostSelling }) {
                       onClick={() => handleIncrement(modalData?.id)}
                     >
                       <svg
-                        fill={"#b11f23"}
+                        fill={process.env.NEXT_PUBLIC_THEME_COLOR}
                         height="18"
                         width="18"
                         viewBox="0 0 24 24"

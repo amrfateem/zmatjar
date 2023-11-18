@@ -10,6 +10,8 @@ function NavBar({ categories }) {
   const [colStyle, setColStyle] = useRecoilState(colStyleState);
   const [isSticky, setIsSticky] = useState(false);
 
+  let color = process.env.NEXT_PUBLIC_THEME_COLOR
+
   const [cats, setCats] = useRecoilState(categoriesState);
 
   setCats(categories);
@@ -88,7 +90,7 @@ function NavBar({ categories }) {
                 viewBox="0 0 21 21"
                 xmlns="http://www.w3.org/2000/svg"
                 className="icon-grid atom-icon nav-category_icon"
-                fill={`${colStyle === "grid" ? "#b11f23" : "currentColor"}`}
+                fill={`${colStyle === "grid" ?process.env.NEXT_PUBLIC_THEME_COLOR: "currentColor"}`}
                 width={21}
                 height={21}
                 id="gridStyle"
@@ -99,7 +101,7 @@ function NavBar({ categories }) {
             <a className="self-center" onClick={(e) => handleColStyle(e)}>
               <svg
                 viewBox="0 0 21 21"
-                fill={`${colStyle === "list" ? "#b11f23" : "currentColor"}`}
+                fill={`${colStyle === "list" ?process.env.NEXT_PUBLIC_THEME_COLOR: "currentColor"}`}
                 xmlns="http://www.w3.org/2000/svg"
                 height={21}
                 width={21}

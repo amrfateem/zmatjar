@@ -84,21 +84,43 @@ productsMapped.forEach((item) => {
   });
 });
 
+const params2 = new DrupalJsonApiParams().addInclude([
+  "field_image",
+  "field_business",
+  "field_logo",
+]);
 
+const pageData = await drupal.getResource(
+  "node--page",
+  process.env.NEXT_PUBLIC_DRUPAL_PAGE_UUID,
+  {
+    params: params2.getQueryObject(),
+  }
+);
 
 export default function Home() {
   return (
     <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
-      <Header />
-      <Intro />
+      <Header headerSrc={pageData.field_image} />
+      <Intro
+        title={pageData.title}
+        logo={pageData.field_logo}
+        business={pageData.field_business}
+        address={pageData.field_address}
+      />
 
       {/* Contacts */}
       <div className="flex py-4 justify-center text-center border-t-[1px]  border-solid border-[#edf2f7] shadow-custom">
-        <Contacts />
+        <Contacts
+          location={pageData.field_location.uri}
+          whatsapp={pageData.field_whatsapp}
+          phone={pageData.field_phone}
+        />
       </div>
       {/* End Contacts */}
 
       <Offers />
+
       <NavBar categories={uniqueCategories} />
 
       <MostSelling mostSelling={mostSellingProducts} />

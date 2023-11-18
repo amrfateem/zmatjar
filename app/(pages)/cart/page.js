@@ -62,7 +62,7 @@ function Cart() {
       <div className="header flex justify-end p-0 items-center text-center  shadow-custom h-11 border-b-2">
         <h2 className="px-3 py-2 h-full w-full ">YOUR BASKET</h2>
         <Button
-          color="#b11f23"
+          color={process.env.NEXT_PUBLIC_THEME_COLOR}
           className="btn btn-secondary rounded-none btn bg-secondry-0 h-11"
           onClick={() => router.push("/")}
         >
@@ -94,7 +94,7 @@ function Cart() {
                     onClick={() => handleDecrement(key)}
                   >
                     <svg
-                      fill={"#b11f23"}
+                      fill={process.env.NEXT_PUBLIC_THEME_COLOR}
                       height="18"
                       width="18"
                       viewBox="0 0 24 24"
@@ -108,7 +108,7 @@ function Cart() {
                     onClick={() => handleIncrement(key)}
                   >
                     <svg
-                      fill={"#b11f23"}
+                      fill={process.env.NEXT_PUBLIC_THEME_COLOR}
                       height="18"
                       width="18"
                       viewBox="0 0 24 24"
@@ -159,7 +159,7 @@ function Cart() {
       {count == 0 ? null : (
         <div className="button-checkout w-full max-w-[460px] p-4 fixed bottom-0">
           <Button
-            color="#b11f23"
+            color={process.env.NEXT_PUBLIC_THEME_COLOR}
             className="uppercase w-full bg-secondry-0 text-white font-ITC-BK focus: focus:ring-secondry-0 focus:border-transparent "
             onClick={() => router.push("/delivery-location")}
           >

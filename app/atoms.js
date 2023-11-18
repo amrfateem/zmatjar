@@ -6,7 +6,6 @@ const localStorageEffect =
   (key) =>
   ({ setSelf, onSet }) => {
     if (typeof window === "undefined") {
-      // Check if running on the server side (during SSR)
       return;
     }
     const savedValue = localStorage.getItem(key);

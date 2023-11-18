@@ -94,7 +94,7 @@ function Cart() {
                         onClick={() => handleDecrement(key)}
                       >
                         <svg
-                          fill={"#b11f23"}
+                          fill={process.env.NEXT_PUBLIC_THEME_COLOR}
                           height="18"
                           width="18"
                           viewBox="0 0 24 24"
@@ -108,7 +108,7 @@ function Cart() {
                         onClick={() => handleIncrement(key)}
                       >
                         <svg
-                          fill={"#b11f23"}
+                          fill={process.env.NEXT_PUBLIC_THEME_COLOR}
                           height="18"
                           width="18"
                           viewBox="0 0 24 24"

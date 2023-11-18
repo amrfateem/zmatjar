@@ -150,7 +150,7 @@ function MainItems({ data }) {
                                 onClick={() => handleDecrement(item.id)}
                               >
                                 <svg
-                                  fill={"#b11f23"}
+                                  fill={process.env.NEXT_PUBLIC_THEME_COLOR}
                                   height="24"
                                   width="24"
                                   viewBox="0 0 24 24"
@@ -166,7 +166,7 @@ function MainItems({ data }) {
                                 onClick={() => handleIncrement(item.id)}
                               >
                                 <svg
-                                  fill={"#b11f23"}
+                                  fill={process.env.NEXT_PUBLIC_THEME_COLOR}
                                   height="24"
                                   width="24"
                                   viewBox="0 0 24 24"
@@ -273,7 +273,7 @@ function MainItems({ data }) {
                     onClick={() => handleDecrement(modalData?.id)}
                   >
                     <svg
-                      fill={"#b11f23"}
+                      fill={process.env.NEXT_PUBLIC_THEME_COLOR}
                       height="24"
                       width="24"
                       viewBox="0 0 24 24"
@@ -289,7 +289,7 @@ function MainItems({ data }) {
                     onClick={() => handleIncrement(modalData?.id)}
                   >
                     <svg
-                      fill={"#b11f23"}
+                      fill={process.env.NEXT_PUBLIC_THEME_COLOR}
                       height="24"
                       width="24"
                       viewBox="0 0 24 24"

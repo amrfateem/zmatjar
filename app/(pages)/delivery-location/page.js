@@ -42,7 +42,7 @@ function DeliveryLocation() {
       <div className="header flex justify-between items-center h-11 text-center shadow-custom border-b-2">
         <h2 className="px-3 py-2  w-full">CHOOSE THE DELIVERY LOCATION</h2>
         <Button
-          color="#b11f23"
+          color={process.env.NEXT_PUBLIC_THEME_COLOR}
           className="btn btn-secondary rounded-none btn bg-secondry-0 h-11"
           onClick={() => router.push("/")}
         >
@@ -62,7 +62,7 @@ function DeliveryLocation() {
       )}
       <div className="button-location w-full max-w-[460px] p-4 fixed bottom-0 z-500">
         <Button
-          color="#b11f23"
+          color={process.env.NEXT_PUBLIC_THEME_COLOR}
           className="uppercase w-full bg-secondry-0 text-white font-ITC-BK focus: focus:ring-secondry-0 focus:border-transparent "
           onClick={() => router.push("/place-order")}
         >
