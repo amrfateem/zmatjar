@@ -140,7 +140,7 @@ function Cart() {
               <p className=" font-ITC-BK">
                 Subtotal <span className="text-xs">(Inclusive of VAT)</span>
               </p>
-              <p className=" font-ITC-BK">{sum} AED</p>
+              <p className=" font-ITC-BK">{Number(sum.toFixed(2))} AED</p>
             </div>
             <div className="flex justify-between items-center pb-2">
               <p className=" font-ITC-BK">Delivery charges</p>
@@ -150,7 +150,7 @@ function Cart() {
             </div>
             <div className="flex justify-between items-center pt-3">
               <p className=" font-ITC-BK">Total</p>
-              <p className=" font-ITC-BK">{total} AED</p>
+              <p className=" font-ITC-BK">{Number(total.toFixed(2))} AED</p>
             </div>
           </div>
         </div>
