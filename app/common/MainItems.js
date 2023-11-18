@@ -1,14 +1,12 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   cartState,
   colStyleState,
   countState,
   sumState,
-  filteredItemsState,
-  itemsState,
   searchState,
   modalDataState,
 } from "../atoms";
@@ -94,8 +92,27 @@ function MainItems({ data }) {
     // Set modalData with the item data
     setModalData(item);
 
+    const itemElement = document.getElementById(`item-${item.id}`);
+    // Check if the element exists before scrolling
+    if (itemElement) {
+      // Scroll to the top of the item
+      itemElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    const newUrl = `${window.location.pathname}?id=${item.id}`;
+    window.history.pushState({ path: newUrl }, "", newUrl);
+
     setOpenModal(true);
   };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setModalData(null);
+    const newUrl = window.location.pathname;
+    window.history.pushState({ path: newUrl }, "", newUrl);
+  };
+
+
   return (
     <div>
       <div className="bg-[#F5F5F5]">
@@ -122,6 +139,7 @@ function MainItems({ data }) {
                       className={`mx-2 bg-white mb-4 rounded-lg ${
                         colStyle === "grid" ? "w-[44%]" : "w-full"
                       }`}
+                      id={`item-${item.id}`}
                       key={index}
                     >
                       <div
@@ -231,7 +249,7 @@ function MainItems({ data }) {
             },
           }}
           show={openModal}
-          onClose={() => setOpenModal(false)}
+          onClose={handleCloseModal}
           closable={true}
           position={"bottom-center"}
           className=" p-0 rounded-none "

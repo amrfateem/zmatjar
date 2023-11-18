@@ -3,11 +3,8 @@ import "./globals.css";
 
 import RecoidContextProvider from "./recoilContextProvider";
 import { drupal } from "./lib/drupal";
-import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 
 const inter = Inter({ subsets: ["latin"] });
-
-
 
 function saveOrUpdateUTMParameters() {
   if (typeof window !== "undefined") {

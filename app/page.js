@@ -75,6 +75,7 @@ productsMapped.forEach((item) => {
         categorizedMenu[category] = [];
       }
       categorizedMenu[category].push({
+        id: item.id,
         name: item.name,
         price: item.price,
         description: item.description,
@@ -97,8 +98,6 @@ const pageData = await drupal.getResource(
     params: params2.getQueryObject(),
   }
 );
-
-console.log(pageData);
 
 export default function Home() {
   return (

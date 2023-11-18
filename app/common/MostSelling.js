@@ -1,11 +1,10 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import {  useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   cartState,
   countState,
-  itemsState,
   modalDataState,
   searchState,
   sumState,
@@ -95,14 +94,23 @@ function MostSelling({ mostSelling }) {
     setModalData(item);
 
     const itemElement = document.getElementById(`item-${item.id}`);
-
     // Check if the element exists before scrolling
     if (itemElement) {
       // Scroll to the top of the item
       itemElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
+    const newUrl = `${window.location.pathname}?id=${item.id}`;
+    window.history.pushState({ path: newUrl }, "", newUrl);
+
     setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setModalData(null);
+    const newUrl = window.location.pathname;
+    window.history.pushState({ path: newUrl }, "", newUrl);
   };
 
   return (
@@ -134,14 +142,14 @@ function MostSelling({ mostSelling }) {
                 <div
                   className={`absolute  rounded-full bg-white  border mx-1 cursor-pointer bottom-2 right-1 `}
                 >
-                  {/* {item.inStock && (
+                  {item.inStock && (
                     <button
                       className="btn btn-secondary btn-sm p-1 px-3 w-30"
                       onClick={() => handleQuickView(item)}
                     >
                       Order Now
                     </button>
-                  )} */}
+                  )}
                 </div>
               </div>
               <div className=" flex flex-col justify-between w-full h-full">
@@ -168,7 +176,7 @@ function MostSelling({ mostSelling }) {
               },
             }}
             show={openModal}
-            onClose={() => setOpenModal(false)}
+            onClose={handleCloseModal}
             closable={true}
             position={"bottom-center"}
             className="w-full p-0"
