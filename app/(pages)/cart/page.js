@@ -66,7 +66,7 @@ function Cart() {
 
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-screen">
-      <div className="header flex justify-end p-0 items-center text-center  shadow-custom h-11 border-b-2 fixed top-0 w-full bg-white">
+      <div className="header flex justify-end p-0 items-center text-center  shadow-custom h-11 border-b-2 w-full bg-white">
         <h2 className="px-3 py-2 h-full w-full ">YOUR BASKET</h2>
         <Button
           color={"bg-secondry"}
@@ -77,7 +77,7 @@ function Cart() {
         </Button>
       </div>
 
-      <div className="space-y-6 px-3 py-2  pt-12">
+      <div className="space-y-6 px-3 py-2  pt-3">
         {count == 0 ? (
           <p className=" font-ITC-BK">Your basket is empty</p>
         ) : (
