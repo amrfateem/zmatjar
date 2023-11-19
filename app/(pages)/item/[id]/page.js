@@ -61,7 +61,7 @@ function Item({ params }) {
           </div>
         </Modal.Body>
         <Modal.Footer className="text-center items-center justify-center">
-          {modalData?.inStock ? (
+          {modalData?.itemOutOfStock ? (
             isItemInCart(modalData?.id) ? (
               <div className="flex justify-between items-center gap-1 w-20">
                 <button

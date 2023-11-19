@@ -93,14 +93,14 @@ function MostSelling({ mostSelling }) {
     // Set modalData with the item data
     setModalData(item);
 
-    const itemElement = document.getElementById(`item-${item.id}`);
+    const itemElement = document.getElementById(`most-selling-${item.id}`);
     // Check if the element exists before scrolling
     if (itemElement) {
       // Scroll to the top of the item
       itemElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    const newUrl = `${window.location.pathname}?id=${item.id}`;
+    const newUrl = `${window.location.pathname}?popular-id=${item.id}`;
     window.history.pushState({ path: newUrl }, "", newUrl);
 
     setOpenModal(true);
@@ -122,7 +122,7 @@ function MostSelling({ mostSelling }) {
         <div className="flex shrink-0 bg-black-100 overflow-auto w-full py-4 px-2 gap-2 scrollbar-hide">
           {mostSelling.map((item, index) => (
             <div
-              id={`item-${item.id}`}
+              id={`most-selling-${item.id}`}
               className={`product-item-selling w-[220px] shrink-0 bg-white rounded-lg flex flex-col ${
                 isItemInCart(item.id) && "border-secondry border"
               } `}
@@ -142,7 +142,7 @@ function MostSelling({ mostSelling }) {
                 <div
                   className={`absolute  rounded-full bg-white  border mx-1 cursor-pointer bottom-2 right-1 `}
                 >
-                  {item.inStock && (
+                  {item.itemOutOfStock && (
                     <button
                       className="btn btn-secondary btn-sm p-1 px-3 w-30"
                       onClick={() => handleQuickView(item)}
@@ -216,7 +216,7 @@ function MostSelling({ mostSelling }) {
               </div>
             </Modal.Body>
             <Modal.Footer className="text-center items-center justify-center">
-              {modalData?.inStock ? (
+              {modalData?.itemOutOfStock ? (
                 isItemInCart(modalData?.id) ? (
                   <div className="flex justify-between items-center gap-1 w-20">
                     <button

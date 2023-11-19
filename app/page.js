@@ -22,6 +22,7 @@ const params = new DrupalJsonApiParams()
     "field_image",
     "drupal_internal__nid",
     "body",
+    "field_out_of_stock"
   ])
   .addInclude(["field_category", "field_image"]);
 
@@ -42,6 +43,9 @@ const productsMapped = products.map((product) => {
       ? process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + product.field_image?.uri.url
       : "/svg/img-placeholder.svg";
 
+      const itemOutOfStock = product.field_out_of_stock;
+
+
   return {
     id: itemId,
     name: itemName,
@@ -49,6 +53,7 @@ const productsMapped = products.map((product) => {
     price: itemPrice,
     description: itemDescription,
     image: itemImage,
+    outOfStock: itemOutOfStock
     // Add other properties you need
   };
 });
@@ -80,6 +85,7 @@ productsMapped.forEach((item) => {
         price: item.price,
         description: item.description,
         image: item.image,
+        outOfStock: item.outOfStock
       });
     }
   });
@@ -98,6 +104,7 @@ const pageData = await drupal.getResource(
     params: params2.getQueryObject(),
   }
 );
+
 
 export default function Home() {
   return (

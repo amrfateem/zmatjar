@@ -71,6 +71,7 @@ const pageData = await drupal.getResource(
   }
 );
 
+
 export const metadata = {
   title: pageData.title,
   description: "ZMatjar App",

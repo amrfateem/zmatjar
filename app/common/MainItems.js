@@ -169,7 +169,7 @@ function MainItems({ data }) {
                                 : "-bottom-5 right-0 mb-2"
                             }`}
                           >
-                            {item.inStock ? (
+                            {item.itemOutOfStock ? (
                               isItemInCart(item.id) ? (
                                 <div className="flex justify-between items-center gap-1 w-20">
                                   <button
