@@ -68,9 +68,9 @@ const pageData = await drupal.getResource(
         "node--page": "field_primary_color,title",
       },
     },
+    withCache: false,
   }
 );
-
 
 export const metadata = {
   title: pageData.title,
