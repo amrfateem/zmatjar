@@ -5,14 +5,14 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { chargesState, countState, sumState } from "../atoms";
 import { useRouter } from "next/navigation";
 
-function Footer({ charges , location, whatsapp, phone }) {
+function Footer({ charges , location, whatsapp, phone, minimum }) {
   const router = useRouter();
   const [offsetTop, setOffsetTop] = useState(0);
   const count = useRecoilValue(countState);
   const sum = useRecoilValue(sumState);
 
   const [deliveryCharges, setDeliveryCharges] = useRecoilState(chargesState);
-  setDeliveryCharges(!charges == null ? charges : 0);
+  setDeliveryCharges(charges ? charges : 0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,10 +51,10 @@ function Footer({ charges , location, whatsapp, phone }) {
         {count > 0 && (
           <div
             className="cart flex justify-between items-center  mx-3 my-2 px-4 py-2 text-white rounded-md cursor-pointer bg-secondry"
-            onClick={() => router.push("/cart")}
+            onClick={() => {minimum > sum ? "" : router.push('/cart')}}
           >
             <div className="basket-txt font-ITC-BK text-xs uppercase">
-              View basket
+             {minimum > sum ? `Minimum order is AED ${minimum}` : `View Basket`}
             </div>
             <div className="basket inline-block relative text-right">
               <span className="mr-8 text-xs">AED {sum}</span>

@@ -142,7 +142,7 @@ function MainItems({ data }) {
                           colStyle === "grid"
                             ? "flex-col"
                             : "flex-row-reverse gap-2 "
-                        } ${isItemInCart(item.id) ? "border-secondry" : ""}`}
+                        } ${isItemInCart(item.id) && "border-secondry"} ${item.outOfStock && "border-gray-500"}`}
                       >
                         <div className="product-item_content relative">
                           <Image

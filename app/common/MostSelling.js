@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import {  useState } from "react";
+import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   cartState,
@@ -123,9 +123,7 @@ function MostSelling({ mostSelling }) {
           {mostSelling.map((item, index) => (
             <div
               id={`most-selling-${item.id}`}
-              className={`product-item-selling w-[220px] shrink-0 bg-white rounded-lg flex flex-col ${
-                isItemInCart(item.id) && "border-secondry border"
-              } `}
+              className={`product-item-selling w-[220px] shrink-0 bg-white rounded-lg flex flex-col ${ isItemInCart(item.id) && "border-secondry border" } ${item.outOfStock && "border-gray-500"} `}
               key={index}
             >
               <div className="product-item_content relative">

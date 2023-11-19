@@ -58,7 +58,6 @@ const productsMapped = products.map((product) => {
   };
 });
 
-console.log(productsMapped);
 
 const allCategories = products.reduce((categories, product) => {
   return categories.concat(
@@ -143,6 +142,7 @@ export default function Home() {
         location={pageData.field_location.uri}
         whatsapp={pageData.field_whatsapp}
         phone={pageData.field_phone}
+        minimum={pageData.field_minimum_order}
       />
     </main>
   );
