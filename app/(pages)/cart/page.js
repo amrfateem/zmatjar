@@ -5,6 +5,7 @@ import {
   cartState,
   chargesState,
   countState,
+  minimumOrderState,
   sumState,
   totalState,
 } from "../../atoms";
@@ -21,6 +22,7 @@ function Cart() {
   const [total, setTotal] = useRecoilState(totalState);
 
   const charges = Number(useRecoilValue(chargesState));
+  const minimum = Number(useRecoilValue(minimumOrderState));
 
   setTotal(sum + charges);
 
@@ -155,12 +157,19 @@ function Cart() {
           </div>
         </div>
       )}
+      {count > 0 && minimum > sum && (
+          <div className="items-start p-2 px-3 text-sm  text-start">
+            <p>Sorry, Minimum order subtotal can not be less than AED {minimum}</p>
+          </div>
+        )}
       {count == 0 ? null : (
         <div className="button-checkout w-full max-w-[460px] p-4  bg-white">
           <Button
             color={"bg-secondry"}
             className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-            onClick={() => router.push("/delivery-location")}
+            onClick={() => {
+              minimum > sum ? "" : router.push("/delivery-location");
+            }}
           >
             Checkout
           </Button>

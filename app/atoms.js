@@ -91,6 +91,12 @@ export const chargesState = atom({
   effects: [localStorageEffect("chargesState")],
 });
 
+export const minimumOrderState = atom({
+  key: "minimumOrderState",
+  default: 0,
+  effects: [localStorageEffect("minimumOrderState")],
+});
+
 export const filteredItemsState = selector({
   key: "filteredItemsState",
   get: ({ get }) => {

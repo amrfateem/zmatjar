@@ -73,7 +73,6 @@ const pageData = await drupal.getResource(
   }
 );
 
-
 export const metadata = {
   title: pageData.title,
   description: "ZMatjar App",
@@ -86,7 +85,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-      <link rel="icon" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url} type="image/x-icon" sizes="32x32"/>
+
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://demo.zmatjar.com/en" />
+        <link rel="shortlink" href="https://demo.zmatjar.com/en" />
+        <link rel="icon" href={ process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url } type="image/x-icon" />
+        <meta name="msapplication-TileColor" content={`#${pageData.field_primary_color}`} />
+        <meta name="theme-color" content={`#${pageData.field_primary_color}`} />
       </head>
       <body className={inter.className}>
         <style

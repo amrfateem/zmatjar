@@ -39,12 +39,12 @@ const productsMapped = products.map((product) => {
   );
   const itemPrice = parseFloat(product.field_price);
   const itemDescription = product.body?.value || "";
-  const itemImage =
-    product.field_image?.filemime === "image/jpeg"
-      ? process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + product.field_image?.uri.url
-      : "/svg/img-placeholder.svg";
+  const itemImage = product.field_image?.uri?.url
+    ? process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + product.field_image?.uri.url
+    : "/svg/img-placeholder.svg";
 
-  const itemOutOfStock = product.field_out_of_stock || product.field_out_of_stock !== null;
+  const itemOutOfStock =
+    product.field_out_of_stock || product.field_out_of_stock !== null;
 
   return {
     id: itemId,
@@ -57,7 +57,6 @@ const productsMapped = products.map((product) => {
     // Add other properties you need
   };
 });
-
 
 const allCategories = products.reduce((categories, product) => {
   return categories.concat(
@@ -80,7 +79,7 @@ productsMapped.forEach((item) => {
       if (!categorizedMenu[category]) {
         categorizedMenu[category] = [];
       }
-      
+
       categorizedMenu[category].push({
         id: item.id,
         name: item.name,
@@ -108,6 +107,7 @@ const pageData = await drupal.getResource(
   }
 );
 
+console.log(pageData);
 export default function Home() {
   return (
     <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">

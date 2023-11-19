@@ -2,17 +2,20 @@
 import { useEffect, useState } from "react";
 import Contacts from "./Contacts";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { chargesState, countState, sumState } from "../atoms";
+import { chargesState, countState, minimumOrderState, sumState } from "../atoms";
 import { useRouter } from "next/navigation";
 
-function Footer({ charges , location, whatsapp, phone, minimum }) {
+function Footer({ charges, location, whatsapp, phone, minimum }) {
   const router = useRouter();
   const [offsetTop, setOffsetTop] = useState(0);
   const count = useRecoilValue(countState);
   const sum = useRecoilValue(sumState);
 
   const [deliveryCharges, setDeliveryCharges] = useRecoilState(chargesState);
+  const [minimumOrder, setMinimumOrder] = useRecoilState(minimumOrderState);
+
   setDeliveryCharges(charges ? charges : 0);
+  setMinimumOrder(minimum ? minimum : 0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,13 +51,20 @@ function Footer({ charges , location, whatsapp, phone, minimum }) {
           offsetTop > 500 ? "" : "translate-y-full invisible"
         }`}
       >
+        {count > 0 && minimum > sum && (
+          <div className="items-start p-2 px-3 text-sm  text-start">
+            <p>Sorry, Minimum order can not be less than AED {minimum}</p>
+          </div>
+        )}
         {count > 0 && (
           <div
             className="cart flex justify-between items-center  mx-3 my-2 px-4 py-2 text-white rounded-md cursor-pointer bg-secondry"
-            onClick={() => {minimum > sum ? "" : router.push('/cart')}}
+            onClick={() => {
+              minimum > sum ? "" : router.push("/cart");
+            }}
           >
             <div className="basket-txt font-ITC-BK text-xs uppercase">
-             {minimum > sum ? `Minimum order is AED ${minimum}` : `View Basket`}
+              View basket
             </div>
             <div className="basket inline-block relative text-right">
               <span className="mr-8 text-xs">AED {Number(sum.toFixed(2))}</span>
@@ -119,7 +129,7 @@ function Footer({ charges , location, whatsapp, phone, minimum }) {
         )}
 
         <div className="flex py-4 justify-center text-center    ">
-          <Contacts  location={location} whatsapp={whatsapp} phone={phone}  />
+          <Contacts location={location} whatsapp={whatsapp} phone={phone} />
         </div>
       </div>
     </>

@@ -8,7 +8,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "test-menu.digializer.com",
+        hostname: process.env.NEXT_PUBLIC_IMAGE_DOMAIN,
       },
     ],
   },
