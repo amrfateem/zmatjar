@@ -93,11 +93,7 @@ function MainItems({ data }) {
     setModalData(item);
 
     const itemElement = document.getElementById(`item-${item.id}`);
-    // Check if the element exists before scrolling
-    if (itemElement) {
-      // Scroll to the top of the item
-      itemElement.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    itemElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
     const newUrl = `${window.location.pathname}?id=${item.id}`;
     window.history.pushState({ path: newUrl }, "", newUrl);
@@ -111,7 +107,6 @@ function MainItems({ data }) {
     const newUrl = window.location.pathname;
     window.history.pushState({ path: newUrl }, "", newUrl);
   };
-
 
   return (
     <div>
@@ -169,7 +164,7 @@ function MainItems({ data }) {
                                 : "-bottom-5 right-0 mb-2"
                             }`}
                           >
-                            {item.itemOutOfStock ? (
+                            {item.outOfStock == false ? (
                               isItemInCart(item.id) ? (
                                 <div className="flex justify-between items-center gap-1 w-20">
                                   <button
@@ -290,7 +285,7 @@ function MainItems({ data }) {
             </div>
           </Modal.Body>
           <Modal.Footer className="text-center items-center justify-center">
-            {modalData?.inStock ? (
+            {modalData?.outOfStock == false ? (
               isItemInCart(modalData?.id) ? (
                 <div className="flex justify-between items-center gap-1 w-20">
                   <button

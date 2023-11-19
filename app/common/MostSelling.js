@@ -142,7 +142,7 @@ function MostSelling({ mostSelling }) {
                 <div
                   className={`absolute  rounded-full bg-white  border mx-1 cursor-pointer bottom-2 right-1 `}
                 >
-                  {item.itemOutOfStock && (
+                  {item.outOfStock == false && (
                     <button
                       className="btn btn-secondary btn-sm p-1 px-3 w-30"
                       onClick={() => handleQuickView(item)}
@@ -216,7 +216,7 @@ function MostSelling({ mostSelling }) {
               </div>
             </Modal.Body>
             <Modal.Footer className="text-center items-center justify-center">
-              {modalData?.itemOutOfStock ? (
+              {modalData?.outOfStock == false ? (
                 isItemInCart(modalData?.id) ? (
                   <div className="flex justify-between items-center gap-1 w-20">
                     <button

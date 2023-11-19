@@ -44,7 +44,7 @@ const productsMapped = products.map((product) => {
       ? process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + product.field_image?.uri.url
       : "/svg/img-placeholder.svg";
 
-  const itemOutOfStock = product.field_out_of_stock;
+  const itemOutOfStock = product.field_out_of_stock || product.field_out_of_stock !== null;
 
   return {
     id: itemId,
@@ -57,6 +57,8 @@ const productsMapped = products.map((product) => {
     // Add other properties you need
   };
 });
+
+console.log(productsMapped);
 
 const allCategories = products.reduce((categories, product) => {
   return categories.concat(
@@ -79,6 +81,7 @@ productsMapped.forEach((item) => {
       if (!categorizedMenu[category]) {
         categorizedMenu[category] = [];
       }
+      
       categorizedMenu[category].push({
         id: item.id,
         name: item.name,
