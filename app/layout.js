@@ -65,21 +65,29 @@ const pageData = await drupal.getResource(
   {
     params: {
       fields: {
-        "node--page": "field_primary_color,title",
+        "node--page": "field_primary_color,title,field_logo",
       },
+      include: "field_logo",
     },
     withCache: false,
   }
 );
 
+
 export const metadata = {
   title: pageData.title,
   description: "ZMatjar App",
+  icons: {
+    icon: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url,
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+      <link rel="icon" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url} type="image/x-icon" sizes="32x32"/>
+      </head>
       <body className={inter.className}>
         <style
           dangerouslySetInnerHTML={{

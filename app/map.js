@@ -1,5 +1,5 @@
 "use client";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Rectangle, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
@@ -37,7 +37,10 @@ const Map = () => {
     },
   };
 
+
   return (
+
+    
     <MapContainer
       center={{
         lat: userLocation.lat || localPosition?.lat || 0,
@@ -49,12 +52,14 @@ const Map = () => {
       zoom={12}
       style={{ width: "100%", height: "84dvh" }}
     >
+      <Circle 
+        center={[25.1851804, 55.2780796]} radius={10000} ></Circle>
       <Marker
         draggable={true}
         position={{
-            lat: userLocation.lat || localPosition?.lat || 0,
-            lng: userLocation.lng || localPosition?.lng || 0,
-          }}
+          lat: userLocation.lat || localPosition?.lat || 0,
+          lng: userLocation.lng || localPosition?.lng || 0,
+        }}
         eventHandlers={eventHandlers}
       >
         <Popup>Your Location</Popup>

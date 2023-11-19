@@ -57,7 +57,7 @@ function Footer({ charges , location, whatsapp, phone, minimum }) {
              {minimum > sum ? `Minimum order is AED ${minimum}` : `View Basket`}
             </div>
             <div className="basket inline-block relative text-right">
-              <span className="mr-8 text-xs">AED {sum}</span>
+              <span className="mr-8 text-xs">AED {Number(sum.toFixed(2))}</span>
               <svg
                 viewBox="0 0 96 96"
                 xmlns="http://www.w3.org/2000/svg"
