@@ -97,6 +97,23 @@ export const minimumOrderState = atom({
   effects: [localStorageEffect("minimumOrderState")],
 });
 
+export const specialInstructionsState = atom({
+  key: "specialInstructionsState",
+  default: "",
+});
+
+export const telegramChatIdState = atom({
+  key: "telegramChatIdState",
+  default: "",
+  effects: [localStorageEffect("telegramChatIdState")],
+});
+
+export const storeLangState = atom({
+  key: "storeLangState",
+  default: "",
+  effects: [localStorageEffect("storeLangState")],
+});
+
 export const filteredItemsState = selector({
   key: "filteredItemsState",
   get: ({ get }) => {

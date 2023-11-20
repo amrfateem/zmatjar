@@ -31,7 +31,7 @@
   stroke: var(--brand-color)
 }
 
-.active-svg svg, .active-svg {
+.active-svg svg, .active-svg, .svg-inline--fa {
   fill: var(--brand-color); /* Use the CSS variable in your SVG styles */
 }
 
@@ -52,6 +52,10 @@
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+.leaflet-pane, .leaflet-control, .leaflet-top, .leaflet-bottom {
+  z-index: 40!important;
 }
 
 .shadow-custom {

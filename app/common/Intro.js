@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 function Intro({ title, logo, business, address }) {
-  const businessNames = business.map((item) => item.name).join(".");
+  const businessNames = business.map((item) => item.name).join(" .");
 
   return (
     <div className="container bg-white p-4 mb-4">

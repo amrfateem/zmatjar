@@ -70,7 +70,7 @@ function MostSelling({ mostSelling }) {
       const updatedCart = {
         ...prevCart,
         [itemId]: {
-          name: item.name,
+          title: item.name,
           price: item.price,
           quantity: prevCart[itemId] ? prevCart[itemId].quantity + 1 : 1,
         },
@@ -151,10 +151,10 @@ function MostSelling({ mostSelling }) {
                 </div>
               </div>
               <div className=" flex flex-col justify-between w-full h-full">
-                <h3 className="title mt-0 mb-2 pt-1 px-2  text-start text-base leading-6 font-ITC-BK float-left">
+                <h3 className="title mt-0 mb-2 pt-1 px-2  text-start text-base leading-6 font-ITC-BK float-left font-bold">
                   {item.name}
                 </h3>
-                <p className=" px-2 line-clamp-2 text-faded-0 text-start mb-2 ">
+                <p className=" px-2 line-clamp-2 text-faded-0 text-start mb-2 text-sm leading-6 font-ITC-BK ">
                   {item.description}
                 </p>
                 <div className="price px-2 float-left text-left pb-3 text-secondry">
@@ -206,13 +206,15 @@ function MostSelling({ mostSelling }) {
                 </p>
               </div>
             </Modal.Header>
-            <Modal.Body className="">
+            {modalData?.description && (
+            <Modal.Body>
               <div className="">
-                <p className="text-base leading-relaxe ">
+                <p className="text-base leading-relaxe">
                   {modalData?.description}
                 </p>
               </div>
             </Modal.Body>
+          )}
             <Modal.Footer className="text-center items-center justify-center">
               {modalData?.outOfStock == false ? (
                 isItemInCart(modalData?.id) ? (

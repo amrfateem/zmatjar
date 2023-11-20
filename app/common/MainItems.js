@@ -129,6 +129,7 @@ function MainItems({ data }) {
                   .filter((item) =>
                     item.name.toLowerCase().includes(searchTerm.toLowerCase())
                   )
+                  .sort((a, b) => a.price - b.price)
                   .map((item, index) => (
                     <div
                       className={`mx-2 bg-white mb-4 rounded-lg ${
@@ -141,29 +142,32 @@ function MainItems({ data }) {
                         className={`product-item-selling h-full w-full shrink-0 bg-white rounded-lg border flex ${
                           colStyle === "grid"
                             ? "flex-col"
-                            : "flex-row-reverse gap-2 "
-                        } ${isItemInCart(item.id) && "border-secondry"} ${
-                          item.outOfStock && "border-gray-500"
+                            : "flex-row-reverse gap-2"
+                        } ${isItemInCart(item.id) && " border-secondry "} ${
+                          item.outOfStock && " border-gray-500 cursor-not-allowed pointer-events-auto opacity-50 "
                         }`}
                       >
                         <div className="product-item_content relative">
                           <Image
-                            width={200}
-                            height={190}
+                            width={180}
+                            height={180}
                             src={item.image}
                             alt={item.name}
-                            onClick={() => handleQuickView(item)}
-                            className={`${
+                            onClick={() =>
+                              item.outOfStock == false && handleQuickView(item)
+                            }
+                            className={` object-cover w-full pb-0
+                            ${
                               colStyle === "grid"
                                 ? "rounded-t-lg"
                                 : "rounded-l-lg"
                             }`}
                           ></Image>
                           <div
-                            className={`absolute  rounded-full bg-white px-1  border mx-3 cursor-pointer ${
+                            className={`absolute rounded-full bg-white px-1 border mx-3 cursor-pointer ${
                               colStyle === "grid"
-                                ? "bottom-2 right-1 "
-                                : "-bottom-5 right-0 mb-2"
+                                ? " bottom-2 right-1 "
+                                : " -bottom-5 right-0 mb-2 "
                             }`}
                           >
                             {item.outOfStock == false ? (
@@ -213,13 +217,13 @@ function MainItems({ data }) {
                           </div>
                         </div>
                         <div
-                          className={`product-details h-full w-full flex flex-col p-2 text-center ${
+                          className={`product-details h-full w-full flex flex-col p-3 text-center ${
                             colStyle === "grid"
                               ? "justify-between"
                               : "justify-center"
                           }`}
                         >
-                          <h3 className="title mt-0 mb-2  line-clamp-2  text-start text-base leading-5 font-ITC-BK float-left">
+                          <h3 className="title mt-0 mb-2 line-clamp-2 text-start text-base leading-5 font-ITC-BK float-left font-bold" >
                             {item.name}
                           </h3>
                           <p className=" line-clamp-2 mb-2 text-faded-0 text-start text-sm leading-6 font-ITC-BK">
@@ -279,13 +283,16 @@ function MainItems({ data }) {
               </p>
             </div>
           </Modal.Header>
-          <Modal.Body>
-            <div className="">
-              <p className="text-base leading-relaxe">
-                {modalData?.description}
-              </p>
-            </div>
-          </Modal.Body>
+          {modalData?.description && (
+            <Modal.Body>
+              <div className="">
+                <p className="text-base leading-relaxe">
+                  {modalData?.description}
+                </p>
+              </div>
+            </Modal.Body>
+          )}
+
           <Modal.Footer className="text-center items-center justify-center">
             {modalData?.outOfStock == false ? (
               isItemInCart(modalData?.id) ? (
@@ -302,7 +309,7 @@ function MainItems({ data }) {
                     {cart[modalData?.id].quantity}
                   </span>
                   <button
-                    className=" font-ITC-BK text-sm px-1 py-2 text-secondryactive-svg"
+                    className=" font-ITC-BK text-sm px-1 py-2 text-secondry active-svg"
                     onClick={() => handleIncrement(modalData?.id)}
                   >
                     <svg height="24" width="24" viewBox="0 0 24 24">

@@ -65,7 +65,7 @@ const pageData = await drupal.getResource(
   {
     params: {
       fields: {
-        "node--page": "field_primary_color,title,field_logo",
+        "node--page": "field_primary_color,title,field_logo,field_telegram_chat_id,field_communication_language",
       },
       include: "field_logo",
     },
@@ -85,7 +85,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://demo.zmatjar.com/en" />
         <link rel="shortlink" href="https://demo.zmatjar.com/en" />

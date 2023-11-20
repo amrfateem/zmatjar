@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import Contacts from "./Contacts";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { chargesState, countState, minimumOrderState, sumState } from "../atoms";
+import { chargesState, countState, minimumOrderState, storeLangState, sumState, telegramChatIdState } from "../atoms";
 import { useRouter } from "next/navigation";
 
-function Footer({ charges, location, whatsapp, phone, minimum }) {
+function Footer({ charges, location, whatsapp, phone, minimum, telegramId, storeLang }) {
   const router = useRouter();
   const [offsetTop, setOffsetTop] = useState(0);
   const count = useRecoilValue(countState);
@@ -14,8 +14,14 @@ function Footer({ charges, location, whatsapp, phone, minimum }) {
   const [deliveryCharges, setDeliveryCharges] = useRecoilState(chargesState);
   const [minimumOrder, setMinimumOrder] = useRecoilState(minimumOrderState);
 
+  const [telegramChatId, setTelegramChatId] = useRecoilState(telegramChatIdState)
+  const [storeLanguage, setStoreLanguage] = useRecoilState(storeLangState)
+
   setDeliveryCharges(charges ? charges : 0);
   setMinimumOrder(minimum ? minimum : 0);
+
+  setTelegramChatId(telegramId ? telegramId : 0)
+  setStoreLanguage(storeLang ? storeLang : 'en')
 
   useEffect(() => {
     const handleScroll = () => {

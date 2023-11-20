@@ -73,9 +73,14 @@ const mostSellingProducts = productsMapped.filter((product) =>
 );
 
 let categorizedMenu = {};
+
 productsMapped.forEach((item) => {
-  item.categories.forEach((category) => {
-    if (category !== "Most Selling") {
+  const hasMostSellingCategory = item.categories.some(
+    (category) => category === "Most Selling"
+  );
+
+  if (!hasMostSellingCategory) {
+    item.categories.forEach((category) => {
       if (!categorizedMenu[category]) {
         categorizedMenu[category] = [];
       }
@@ -88,8 +93,8 @@ productsMapped.forEach((item) => {
         image: item.image,
         outOfStock: item.outOfStock,
       });
-    }
-  });
+    });
+  }
 });
 
 const params2 = new DrupalJsonApiParams().addInclude([
@@ -107,7 +112,7 @@ const pageData = await drupal.getResource(
   }
 );
 
-console.log(pageData);
+
 export default function Home() {
   return (
     <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
@@ -128,8 +133,8 @@ export default function Home() {
         />
       </div>
       {/* End Contacts */}
-
-      <Offers />
+      {/* 
+      <Offers /> */}
 
       <NavBar categories={uniqueCategories} />
 
@@ -143,6 +148,8 @@ export default function Home() {
         whatsapp={pageData.field_whatsapp}
         phone={pageData.field_phone}
         minimum={pageData.field_minimum_order}
+        telegramId={pageData.field_telegram_chat_id}
+        storeLang={pageData.field_communication_language}
       />
     </main>
   );

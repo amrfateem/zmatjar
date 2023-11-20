@@ -2,73 +2,55 @@ import React from "react";
 import { drupal } from "./drupal";
 
 async function placeOrder({ props }) {
-  console.log(props);
 
-    try {
-      const response = await fetch("/api/customer", {
+  const storeData = await drupal.getResource(
+    "node--page",
+    process.env.NEXT_PUBLIC_DRUPAL_PAGE_UUID,
+    {
+      params: {
+        fields: {
+          "node--page": "field_primary_color,title,field_logo",
+        },
+        include: "field_logo",
+      },
+      withCache: false,
+    }
+  );
+
+
+  try {
+    const response = await fetch(
+      "https://staging-menu.digializer.com/place-order",
+      {
         method: "POST",
         body: JSON.stringify({
-          data: {
-            type: "node--customer",
-            attributes: {
-              title: props.name,
-              field_country: props.country,
-              field_email: props.email,
-              field_telephone: props.phone,
-            },
-          },
+          name: e.target.name.value,
+          phone: phone,
+          country: country,
+          address: e.target.address.value,
+          email: e.target.email.value,
+          payment: e.target.payment.value,
+          language: "en",
+          time: selectedTime,
+          order: order,
+          subtotal: subtotal.toFixed(2),
+          charges: charges,
+          total: (subtotal + charges).toFixed(2),
+          coordinates: `${location.lng}, ${location.lat}`,
+          specialInfo: specialInfo,
+          host: window.location.host,
+          telegramChatId: "123456789",
         }),
         headers: {
-          Accept: "application/vnd.api+json",
-          "Content-Type": "application/vnd.api+json",
-          Authorization: `Basic ${btoa("api:api")}`,
+          "Content-Type": "application/json",
         },
-      });
-      if (!response.ok) {
-        throw new Error("An error occurred while creating the post");
       }
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+    );
 
-//   const customer = await drupal.createResource("node--customer", {
-//     data: {
-//       type: "node--customer",
-//       attributes: {
-//         title: props.name,
-//         field_country: props.country,
-//         field_email: props.email,
-//         field_telephone: props.phone,
-//       },
-//     },
-//   });
-
-  //   const order = await drupal.createResource("node--order", {
-  //     data: {
-  //       attributes: {
-  //         type: "order",
-  //         title: props.name,
-  //         field_name: props.name,
-  //         field_phone: props.phone,
-  //         field_country: props.country,
-  //         field_address: props.address,
-  //         field_email: props.email,
-  //         field_payment_method: props.payment,
-  //         field_delivery_time: props.time,
-  //         field_order: props.order,
-  //         field_subtotal: props.subtotal,
-  //         field_delivery_charges: props.charges,
-  //         field_total: props.total,
-  //         field_location: props.location,
-  //       },
-  //     },
-  //   });
-  return (
-    <div>
-      <p>Order placed successfully</p>
-    </div>
-  );
+    return console.log(response);
+  } catch (error) {
+    return console.log(error);
+  }
 }
 
 export default placeOrder;
