@@ -56,8 +56,8 @@ function DeliveryLocation() {
   ];
 
   const currentLocation = [
-    userLocation.lng.toFixed(6),
-    userLocation.lat.toFixed(6),
+    userLocation.lng,
+    userLocation.lat,
   ];
 
   const isWithinPolygon = turf.booleanPointInPolygon(
