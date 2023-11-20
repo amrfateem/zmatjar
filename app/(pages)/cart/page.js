@@ -77,7 +77,7 @@ function Cart() {
         <h2 className="px-3 py-2 h-full w-full ">YOUR BASKET</h2>
         <Button
           color={"bg-secondry"}
-          className="btn btn-secondary rounded-none btn h-11 bg-secondry"
+          className="btn btn-secondary rounded-none btn h-11 bg-[#F5F5F5]"
           onClick={() => router.push("/")}
         >
           <svg
