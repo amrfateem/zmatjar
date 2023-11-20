@@ -112,10 +112,10 @@ function PlaceOrder() {
 
       const responseData = await response.json();
       console.log("Success:", responseData);
-      // router.push("/thank-you");
+      router.push("/thank-you");
     } catch (error) {
       console.error("Error:", error);
-      // router.push("/thank-you");
+      router.push("/thank-you");
     }
   };
 
