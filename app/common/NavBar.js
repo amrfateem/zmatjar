@@ -17,6 +17,8 @@ function NavBar({ categories }) {
   const [searchTerm, setSearchTerm] = useRecoilState(searchState);
 
   const handleSearch = (e) => {
+    let nav = document.getElementById("nav");
+    nav.scrollIntoView();
     setSearchTerm(e.target.value);
   };
 
@@ -89,7 +91,12 @@ function NavBar({ categories }) {
       >
         {!show ? (
           <>
-            <a className={`self-center ${colStyle === "grid" ? "active-svg" : "faded-svg"}`} onClick={(e) => handleColStyle(e)}>
+            <a
+              className={`self-center ${
+                colStyle === "grid" ? "active-svg" : "faded-svg"
+              }`}
+              onClick={(e) => handleColStyle(e)}
+            >
               <svg
                 viewBox="0 0 21 21"
                 xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +108,12 @@ function NavBar({ categories }) {
                 <path d="M4.067 2.8a.267.267 0 00-.267.267v4.266c0 .148.12.267.267.267h4.266c.148 0 .267-.12.267-.267V3.067a.267.267 0 00-.267-.267H4.067zM2.2 3.067c0-1.031.836-1.867 1.867-1.867h4.266c1.031 0 1.867.836 1.867 1.867v4.266A1.867 1.867 0 018.333 9.2H4.067A1.867 1.867 0 012.2 7.333V3.067zM4.067 12.4a.267.267 0 00-.267.267v4.266c0 .148.12.267.267.267h4.266c.148 0 .267-.12.267-.267v-4.266a.267.267 0 00-.267-.267H4.067zm-1.867.267c0-1.031.836-1.867 1.867-1.867h4.266c1.031 0 1.867.836 1.867 1.867v4.266A1.867 1.867 0 018.333 18.8H4.067A1.867 1.867 0 012.2 16.933v-4.266zM13.667 2.8a.267.267 0 00-.267.267v4.266c0 .148.12.267.267.267h4.266c.148 0 .267-.12.267-.267V3.067a.267.267 0 00-.267-.267h-4.266zm-1.867.267c0-1.031.836-1.867 1.867-1.867h4.266c1.031 0 1.867.836 1.867 1.867v4.266A1.867 1.867 0 0117.933 9.2h-4.266A1.867 1.867 0 0111.8 7.333V3.067zm1.867 9.333a.267.267 0 00-.267.267v4.266c0 .148.12.267.267.267h4.266c.148 0 .267-.12.267-.267v-4.266a.267.267 0 00-.267-.267h-4.266zm-1.867.267c0-1.031.836-1.867 1.867-1.867h4.266c1.031 0 1.867.836 1.867 1.867v4.266a1.867 1.867 0 01-1.867 1.867h-4.266a1.867 1.867 0 01-1.867-1.867v-4.266z"></path>
               </svg>
             </a>
-            <a className={`self-center ${colStyle === "list" ? "active-svg" : "faded-svg"}`} onClick={(e) => handleColStyle(e)}>
+            <a
+              className={`self-center ${
+                colStyle === "list" ? "active-svg" : "faded-svg"
+              }`}
+              onClick={(e) => handleColStyle(e)}
+            >
               <svg
                 viewBox="0 0 21 21"
                 xmlns="http://www.w3.org/2000/svg"
@@ -151,6 +163,7 @@ function NavBar({ categories }) {
           <>
             <input
               type="text"
+              
               className="border-[1px] border-secondry rounded-full px-4 py-2 w-full h-8 focus:border-secondry hover:ring-0"
               placeholder="Search"
               value={searchTerm}
