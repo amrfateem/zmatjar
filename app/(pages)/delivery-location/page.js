@@ -129,9 +129,24 @@ function DeliveryLocation() {
           content: {
             base: "relative h-full w-full p-4 h-auto",
           },
+          header: {
+            close: {
+              base: "ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-brand hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white active-svg",
+            },
+          },
         }}
       >
-        <Modal.Header className="p-6">
+        <Modal.Header
+          className="p-6"
+          theme={{
+            header: {
+              close: {
+                base: "ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-brand hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white active-svg",
+                icon: "h-5 w-5",
+              },
+            },
+          }}
+        >
           <div className="flex flex-col text-start items-center w-full h-full">
             <h2 className="text-center font-ITC-BK text-secondry">
               We're not there yet

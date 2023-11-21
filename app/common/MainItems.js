@@ -160,14 +160,14 @@ function MainItems({ data }) {
                             ${
                               colStyle === "grid"
                                 ? "rounded-t-lg"
-                                : "rounded-l-lg"
+                                : "rounded-r-lg"
                             }`}
                           ></Image>
                           <div
                             className={`absolute rounded-full bg-white px-1 border mx-3 cursor-pointer ${
                               colStyle === "grid"
                                 ? " bottom-2 right-1 "
-                                : " -bottom-5 right-0 mb-2 "
+                                : " -bottom-5 right-1 mb-2 "
                             }`}
                           >
                             {item.outOfStock == false ? (
@@ -229,7 +229,7 @@ function MainItems({ data }) {
                           <p className=" line-clamp-2 mb-2 text-faded-0 text-start text-sm leading-6 font-ITC-BK">
                             {item.description}
                           </p>
-                          <div className="price float-left text-left text-secondry">
+                          <div className="price float-left text-left text-secondry leading-none">
                             <span>AED </span>
                             <span>{item.price}</span>
                           </div>
@@ -296,7 +296,7 @@ function MainItems({ data }) {
           <Modal.Footer className="text-center items-center justify-center">
             {modalData?.outOfStock == false ? (
               isItemInCart(modalData?.id) ? (
-                <div className="flex justify-between items-center gap-1 w-20">
+                <div className="flex justify-between items-center gap-1 w-32">
                   <button
                     className=" font-ITC-BK text-sm px-1 py-2 text-secondry active-svg"
                     onClick={() => handleDecrement(modalData?.id)}

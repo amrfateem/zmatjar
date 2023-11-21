@@ -106,7 +106,7 @@ function Cart() {
                 <div className="flex items-center w-full">
                   <div className="flex flex-col">
                     <p className=" font-ITC-BK">{cart[key].title}</p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-gray-500">
                       {cart[key].quantity} x {cart[key].price} AED
                     </p>
                   </div>

@@ -14,17 +14,9 @@ import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 
 const params = new DrupalJsonApiParams()
-  .addFields("node--product", [
-    "title",
-    "body",
-    "field_price",
-    "field_category",
-    "field_image",
-    "drupal_internal__nid",
-    "body",
-    "field_out_of_stock",
-  ])
-  .addInclude(["field_category", "field_image"]);
+  .addFields("node--product", [ "title", "body", "field_price", "field_category", "field_image", "drupal_internal__nid", "body", "field_out_of_stock", ])
+  .addInclude(["field_category", "field_image"])
+  .addPageLimit(200);
 
 const products = await drupal.getResourceCollection("node--product", {
   params: params.getQueryObject(),

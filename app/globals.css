@@ -31,6 +31,10 @@
   stroke: var(--brand-color)
 }
 
+.text-gray-400  {
+  color: var(--brand-color);
+}
+
 .active-svg svg, .active-svg, .svg-inline--fa {
   fill: var(--brand-color); /* Use the CSS variable in your SVG styles */
 }
