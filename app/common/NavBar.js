@@ -40,21 +40,10 @@ function NavBar({ categories }) {
       } else if (offset < threshold && isSticky) {
         setIsSticky(false);
       }
-
-      const sections = [
-        { id: "cat0", link: "#link0" },
-        { id: "cat1", link: "#link1" },
-        { id: "cat2", link: "#link2" },
-        { id: "cat3", link: "#link3" },
-        { id: "cat4", link: "#link4" },
-        { id: "cat5", link: "#link5" },
-        { id: "cat6", link: "#link6" },
-        { id: "cat7", link: "#link7" },
-        { id: "cat8", link: "#link8" },
-        { id: "cat9", link: "#link9" },
-        { id: "cat10", link: "#link10" },
-      ];
-
+      const sections = categories.map((category, i) => ({
+        id: `cat${i}`,
+        link: `link${i}`,
+      }));
       const newActiveSection = sections.find(({ id }) => {
         const sectionElement = document.getElementById(id);
         if (sectionElement) {
@@ -163,7 +152,6 @@ function NavBar({ categories }) {
           <>
             <input
               type="text"
-              
               className="border-[1px] border-secondry rounded-full px-4 py-2 w-full h-8 focus:border-secondry hover:ring-0"
               placeholder="Search"
               value={searchTerm}

@@ -16,6 +16,7 @@ import Head from "next/head";
 
 const params = new DrupalJsonApiParams()
   .addFields("node--product", [
+    "path",
     "title",
     "body",
     "field_price",
@@ -28,10 +29,13 @@ const params = new DrupalJsonApiParams()
   .addInclude(["field_category", "field_image"])
   .addPageLimit(200);
 
+
+
 const products = await drupal.getResourceCollection("node--product", {
   params: params.getQueryObject(),
   withCache: false,
 });
+
 
 const productsMapped = products.map((product) => {
   const itemId = product.drupal_internal__nid;
