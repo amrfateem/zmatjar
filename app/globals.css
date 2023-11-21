@@ -84,6 +84,10 @@
   scrollbar-width: none; /* Firefox */
 }
 
+.enabled\:hover\:bg-cyan-800:hover:enabled {
+  background-color: var(--brand-color)!important;
+}
+
 .leaflet-pane,
 .leaflet-control,
 .leaflet-top,

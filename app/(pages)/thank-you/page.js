@@ -5,15 +5,18 @@ import React from "react";
 
 function page() {
   return (
-    <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-x-[1px]">
+    <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-x-[1px] h-screen">
       <div className="header flex justify-between items-center h-11 text-center shadow-custom border-b-2">
         <h2 className="px-3 py-2  w-full text-base font-semibold font-ITC-BK">
           THANK YOU
         </h2>
         <Link href="/">
           <Button
+            theme={{
+              size: "text-sm p-3",
+            }}
             color={"bg-secondry"}
-            className="btn btn-secondary rounded-none btn h-11 bg-[#F5F5F5]"
+            className="btn btn-secondary rounded-none btn h-11 p-3 bg-[#F5F5F5]"
           >
             <svg
               width={21}
@@ -33,22 +36,23 @@ function page() {
         <p>Your order has been placed successfully.</p>
 
         <p suppressHydrationWarning className="pt-4">
-          Your order number is: {" "}
+          Your order number is:{" "}
           {Math.floor(Math.random() * (9999 - 1000 + 1) + 1000)}
         </p>
 
         <p className="pt-4">
-          Your order status is now <span className="font-bold">Processing</span>.
+          Your order status is now <span className="font-bold">Processing</span>
+          .
         </p>
       </div>
 
-      <div className="button-location w-full max-w-[460px] p-4 fixed bottom-0 z-500">
+      <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0 shadow-custom-up ">
         <Link href="/">
           <Button
-            color={"bg-secondry"}
-            className="uppercase w-full  text-white font-ITC-BK bg-secondry "
+            type="submit"
+            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent"
           >
-            Return to Home
+            place order
           </Button>
         </Link>
       </div>

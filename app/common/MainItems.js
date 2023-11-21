@@ -152,7 +152,6 @@ function MainItems({ data }) {
                           <Image
                             width={180}
                             height={180}
-                            sizes="180px"
                             src={item.image}
                             alt={item.name}
                             onClick={() =>
@@ -232,7 +231,7 @@ function MainItems({ data }) {
                           <h3 className="title mt-0 mb-2 line-clamp-2 text-start text-base leading-5 font-ITC-BK float-left font-bold">
                             {item.name}
                           </h3>
-                          <p className=" line-clamp-1 mb-2 text-faded-0 text-start text-sm leading-5 font-ITC-BK">
+                          <p className=" line-clamp-2 mb-2 text-faded-0 text-start text-sm leading-5 font-ITC-BK">
                             {item.description}
                           </p>
                           <div className="price float-left text-left text-secondry leading-none">

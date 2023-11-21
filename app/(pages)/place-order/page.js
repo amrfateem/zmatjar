@@ -2,6 +2,7 @@
 import {
   cartState,
   chargesState,
+  minimumOrderState,
   specialInstructionsState,
   storeLangState,
   sumState,
@@ -19,15 +20,26 @@ import "react-phone-input-2/lib/style.css";
 import { useRecoilValue } from "recoil";
 
 function PlaceOrder() {
+  // Router
   const router = useRouter();
+
+  // Handling User error
+  const [errorModal, setErrorModal] = useState(false);
+  const [modalErrormsg, setModalErrormsg] = useState("");
+  const minimumOrder = useRecoilValue(minimumOrderState);
+  const cartError = "Your cart is empty";
+  const subTotalError = "Your order subtotal is lower than the minimum order";
+
+  // States from this page
   const [selectedTime, setSelectedTime] = useState("");
   const [deliveryTime, setDeliveryTime] = useState("");
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModalTerms, setOpenModalTerms] = useState(false);
   const [phone, setPhone] = useState("");
   const [country, setCountry] = useState("");
   const [countryCode, setCountryCode] = useState("");
 
+  // States from local storage
   const charges = useRecoilValue(chargesState);
   const location = useRecoilValue(userLocationState);
   const order = useRecoilValue(cartState);
@@ -36,8 +48,10 @@ function PlaceOrder() {
   const telegramChatId = useRecoilValue(telegramChatIdState);
   const storeLanguage = useRecoilValue(storeLangState);
 
+  // Total calculated
   const total = parseInt(subtotal) + parseInt(charges);
 
+  // Gets the correct time format and sends it back
   const handleTimeChange = (e) => {
     const currentDate = new Date();
     const selectedTime = e.target.value;
@@ -56,6 +70,8 @@ function PlaceOrder() {
     const formattedDateTime = `${year}-${month}-${day}T${selectedTime}:00`;
     setDeliveryTime(formattedDateTime);
   };
+
+  // Gets the current time and sends it back
   const getCurrentTime = () => {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, "0");
@@ -63,10 +79,12 @@ function PlaceOrder() {
     return `${hours}:${minutes}`;
   };
 
+  // Shows the time picker
   const handleCheckboxChange = () => {
     setShowTimePicker(!showTimePicker);
   };
 
+  // Sends the order through
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
 
@@ -100,22 +118,35 @@ function PlaceOrder() {
       redirect: "follow",
     };
 
-    try {
-      const response = await fetch(
-        "https://staging-menu.digializer.com/place-order",
-        requestOptions
-      );
+    if (Object.keys(order).length < 10) {
+      console.log("cart is empty");
+      setErrorModal(true);
+      setModalErrormsg(cartError);
+      return;
+    } else if (subtotal.toFixed(2) < minimumOrder) {
+      console.log("subtotal is lower than minimum order");
+      setErrorModal(true);
+      setModalErrormsg(subTotalError);
+      return;
+    } 
+    else {
+      try {
+        const response = await fetch(
+          "https://staging-menu.digializer.com/place-order",
+          requestOptions
+        );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        console.log("Success:", responseData);
+        router.push("/thank-you");
+      } catch (error) {
+        console.error("Error:", error);
+        router.push("/thank-you");
       }
-
-      const responseData = await response.json();
-      console.log("Success:", responseData);
-      router.push("/thank-you");
-    } catch (error) {
-      console.error("Error:", error);
-      router.push("/thank-you");
     }
   };
 
@@ -127,9 +158,9 @@ function PlaceOrder() {
             PLACE ORDER
           </h2>
           <Button
-          theme={{
-            size: "text-sm p-3"
-          }}
+            theme={{
+              size: "text-sm p-3",
+            }}
             color={"bg-secondry"}
             className="btn btn-secondary rounded-none btn bg-[#F5F5F5] h-11 p-3"
             onClick={() => router.push("/")}
@@ -267,8 +298,11 @@ function PlaceOrder() {
                 className="form-checkbox border border-gray-300 rounded-md px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
               />
               <p className="text-xs font-ITC-BK">
-                I acknowledge that I have read and agree to the {" "}
-                <a className="text-secondry underline" onClick={() => setOpenModal(true)}>
+                I acknowledge that I have read and agree to the{" "}
+                <a
+                  className="text-secondry underline"
+                  onClick={() => setOpenModalTerms(true)}
+                >
                   Terms and conditions
                 </a>
               </p>
@@ -276,21 +310,81 @@ function PlaceOrder() {
           </div>
 
           <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0 shadow-custom-up ">
-            <Button className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent ">
+            <Button type="submit" className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent">
               place order
             </Button>
           </div>
         </form>
       </div>
       <Modal
-        show={openModal}
-        onClose={() => setOpenModal(false)}
+        show={openModalTerms}
+        onClose={() => setOpenModalTerms(false)}
         closable={true}
         className="w-full p-0"
         style={{ height: "auto", margin: "0" }}
       >
         <Modal.Header>Terms and conditions</Modal.Header>
         <Modal.Body>Terms go here</Modal.Body>
+      </Modal>
+
+      <Modal
+        show={errorModal}
+        closable={false}
+        position={"center"}
+        popup={true}
+        className="z-50 m-auto"
+        onClose={() => setErrorModal(false)}
+        theme={{
+          content: {
+            base: "relative h-full w-full p-4 h-auto",
+            inner:
+              "relative rounded-none bg-white shadow dark:bg-gray-700 flex flex-col max-w-[460px] max-h-[90vh] m-auto",
+          },
+          header: {
+            close: {
+              base: "ml-auto inline-flex items-center rounded-none bg-transparent p-1.5 text-sm text-brand hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white active-svg",
+            },
+          },
+        }}
+      >
+        <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
+          <h2 className="px-6 py-2 w-full text-base font-semibold font-ITC-BK">
+            There's a problem in your order
+          </h2>
+          <Button
+            theme={{
+              size: "text-sm p-3",
+            }}
+            color={"bg-secondry"}
+            className="btn btn-secondary self-end rounded-none btn bg-[#F5F5F5] h-11 p-3 focus:ring-2 focus:ring-secondry focus:border-transparent"
+            onClick={() => setErrorModal(false)}
+          >
+            <svg
+              width={21}
+              height={21}
+              version="1.1"
+              className="active-svg"
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4  L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1  c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1  c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z"></path>
+            </svg>
+          </Button>
+        </div>
+        <Modal.Body>
+          <p className="text-start">
+            {modalErrormsg}
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            color={"bg-secondry"}
+            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+            onClick={() => setErrorModal(false)}
+          >
+            Change Location
+          </Button>
+        </Modal.Footer>
       </Modal>
     </>
   );
