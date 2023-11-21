@@ -39,16 +39,13 @@ function Footer({
   setTelegramChatId(telegramId ? telegramId : 0);
   setStoreLanguage(storeLang ? storeLang : "en");
 
-  let pathname = "";
+  const url = new URL(process.env.NEXT_PUBLIC_DRUPAL_BASE_URL);
+  const subdomain = url.host.split(".")[1];
 
   useEffect(() => {
     const handleScroll = () => {
       setOffsetTop(window.scrollY);
     };
-
-    pathname = window.location.hostname;
-
-    console.log(pathname);
 
     window.addEventListener("scroll", handleScroll);
 
@@ -67,9 +64,9 @@ function Footer({
 
       <a
         className={`flex justify-center items-center py-2 text-faded-0 text-sm bg-[#F5F5F5]  text-center ${
-          count > 0 ? " pb-[140px]" : "pb-[70px]"
+          count > 0 ? " pb-[140px]" : "pb-[85px]"
         }`}
-        href={`https://www.zmatjar.com/?utm_content=powered-by&amp;utm_source=${pathname}&amp;utm_medium=business-storefront&amp;utm_campaign=business-partner`}
+        href={`https://www.zmatjar.com/?utm_content=powered-by&amp;utm_source=${subdomain}&amp;utm_medium=business-storefront&amp;utm_campaign=business-partner`}
         target="_blank"
         rel="noopener noreferrer"
       >
