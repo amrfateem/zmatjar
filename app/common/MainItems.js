@@ -142,7 +142,7 @@ function MainItems({ data }) {
                         className={`product-item-selling h-full w-full shrink-0 bg-white rounded-lg border flex ${
                           colStyle === "grid"
                             ? "flex-col"
-                            : "flex-row-reverse gap-2"
+                            : "flex-row-reverse gap-1"
                         } ${isItemInCart(item.id) && " border-secondry "} ${
                           item.outOfStock && " border-gray-500 cursor-not-allowed pointer-events-auto opacity-50 "
                         }`}
@@ -151,12 +151,13 @@ function MainItems({ data }) {
                           <Image
                             width={180}
                             height={180}
+                            sizes="180px"
                             src={item.image}
                             alt={item.name}
                             onClick={() =>
                               item.outOfStock == false && handleQuickView(item)
                             }
-                            className={` object-cover w-full pb-0
+                            className={` w-full pb-0 images-fix
                             ${
                               colStyle === "grid"
                                 ? "rounded-t-lg"
@@ -164,10 +165,10 @@ function MainItems({ data }) {
                             }`}
                           ></Image>
                           <div
-                            className={`absolute rounded-full bg-white px-1 border mx-3 cursor-pointer ${
+                            className={`absolute rounded-full bg-white px-1 border mx-2 cursor-pointer ${
                               colStyle === "grid"
                                 ? " bottom-2 right-1 "
-                                : " -bottom-5 right-1 mb-2 "
+                                : " -bottom-5 right-1 mb-2"
                             }`}
                           >
                             {item.outOfStock == false ? (
@@ -210,7 +211,7 @@ function MainItems({ data }) {
                                 </button>
                               )
                             ) : (
-                              <button className="btn btn-secondary text-sm btn-sm p-1 w-full">
+                              <button className="btn btn-secondary text-xs btn-sm p-1 w-full">
                                 Out of stock
                               </button>
                             )}
@@ -220,13 +221,13 @@ function MainItems({ data }) {
                           className={`product-details h-full w-full flex flex-col p-3 text-center ${
                             colStyle === "grid"
                               ? "justify-between"
-                              : "justify-center"
+                              : "justify-between"
                           }`}
                         >
                           <h3 className="title mt-0 mb-2 line-clamp-2 text-start text-base leading-5 font-ITC-BK float-left font-bold" >
                             {item.name}
                           </h3>
-                          <p className=" line-clamp-2 mb-2 text-faded-0 text-start text-sm leading-6 font-ITC-BK">
+                          <p className=" line-clamp-1 mb-2 text-faded-0 text-start text-sm leading-5 font-ITC-BK">
                             {item.description}
                           </p>
                           <div className="price float-left text-left text-secondry leading-none">

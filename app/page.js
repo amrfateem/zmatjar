@@ -14,7 +14,16 @@ import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 
 const params = new DrupalJsonApiParams()
-  .addFields("node--product", [ "title", "body", "field_price", "field_category", "field_image", "drupal_internal__nid", "body", "field_out_of_stock", ])
+  .addFields("node--product", [
+    "title",
+    "body",
+    "field_price",
+    "field_category",
+    "field_image",
+    "drupal_internal__nid",
+    "body",
+    "field_out_of_stock",
+  ])
   .addInclude(["field_category", "field_image"])
   .addPageLimit(200);
 
@@ -23,12 +32,22 @@ const products = await drupal.getResourceCollection("node--product", {
   withCache: false,
 });
 
+console.log(products[30]);
+
 const productsMapped = products.map((product) => {
   const itemId = product.drupal_internal__nid;
   const itemName = product.title;
-  const itemCategories = product.field_category.map(
-    (category) => category.name
-  );
+  const itemCategories = product.field_category
+    .map((category) => category.name)
+    .sort((a, b) => {
+      const weightA =
+        product.field_category.find((category) => category.name === a)
+          ?.weight || 0;
+      const weightB =
+        product.field_category.find((category) => category.name === b)
+          ?.weight || 0;
+      return weightA - weightB;
+    });
   const itemPrice = parseFloat(product.field_price);
   const itemDescription = product.body?.value || "";
   const itemImage = product.field_image?.uri?.url

@@ -35,6 +35,10 @@
   color: var(--brand-color);
 }
 
+.images-fix {
+  height: -webkit-fill-available;
+}
+
 .active-svg svg, .active-svg, .svg-inline--fa {
   fill: var(--brand-color); /* Use the CSS variable in your SVG styles */
 }
