@@ -6,7 +6,7 @@ function Header({ headerSrc }) {
     <div
       className={`w-full h-64 bg-cover`}
       style={{
-        backgroundImage: `url('images/header/header-image.jpg')`
+        backgroundImage: `url(${img})`
       }}
     >
       {/* <button className="button text-white px-[10px] py-[5px]  mx-[5px] my-[10px] opacity-80 rounded-md text-center right-[10px] absolute bg-brand">
