@@ -74,10 +74,15 @@ function Cart() {
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] border-solid border-[#dfe2e7] border-[1px] h-full min-h-screen relative">
       <div className="header flex justify-end p-0 items-center text-center  shadow-custom h-11 border-b-2 w-full bg-white">
-        <h2 className="px-3 py-2 h-full w-full ">YOUR BASKET</h2>
+        <h2 className="p-3  w-full text-base font-semibold font-ITC-BK h-full  leading-8">
+          YOUR BASKET
+        </h2>
         <Button
           color={"bg-secondry"}
-          className="btn btn-secondary rounded-none btn h-11 bg-[#F5F5F5]"
+          theme={{
+            size: "text-sm p-3",
+          }}
+          className="btn btn-secondary rounded-none btn h-11 p-3 bg-[#F5F5F5]"
           onClick={() => router.push("/")}
         >
           <svg
@@ -106,8 +111,8 @@ function Cart() {
                 <div className="flex items-center w-full">
                   <div className="flex flex-col">
                     <p className=" font-ITC-BK">{cart[key].title}</p>
-                    <p className="text-xs text-gray-500">
-                      {cart[key].quantity} x {cart[key].price} AED
+                    <p className="text-gray-500 text-sm">
+                      AED {cart[key].quantity} x {cart[key].price}
                     </p>
                   </div>
                 </div>
@@ -130,8 +135,8 @@ function Cart() {
                     </svg>
                   </button>
                 </div>
-                <p className=" font-ITC-BK w-36 text-end">
-                  {cart[key].quantity * cart[key].price} AED
+                <p className=" font-ITC-BK w-36 text-end text-sm text-gray-500">
+                  AED {cart[key].quantity * cart[key].price}
                 </p>
               </div>
             );
@@ -158,17 +163,19 @@ function Cart() {
               <p className=" font-ITC-BK">
                 Subtotal <span className="text-xs">(Inclusive of VAT)</span>
               </p>
-              <p className=" font-ITC-BK">{Number(sum.toFixed(2))} AED</p>
+              <p className=" font-ITC-BK">AED {Number(sum.toFixed(2))}</p>
             </div>
             <div className="flex justify-between items-center pb-2">
               <p className=" font-ITC-BK">Delivery charges</p>
               <p className=" font-ITC-BK">
-                {charges == 0 ? "Free" : charges + " AED"}
+                {charges == 0 ? "Free" : "AED " + charges}
               </p>
             </div>
             <div className="flex justify-between items-center pt-3">
-              <p className=" font-ITC-BK">Total</p>
-              <p className=" font-ITC-BK">{Number(total.toFixed(2))} AED</p>
+              <p className=" font-ITC-BK">
+                Total <span className="text-xs">(Inclusive of VAT)</span>
+              </p>
+              <p className=" font-ITC-BK">AED {Number(total.toFixed(2))}</p>
             </div>
           </div>
         </div>
@@ -181,7 +188,7 @@ function Cart() {
         </div>
       )}
       {count == 0 ? null : (
-        <div className="button-checkout w-full max-w-[460px] p-4 h-auto flex flex-col justify-end bg-white absolute bottom-0 ">
+        <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0  shadow-custom-up">
           <Button
             color={"bg-secondry"}
             className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "

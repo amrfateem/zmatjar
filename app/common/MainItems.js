@@ -10,7 +10,7 @@ import {
   searchState,
   modalDataState,
 } from "../atoms";
-import { Modal } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 
 function MainItems({ data }) {
   const colStyle = useRecoilValue(colStyleState);
@@ -132,8 +132,8 @@ function MainItems({ data }) {
                   .sort((a, b) => a.price - b.price)
                   .map((item, index) => (
                     <div
-                      className={`mx-2 bg-white mb-4 rounded-lg ${
-                        colStyle === "grid" ? "w-[44%]" : "w-full"
+                      className={`mx-1 bg-white mb-1 rounded-lg ${
+                        colStyle === "grid" ? "w-[47%]" : "w-full"
                       }`}
                       id={`item-${item.id}`}
                       key={index}
@@ -144,7 +144,8 @@ function MainItems({ data }) {
                             ? "flex-col"
                             : "flex-row-reverse gap-1"
                         } ${isItemInCart(item.id) && " border-secondry "} ${
-                          item.outOfStock && " border-gray-500 cursor-not-allowed pointer-events-auto opacity-50 "
+                          item.outOfStock &&
+                          " border-gray-500 cursor-not-allowed pointer-events-auto opacity-50 "
                         }`}
                       >
                         <div className="product-item_content relative">
@@ -157,7 +158,11 @@ function MainItems({ data }) {
                             onClick={() =>
                               item.outOfStock == false && handleQuickView(item)
                             }
-                            className={` w-full pb-0 images-fix
+                            className={` w-full pb-0 images-fix ${
+                              item.outOfStock
+                                ? "cursor-not-allowed"
+                                : "cursor-pointer"
+                            } 
                             ${
                               colStyle === "grid"
                                 ? "rounded-t-lg"
@@ -168,7 +173,7 @@ function MainItems({ data }) {
                             className={`absolute rounded-full bg-white px-1 border mx-2 cursor-pointer ${
                               colStyle === "grid"
                                 ? " bottom-2 right-1 "
-                                : " -bottom-5 right-1 mb-2"
+                                : " -bottom-5 right-2 mb-2"
                             }`}
                           >
                             {item.outOfStock == false ? (
@@ -211,7 +216,7 @@ function MainItems({ data }) {
                                 </button>
                               )
                             ) : (
-                              <button className="btn btn-secondary text-xs btn-sm p-1 w-full">
+                              <button className="btn btn-secondary text-sm btn-sm p-1 w-full">
                                 Out of stock
                               </button>
                             )}
@@ -224,7 +229,7 @@ function MainItems({ data }) {
                               : "justify-between"
                           }`}
                         >
-                          <h3 className="title mt-0 mb-2 line-clamp-2 text-start text-base leading-5 font-ITC-BK float-left font-bold" >
+                          <h3 className="title mt-0 mb-2 line-clamp-2 text-start text-base leading-5 font-ITC-BK float-left font-bold">
                             {item.name}
                           </h3>
                           <p className=" line-clamp-1 mb-2 text-faded-0 text-start text-sm leading-5 font-ITC-BK">
@@ -263,27 +268,40 @@ function MainItems({ data }) {
             margin: "0 auto",
           }}
         >
-          <Modal.Header
-            style={{
-              borderRadius: "0",
-              flexDirection: "column-reverse",
-              alignItems: "center",
-            }}
-          >
+          <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b ">
             <div className="flex flex-col text-start items-center w-full h-full">
+              <Button
+                theme={{
+                  size: "text-sm p-3",
+                }}
+                color={"bg-secondry"}
+                className="btn btn-secondary self-end rounded-none btn bg-[#F5F5F5] h-11 p-3"
+                onClick={handleCloseModal}
+              >
+                <svg
+                  width={21}
+                  height={21}
+                  version="1.1"
+                  className="active-svg"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4  L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1  c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1  c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z"></path>
+                </svg>
+              </Button>
               <Image
                 width={250}
                 height={250}
                 src={modalData?.image}
                 alt={modalData?.name}
-                className={`rounded-lg mb-3 w-full h-full`}
+                className={`rounded-lg mb-3 m-5`}
               ></Image>
               {modalData?.name}
               <p className="text-base leading-relaxed text-secondry">
                 AED {modalData?.price}
               </p>
             </div>
-          </Modal.Header>
+          </div>
           {modalData?.description && (
             <Modal.Body>
               <div className="">

@@ -3,10 +3,12 @@ import "./globals.css";
 
 import RecoidContextProvider from "./recoilContextProvider";
 import { drupal } from "./lib/drupal";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
 function saveOrUpdateUTMParameters() {
+  let host = "";
   if (typeof window !== "undefined") {
     const queryParams = new URLSearchParams(window.location.search);
 
@@ -48,6 +50,10 @@ function saveOrUpdateUTMParameters() {
   }
 }
 
+if (typeof window !== "undefined") {
+  host = window.location.host;
+}
+
 // Call the function to save or update UTM parameters
 saveOrUpdateUTMParameters();
 
@@ -65,7 +71,8 @@ const pageData = await drupal.getResource(
   {
     params: {
       fields: {
-        "node--page": "field_primary_color,title,field_logo,field_telegram_chat_id,field_communication_language",
+        "node--page":
+          "field_primary_color,title,field_logo,field_telegram_chat_id,field_communication_language,field_metatags",
       },
       include: "field_logo",
     },
@@ -75,29 +82,63 @@ const pageData = await drupal.getResource(
 
 export const metadata = {
   title: pageData.title,
-  description: "ZMatjar App",
+  description: pageData.title,
   icons: {
-    icon: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url,
+    icon: [{ url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url }, new URL(process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url, process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url)],
+    shortcut: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url,
+    apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url,
+    other: {
+      rel: 'apple-touch-icon-precomposed',
+      url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url,
+    },
   },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <Head>
+        <link
+          rel="icon"
+          href={
+            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+            pageData.field_logo.uri.url
+          }
+          type="image/x-icon"
+        />
+      </Head>
       <head>
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://demo.zmatjar.com/en" />
-        <link rel="shortlink" href="https://demo.zmatjar.com/en" />
-        <link rel="icon" href={ process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url } type="image/x-icon" />
-        <meta name="msapplication-TileColor" content={`#${pageData.field_primary_color}`} />
+        <meta name="robots" content={pageData.field_metatags.robots} />
+        <link rel="canonical" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />
+        <link rel="shortlink" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />
+        <link
+          rel="icon"
+          href={
+            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+            pageData.field_logo.uri.url
+          }
+          type="image/x-icon"
+        />
+        <meta
+          name="msapplication-TileColor"
+          content={`#${pageData.field_primary_color}`}
+        />
         <meta name="theme-color" content={`#${pageData.field_primary_color}`} />
       </head>
       <body className={inter.className}>
         <style
           dangerouslySetInnerHTML={{
             __html: ` :root {
-                             --brand-color:  #${pageData.field_primary_color ? pageData.field_primary_color : "000000"};
-                             --brand-color-bg:  #${pageData.field_primary_color ? pageData.field_primary_color : "000000"}45;
+                             --brand-color:  #${
+                               pageData.field_primary_color
+                                 ? pageData.field_primary_color
+                                 : "000000"
+                             };
+                             --brand-color-bg:  #${
+                               pageData.field_primary_color
+                                 ? pageData.field_primary_color
+                                 : "000000"
+                             }45;
                            }`,
           }}
         />

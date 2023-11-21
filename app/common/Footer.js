@@ -2,10 +2,25 @@
 import { useEffect, useState } from "react";
 import Contacts from "./Contacts";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { chargesState, countState, minimumOrderState, storeLangState, sumState, telegramChatIdState } from "../atoms";
+import {
+  chargesState,
+  countState,
+  minimumOrderState,
+  storeLangState,
+  sumState,
+  telegramChatIdState,
+} from "../atoms";
 import { useRouter } from "next/navigation";
 
-function Footer({ charges, location, whatsapp, phone, minimum, telegramId, storeLang }) {
+function Footer({
+  charges,
+  location,
+  whatsapp,
+  phone,
+  minimum,
+  telegramId,
+  storeLang,
+}) {
   const router = useRouter();
   const [offsetTop, setOffsetTop] = useState(0);
   const count = useRecoilValue(countState);
@@ -14,14 +29,15 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
   const [deliveryCharges, setDeliveryCharges] = useRecoilState(chargesState);
   const [minimumOrder, setMinimumOrder] = useRecoilState(minimumOrderState);
 
-  const [telegramChatId, setTelegramChatId] = useRecoilState(telegramChatIdState)
-  const [storeLanguage, setStoreLanguage] = useRecoilState(storeLangState)
+  const [telegramChatId, setTelegramChatId] =
+    useRecoilState(telegramChatIdState);
+  const [storeLanguage, setStoreLanguage] = useRecoilState(storeLangState);
 
   setDeliveryCharges(charges ? charges : 0);
   setMinimumOrder(minimum ? minimum : 0);
 
-  setTelegramChatId(telegramId ? telegramId : 0)
-  setStoreLanguage(storeLang ? storeLang : 'en')
+  setTelegramChatId(telegramId ? telegramId : 0);
+  setStoreLanguage(storeLang ? storeLang : "en");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,8 +60,10 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
       </div>
 
       <a
-        className="flex justify-center items-center py-2 text-faded-0 text-sm bg-[#F5F5F5]  text-center pb-[140px]"
-        href="https://www.zmatjar.com/?utm_content=powered-by&amp;utm_source=business-storefront&amp;utm_medium=business-partner&amp;utm_campaign=demo"
+        className={`flex justify-center items-center py-2 text-faded-0 text-sm bg-[#F5F5F5]  text-center ${
+          count > 0 ? " pb-[140px]" : "pb-[70px]"
+        }`}
+        href={`https://www.zmatjar.com/?utm_content=powered-by&amp;utm_source=${window.location.hostname}&amp;utm_medium=business-storefront&amp;utm_campaign=business-partner`}
         target="_blank"
         rel="noopener noreferrer"
       >

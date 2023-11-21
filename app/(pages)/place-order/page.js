@@ -127,8 +127,11 @@ function PlaceOrder() {
             PLACE ORDER
           </h2>
           <Button
+          theme={{
+            size: "text-sm p-3"
+          }}
             color={"bg-secondry"}
-            className="btn btn-secondary rounded-none btn bg-[#F5F5F5] h-11"
+            className="btn btn-secondary rounded-none btn bg-[#F5F5F5] h-11 p-3"
             onClick={() => router.push("/")}
           >
             <svg
@@ -145,7 +148,7 @@ function PlaceOrder() {
         </div>
         {/* Inputs name, phone, email, address, check box to aknowlege */}
         <form onSubmit={(e) => handlePlaceOrder(e)}>
-          <div className="space-y-6 px-3 py-2">
+          <div className="space-y-6 px-3 py-2 pb-20">
             <div className="flex flex-col space-y-1">
               <label className="text-sm font-ITC-BK">
                 Name <span className="text-red-600">*</span>
@@ -264,18 +267,18 @@ function PlaceOrder() {
                 className="form-checkbox border border-gray-300 rounded-md px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
               />
               <p className="text-xs font-ITC-BK">
-                I acknowledge that I have read and agree to the
-                <a className="text-secondry" onClick={() => setOpenModal(true)}>
+                I acknowledge that I have read and agree to the {" "}
+                <a className="text-secondry underline" onClick={() => setOpenModal(true)}>
                   Terms and conditions
                 </a>
               </p>
             </div>
           </div>
 
-          <div className="button-checkout w-full max-w-[460px] p-4 fixed bottom-0">
-            <button className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent p-3 rounded-lg ">
+          <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0 shadow-custom-up ">
+            <Button className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent ">
               place order
-            </button>
+            </Button>
           </div>
         </form>
       </div>

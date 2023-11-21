@@ -123,7 +123,9 @@ function MostSelling({ mostSelling }) {
           {mostSelling.map((item, index) => (
             <div
               id={`most-selling-${item.id}`}
-              className={`product-item-selling w-[220px] shrink-0 bg-white rounded-lg flex flex-col ${ isItemInCart(item.id) && "border-secondry border" } ${item.outOfStock && "border-gray-500"} `}
+              className={`product-item-selling w-[220px] shrink-0 bg-white rounded-lg flex flex-col ${
+                isItemInCart(item.id) && "border-secondry border"
+              } ${item.outOfStock && "border-gray-500"} `}
               key={index}
             >
               <div className="product-item_content relative">
@@ -185,36 +187,47 @@ function MostSelling({ mostSelling }) {
               borderRadius: "0",
             }}
           >
-            <Modal.Header
-              style={{
-                borderRadius: "0",
-                flexDirection: "column-reverse",
-                alignItems: "center",
-              }}
-            >
-              <div className="flex flex-col text-start items-center w-full h-full">
-                <Image
-                  width={250}
-                  height={250}
-                  src={modalData?.image}
-                  alt={modalData?.name}
-                  className={`rounded-lg mb-3 w-full h-full`}
-                ></Image>
-                {modalData?.name}
-                <p className="text-base leading-relaxed text-secondry">
-                  AED {modalData?.price}
-                </p>
-              </div>
-            </Modal.Header>
+            <div className="flex flex-col text-start items-center w-full h-full">
+              <Button
+                theme={{
+                  size: "text-sm p-3",
+                }}
+                color={"bg-secondry"}
+                className="btn btn-secondary self-end rounded-none btn bg-[#F5F5F5] h-11 p-3 focus:ring-2 focus:ring-secondry focus:border-transparent"
+                onClick={handleCloseModal}
+              >
+                <svg
+                  width={21}
+                  height={21}
+                  version="1.1"
+                  className="active-svg"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4  L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1  c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1  c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z"></path>
+                </svg>
+              </Button>
+              <Image
+                width={250}
+                height={250}
+                src={modalData?.image}
+                alt={modalData?.name}
+                className={`rounded-lg mb-3 m-5`}
+              ></Image>
+              {modalData?.name}
+              <p className="text-base leading-relaxed text-secondry">
+                AED {modalData?.price}
+              </p>
+            </div>
             {modalData?.description && (
-            <Modal.Body>
-              <div className="">
-                <p className="text-base leading-relaxe">
-                  {modalData?.description}
-                </p>
-              </div>
-            </Modal.Body>
-          )}
+              <Modal.Body>
+                <div className="">
+                  <p className="text-base leading-relaxe">
+                    {modalData?.description}
+                  </p>
+                </div>
+              </Modal.Body>
+            )}
             <Modal.Footer className="text-center items-center justify-center">
               {modalData?.outOfStock == false ? (
                 isItemInCart(modalData?.id) ? (

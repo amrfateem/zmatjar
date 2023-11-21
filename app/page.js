@@ -12,6 +12,7 @@ config.autoAddCss = false;
 
 import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
+import Head from "next/head";
 
 const params = new DrupalJsonApiParams()
   .addFields("node--product", [
@@ -32,22 +33,13 @@ const products = await drupal.getResourceCollection("node--product", {
   withCache: false,
 });
 
-console.log(products[30]);
-
 const productsMapped = products.map((product) => {
   const itemId = product.drupal_internal__nid;
   const itemName = product.title;
-  const itemCategories = product.field_category
-    .map((category) => category.name)
-    .sort((a, b) => {
-      const weightA =
-        product.field_category.find((category) => category.name === a)
-          ?.weight || 0;
-      const weightB =
-        product.field_category.find((category) => category.name === b)
-          ?.weight || 0;
-      return weightA - weightB;
-    });
+  const itemCategories = product.field_category.map(
+    (category) => category.name
+  );
+
   const itemPrice = parseFloat(product.field_price);
   const itemDescription = product.body?.value || "";
   const itemImage = product.field_image?.uri?.url
@@ -126,6 +118,16 @@ const pageData = await drupal.getResource(
 export default function Home() {
   return (
     <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
+       <Head>
+        <link
+          rel="icon"
+          href={
+            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+            pageData.field_logo.uri.url
+          }
+          type="image/x-icon"
+        />
+      </Head>
       <Header headerSrc={pageData.field_image} />
       <Intro
         title={pageData.title}

@@ -50,11 +50,10 @@ const Map = () => {
         lat: userLocation.lat || localPosition?.lat || 0,
         lng: userLocation.lng || localPosition?.lng || 0,
       }}
-      className="space-y-6"
+      className="space-y-6 w-full h-full"
       scrollWheelZoom={false}
       attributionControl={false}
       zoom={12}
-      style={{ width: "100%", height: "84dvh" }}
     >
       <Marker
         draggable={true}
