@@ -47,6 +47,10 @@
   fill: var(--brand-color);
 }
 
+.faded-svg {
+  opacity: 0.5;
+}
+
 .bg-brand-faded svg {
   opacity: 1;
 }

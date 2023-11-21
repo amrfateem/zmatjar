@@ -275,7 +275,7 @@ function MainItems({ data }) {
                 height={250}
                 src={modalData?.image}
                 alt={modalData?.name}
-                className={`rounded-lg pb-3 w-full h-full`}
+                className={`rounded-lg mb-3 w-full h-full`}
               ></Image>
               {modalData?.name}
               <p className="text-base leading-relaxed text-secondry">
