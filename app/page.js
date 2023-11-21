@@ -112,7 +112,6 @@ const pageData = await drupal.getResource(
   }
 );
 
-
 export default function Home() {
   return (
     <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
@@ -138,7 +137,9 @@ export default function Home() {
 
       <NavBar categories={uniqueCategories} />
 
-      <MostSelling mostSelling={mostSellingProducts} />
+      {mostSellingProducts.length > 0 && (
+        <MostSelling mostSelling={mostSellingProducts} />
+      )}
 
       <MainItems data={categorizedMenu} />
 

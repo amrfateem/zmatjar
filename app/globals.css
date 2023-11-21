@@ -43,6 +43,10 @@
   background-color: var(--brand-color-bg);
 }
 
+.st0 {
+  fill: var(--brand-color);
+}
+
 .bg-brand-faded svg {
   opacity: 1;
 }

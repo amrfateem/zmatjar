@@ -63,7 +63,6 @@ const Map = () => {
           html: `<svg xmlns="http://www.w3.org/2000/svg" width="40"
           height="40"  version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 324.2 367.8">
           <style type="text/css">
-            .st0{fill:#B11F23;}
             .st1{fill:#EBA721;}
             .st2{fill:none;}
           </style>

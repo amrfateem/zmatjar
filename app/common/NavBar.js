@@ -45,6 +45,12 @@ function NavBar({ categories }) {
         { id: "cat2", link: "#link2" },
         { id: "cat3", link: "#link3" },
         { id: "cat4", link: "#link4" },
+        { id: "cat5", link: "#link5" },
+        { id: "cat6", link: "#link6" },
+        { id: "cat7", link: "#link7" },
+        { id: "cat8", link: "#link8" },
+        { id: "cat9", link: "#link9" },
+        { id: "cat10", link: "#link10" },
       ];
 
       const newActiveSection = sections.find(({ id }) => {

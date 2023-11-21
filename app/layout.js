@@ -96,8 +96,8 @@ export default function RootLayout({ children }) {
         <style
           dangerouslySetInnerHTML={{
             __html: ` :root {
-                             --brand-color:  #${pageData.field_primary_color};
-                             --brand-color-bg:  #${pageData.field_primary_color}45;
+                             --brand-color:  #${pageData.field_primary_color ? pageData.field_primary_color : "000000"};
+                             --brand-color-bg:  #${pageData.field_primary_color ? pageData.field_primary_color : "000000"}45;
                            }`,
           }}
         />
