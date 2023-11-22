@@ -8,6 +8,7 @@ import NavBar from "./common/NavBar";
 import Offers from "./common/Offers";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { unstable_noStore as noStore } from "next/cache";
 config.autoAddCss = false;
 
 import { drupal } from "./lib/drupal";
@@ -26,26 +27,21 @@ const params = new DrupalJsonApiParams()
     "field_out_of_stock",
   ])
   .addInclude(["field_category", "field_image"])
-  .addPageLimit(Math.random() > 0.5 ? 100 : Math.random() * 100 + 100);
+  .addPageLimit(
+    Math.random() > 0.5
+      ? Math.floor(Math.random() * 100) + 101
+      : Math.floor(Math.random() * 100) + 101
+  );
 
 const queryString = params.getQueryString({ encode: false });
 
-console.log(queryString);
-// const products = await drupal.getResourceCollection("node--product", {
-//   params: params.getQueryObject(),
-
-// });
 let products;
 
 try {
   const response = await fetch(
     process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
       "/jsonapi/node/product?jsonapi_include=1&" +
-      queryString,
-    {
-      cache: "no-store",
-      headers: { "Cache-Control": "no-store ,  no-cache" },
-    }
+      queryString
   );
   if (!response.ok) {
     throw new Error("Failed to fetch data");
@@ -163,6 +159,7 @@ const page = await drupal.getResourceCollection("node--page", {
 });
 
 export default function Home() {
+  noStore();
   return (
     <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
       <Header headerSrc={page[0].field_image} />

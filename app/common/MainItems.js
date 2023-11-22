@@ -11,12 +11,16 @@ import {
   modalDataState,
 } from "../atoms";
 import { Button, Modal } from "flowbite-react";
+import { unstable_noStore as noStore } from "next/cache";
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-export const fetchCache = 'force-no-store'
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 function MainItems({ data }) {
+  noStore();
+
+  console.log(data.Samsa[0]);
   const colStyle = useRecoilValue(colStyleState);
   const [cart, setCart] = useRecoilState(cartState);
   const [count, setCount] = useRecoilState(countState);
