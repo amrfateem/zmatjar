@@ -14,6 +14,7 @@ import { Button, Modal } from "flowbite-react";
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+export const fetchCache = 'force-no-store'
 
 function MainItems({ data }) {
   const colStyle = useRecoilValue(colStyleState);
@@ -237,7 +238,7 @@ function MainItems({ data }) {
                             <h3 className="title mt-0 line-clamp-2 text-start text-base leading-5 font-ITC-BK float-left font-bold">
                               {item.name}
                             </h3>
-                            <p className=" line-clamp-2 text-faded-0 text-start text-sm leading-5 font-ITC-BK">
+                            <p className=" line-clamp-2 text-faded-0 text-start text-sm leading-5 font-ITC-BK pb-3">
                               {item.description}
                             </p>
                           </div>
