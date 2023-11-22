@@ -118,7 +118,7 @@ function PlaceOrder() {
       redirect: "follow",
     };
 
-    if (Object.keys(order).length < 10) {
+    if (Object.keys(order).length == 0) {
       console.log("cart is empty");
       setErrorModal(true);
       setModalErrormsg(cartError);
