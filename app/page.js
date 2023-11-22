@@ -29,12 +29,9 @@ const params = new DrupalJsonApiParams()
   .addInclude(["field_category", "field_image"])
   .addPageLimit(200);
 
-
-
 const products = await drupal.getResourceCollection("node--product", {
   params: params.getQueryObject(),
 });
-
 
 const productsMapped = products.map((product) => {
   const itemId = product.drupal_internal__nid;
@@ -49,8 +46,15 @@ const productsMapped = products.map((product) => {
     ? process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + product.field_image?.uri.url
     : "/svg/img-placeholder.svg";
 
-  const itemOutOfStock =
-    product.field_out_of_stock || product.field_out_of_stock !== null;
+  let itemOutOfStock 
+
+  if (product.field_out_of_stock === null) {
+    itemOutOfStock = false
+  } else if (product.field_out_of_stock === false) {
+    itemOutOfStock = false
+  } else {
+    itemOutOfStock = true
+  }
 
   return {
     id: itemId,
@@ -63,6 +67,8 @@ const productsMapped = products.map((product) => {
     // Add other properties you need
   };
 });
+
+console.log(products);
 
 const allCategories = products.reduce((categories, product) => {
   return categories.concat(
@@ -120,7 +126,7 @@ const pageData = await drupal.getResource(
 export default function Home() {
   return (
     <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
-       <Head>
+      <Head>
         <link
           rel="icon"
           href={
