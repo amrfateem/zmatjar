@@ -81,7 +81,7 @@ function NavBar({ categories }) {
         {!show ? (
           <>
             <a
-              className={`self-center ${
+              className={`self-center cursor-pointer ${
                 colStyle === "grid" ? "active-svg" : "faded-svg"
               }`}
               onClick={(e) => handleColStyle(e)}
@@ -98,7 +98,7 @@ function NavBar({ categories }) {
               </svg>
             </a>
             <a
-              className={`self-center ${
+              className={`self-center cursor-pointer ${
                 colStyle === "list" ? "active-svg" : "faded-svg"
               }`}
               onClick={(e) => handleColStyle(e)}
@@ -137,7 +137,7 @@ function NavBar({ categories }) {
               ))}
             </div>
 
-            <a className="self-center" onClick={() => setShow(true)}>
+            <a className="self-center cursor-pointer" onClick={() => setShow(true)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 122.879 119.799"
@@ -159,7 +159,7 @@ function NavBar({ categories }) {
             />
 
             <a
-              className="self-center"
+              className="self-center cursor-pointer"
               onClick={() => {
                 setShow(false), setSearchTerm("");
               }}

@@ -33,7 +33,6 @@ const params = new DrupalJsonApiParams()
 
 const products = await drupal.getResourceCollection("node--product", {
   params: params.getQueryObject(),
-  withCache: false,
 });
 
 
@@ -115,7 +114,6 @@ const pageData = await drupal.getResource(
   process.env.NEXT_PUBLIC_DRUPAL_PAGE_UUID,
   {
     params: params2.getQueryObject(),
-    withCache: false,
   }
 );
 
