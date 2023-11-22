@@ -9,7 +9,6 @@ import Offers from "./common/Offers";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
-export const fetchCache = "force-no-store";
 
 import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
@@ -42,12 +41,8 @@ try {
     process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
       "/jsonapi/node/product?jsonapi_include=1&" +
       queryString,
-    {
-      headers: {
-        "Cache-Control": "no-cache",
-      },
-    },
-    { cache: "force-no-store" }
+    { cache: "no-store" },
+    { next: { revalidate: 0 } }
   );
   if (!response.ok) {
     throw new Error("Failed to fetch data");

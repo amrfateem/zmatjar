@@ -12,6 +12,7 @@ const nextConfig = {
       },
     ],
   },
+  fetchCache: false,
 };
 
 module.exports = nextConfig;
