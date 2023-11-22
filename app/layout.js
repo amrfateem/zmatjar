@@ -78,6 +78,7 @@ const param21 = new DrupalJsonApiParams()
     "field_telegram_chat_id",
     "field_communication_language",
     "field_metatags",
+    "field_image",
     "body",
   ]);
 
@@ -115,7 +116,7 @@ export const metadata = {
   },
   url: hostname,
   image: {
-    url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+    url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_image.uri.url,
     alt: page[0].title,
   },
 
