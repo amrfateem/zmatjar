@@ -65,21 +65,6 @@ function setCookie(name, value, days) {
   document.cookie = cookie; // Set the cookie in the browser environment
 }
 
-// const pageData = await drupal.getResource(
-//   "node--page",
-//   process.env.NEXT_PUBLIC_DRUPAL_PAGE_UUID,
-//   {
-//     params: {
-//       fields: {
-//         "node--page":
-//           "field_primary_color,title,field_logo,field_telegram_chat_id,field_communication_language,field_metatags",
-//       },
-//       include: "field_logo",
-//     },
-//     withCache: false,
-//   }
-// );
-
 const param21 = new DrupalJsonApiParams()
   .addInclude(["field_logo"])
   .addFields("node--page", [
@@ -89,15 +74,22 @@ const param21 = new DrupalJsonApiParams()
     "field_telegram_chat_id",
     "field_communication_language",
     "field_metatags",
+    "body",
   ]);
 
 const page = await drupal.getResourceCollection("node--page", {
   params: param21.getQueryObject(),
 });
 
+let hostname = "";
+
+if (typeof window !== "undefined") {
+  hostname = window.location.hostname;
+}
+
 export const metadata = {
   title: page[0].title,
-  description: page[0].title,
+  description: page[0].body.value,
   icons: {
     icon: [
       {
@@ -111,14 +103,19 @@ export const metadata = {
     ],
     shortcut:
       process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
-    apple:
-      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+    apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
     other: {
       rel: "apple-touch-icon-precomposed",
-      url:
-        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+      url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
     },
   },
+  url: hostname,
+  image: {
+    url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+    alt: page[0].title,
+  },
+
+  theme_color: `#${page[0].field_primary_color}`,
 };
 
 export default function RootLayout({ children }) {
@@ -128,35 +125,25 @@ export default function RootLayout({ children }) {
         <meta name="robots" content={page[0].field_metatags.robots} />
         <link rel="canonical" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />
         <link rel="shortlink" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />
-        <link
-          rel="icon"
-          href={
-            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-            page[0].field_logo.uri.url
-          }
-          type="image/x-icon"
-        />
-        <meta
-          name="msapplication-TileColor"
-          content={`#${page[0].field_primary_color}`}
-        />
+        <link rel="icon" href={ process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url } type="image/x-icon" />
+        <meta name="msapplication-TileColor" content={`#${page[0].field_primary_color}`} />
         <meta name="theme-color" content={`#${page[0].field_primary_color}`} />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />
+        <meta property="og:image" content={ process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url }
+        />
       </head>
       <body className={inter.className}>
         <style
           dangerouslySetInnerHTML={{
-            __html: ` :root {
-                             --brand-color:  #${
-                               page[0].field_primary_color
-                                 ? page[0].field_primary_color
-                                 : "000000"
-                             };
-                             --brand-color-bg:  #${
-                               page[0].field_primary_color
-                                 ? page[0].field_primary_color
-                                 : "000000"
-                             }45;
-                           }`,
+            __html: ` :root { --brand-color:  #${
+              page[0].field_primary_color
+                ? page[0].field_primary_color
+                : "000000"
+            }; --brand-color-bg:  #${
+              page[0].field_primary_color
+                ? page[0].field_primary_color
+                : "000000"
+            }45; }`,
           }}
         />
         <RecoidContextProvider>{children}</RecoidContextProvider>
