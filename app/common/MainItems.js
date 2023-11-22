@@ -12,7 +12,11 @@ import {
 } from "../atoms";
 import { Button, Modal } from "flowbite-react";
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 function MainItems({ data }) {
+  console.log(data.Soups[0]);
   const colStyle = useRecoilValue(colStyleState);
   const [cart, setCart] = useRecoilState(cartState);
   const [count, setCount] = useRecoilState(countState);

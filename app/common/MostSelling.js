@@ -12,6 +12,9 @@ import {
 import { useRouter } from "next/navigation";
 import { Button, Modal } from "flowbite-react";
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 function MostSelling({ mostSelling }) {
   const [cart, setCart] = useRecoilState(cartState);
   const [count, setCount] = useRecoilState(countState);

@@ -10,6 +10,9 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 
@@ -52,6 +55,7 @@ try {
 } catch (error) {
   console.error(error);
 }
+
 
 const productsMapped = products.map((product) => {
   const itemId = product.drupal_internal__nid;
