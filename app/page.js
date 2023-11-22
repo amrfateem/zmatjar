@@ -136,12 +136,10 @@ const param21 = new DrupalJsonApiParams().addInclude([
   "field_branch"
 ])
 
-const pageData  = await drupal.getResourceCollection("node--page", {
+const page  = await drupal.getResourceCollection("node--page", {
   params: param21.getQueryObject(),
-  withcache: false,
 })
 
-console.log(pageData[0]);
 
 
 export default function Home() {
@@ -152,25 +150,25 @@ export default function Home() {
           rel="icon"
           href={
             process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-            pageData[0].field_logo.uri.url
+            page[0].field_logo.uri.url
           }
           type="image/x-icon"
         />
       </Head>
-      <Header headerSrc={pageData[0].field_image} />
+      <Header headerSrc={page[0].field_image} />
       <Intro
-        title={pageData[0].title}
-        logo={pageData[0].field_logo}
-        business={pageData[0].field_business}
-        branches={pageData[0].field_branch}
+        title={page[0].title}
+        logo={page[0].field_logo}
+        business={page[0].field_business}
+        branches={page[0].field_branch}
       />
 
       {/* Contacts */}
       <div className="flex py-4 justify-center text-center border-t-[1px]  border-solid border-[#edf2f7] shadow-custom">
         <Contacts
-          location={pageData[0].field_location.uri}
-          whatsapp={pageData[0].field_whatsapp}
-          phone={pageData[0].field_phone}
+          location={page[0].field_location.uri}
+          whatsapp={page[0].field_whatsapp}
+          phone={page[0].field_phone}
         />
       </div>
       {/* End Contacts */}
@@ -186,13 +184,13 @@ export default function Home() {
       <MainItems data={sortedCategorizedMenu} />
 
       <Footer
-        charges={pageData[0].field_delivery_charges}
-        location={pageData[0].field_location.uri}
-        whatsapp={pageData[0].field_whatsapp}
-        phone={pageData[0].field_phone}
-        minimum={pageData[0].field_minimum_order}
-        telegramId={pageData[0].field_telegram_chat_id}
-        storeLang={pageData[0].field_comm_lang}
+        charges={page[0].field_delivery_charges}
+        location={page[0].field_location.uri}
+        whatsapp={page[0].field_whatsapp}
+        phone={page[0].field_phone}
+        minimum={page[0].field_minimum_order}
+        telegramId={page[0].field_telegram_chat_id}
+        storeLang={page[0].field_comm_lang}
       />
     </main>
   );

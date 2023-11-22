@@ -3,6 +3,7 @@ import "./globals.css";
 
 import RecoidContextProvider from "./recoilContextProvider";
 import { drupal } from "./lib/drupal";
+import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -64,31 +65,58 @@ function setCookie(name, value, days) {
   document.cookie = cookie; // Set the cookie in the browser environment
 }
 
-const pageData = await drupal.getResource(
-  "node--page",
-  process.env.NEXT_PUBLIC_DRUPAL_PAGE_UUID,
-  {
-    params: {
-      fields: {
-        "node--page":
-          "field_primary_color,title,field_logo,field_telegram_chat_id,field_communication_language,field_metatags",
-      },
-      include: "field_logo",
-    },
-    withCache: false,
-  }
-);
+// const pageData = await drupal.getResource(
+//   "node--page",
+//   process.env.NEXT_PUBLIC_DRUPAL_PAGE_UUID,
+//   {
+//     params: {
+//       fields: {
+//         "node--page":
+//           "field_primary_color,title,field_logo,field_telegram_chat_id,field_communication_language,field_metatags",
+//       },
+//       include: "field_logo",
+//     },
+//     withCache: false,
+//   }
+// );
+
+const param21 = new DrupalJsonApiParams()
+  .addInclude(["field_logo"])
+  .addFields("node--page", [
+    "title",
+    "field_primary_color",
+    "field_logo",
+    "field_telegram_chat_id",
+    "field_communication_language",
+    "field_metatags",
+  ]);
+
+const page = await drupal.getResourceCollection("node--page", {
+  params: param21.getQueryObject(),
+});
 
 export const metadata = {
-  title: pageData.title,
-  description: pageData.title,
+  title: page[0].title,
+  description: page[0].title,
   icons: {
-    icon: [{ url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url }, new URL(process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url, process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url)],
-    shortcut: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url,
-    apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url,
+    icon: [
+      {
+        url:
+          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+      },
+      new URL(
+        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url
+      ),
+    ],
+    shortcut:
+      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+    apple:
+      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
     other: {
-      rel: 'apple-touch-icon-precomposed',
-      url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData.field_logo.uri.url,
+      rel: "apple-touch-icon-precomposed",
+      url:
+        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
     },
   },
 };
@@ -97,35 +125,35 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <meta name="robots" content={pageData.field_metatags.robots} />
+        <meta name="robots" content={page[0].field_metatags.robots} />
         <link rel="canonical" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />
         <link rel="shortlink" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />
         <link
           rel="icon"
           href={
             process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-            pageData.field_logo.uri.url
+            page[0].field_logo.uri.url
           }
           type="image/x-icon"
         />
         <meta
           name="msapplication-TileColor"
-          content={`#${pageData.field_primary_color}`}
+          content={`#${page[0].field_primary_color}`}
         />
-        <meta name="theme-color" content={`#${pageData.field_primary_color}`} />
+        <meta name="theme-color" content={`#${page[0].field_primary_color}`} />
       </head>
       <body className={inter.className}>
         <style
           dangerouslySetInnerHTML={{
             __html: ` :root {
                              --brand-color:  #${
-                               pageData.field_primary_color
-                                 ? pageData.field_primary_color
+                               page[0].field_primary_color
+                                 ? page[0].field_primary_color
                                  : "000000"
                              };
                              --brand-color-bg:  #${
-                               pageData.field_primary_color
-                                 ? pageData.field_primary_color
+                               page[0].field_primary_color
+                                 ? page[0].field_primary_color
                                  : "000000"
                              }45;
                            }`,
