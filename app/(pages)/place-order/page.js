@@ -89,8 +89,7 @@ function PlaceOrder() {
     e.preventDefault();
 
     let headers = new Headers();
-    headers.append("Content-Type", "application/vnd.api+json");
-    headers.append("Accept", "application/vnd.api+json");
+    headers.append("Content-Type", "application/json");
 
     let data = JSON.stringify({
       name: e.target.name.value,
@@ -129,7 +128,8 @@ function PlaceOrder() {
       setErrorModal(true);
       setModalErrormsg(subTotalError);
       return;
-    } else {
+    } 
+    else {
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/place-order`,
@@ -310,10 +310,7 @@ function PlaceOrder() {
           </div>
 
           <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0 shadow-custom-up ">
-            <Button
-              type="submit"
-              className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent"
-            >
+            <Button type="submit" className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent">
               place order
             </Button>
           </div>
@@ -375,7 +372,9 @@ function PlaceOrder() {
           </Button>
         </div>
         <Modal.Body>
-          <p className="text-start">{modalErrormsg}</p>
+          <p className="text-start">
+            {modalErrormsg}
+          </p>
         </Modal.Body>
         <Modal.Footer>
           <Button

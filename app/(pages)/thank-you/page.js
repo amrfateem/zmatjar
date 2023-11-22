@@ -28,10 +28,10 @@ function page() {
       <div className="text-center m-auto py-40 ">
         <p>Your order has been placed successfully.</p>
 
-        <p suppressHydrationWarning className="pt-4">
+        {/* <p suppressHydrationWarning className="pt-4">
           Your order number is:{" "}
           {Math.floor(Math.random() * (9999 - 1000 + 1) + 1000)}
-        </p>
+        </p> */}
 
         <p className="pt-4">
           Your order status is now <span className="font-bold">Processing</span>
