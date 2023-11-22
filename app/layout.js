@@ -134,7 +134,7 @@ export default function RootLayout({ children }) {
         <meta name="msapplication-TileColor" content={`#${page[0].field_primary_color}`} />
         <meta name="theme-color" content={`#${page[0].field_primary_color}`} />
         <meta property="og:url" content={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />
-        <meta property="og:image" content={ process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url }
+        <meta property="og:image" content={ process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_image.uri.url }
         />
       </head>
       <body className={inter.className}>

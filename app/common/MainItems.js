@@ -130,7 +130,7 @@ function MainItems({ data }) {
                 {category}
               </h2>
               <div
-                className={`flex flex-wrap shrink-0 bg-black-100 w-full py-4 px-1justify-start ${
+                className={`flex flex-wrap shrink-0 bg-black-100 w-full py-4 px-1 justify-between ${
                   colStyle === "grid" ? "gap-1 " : "gap-3"
                 }`}
               >

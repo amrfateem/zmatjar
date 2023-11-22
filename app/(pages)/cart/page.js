@@ -74,7 +74,7 @@ function Cart() {
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] border-solid border-[#dfe2e7] border-[1px] h-full min-h-screen relative">
       <div className="header flex justify-end p-0 items-center text-center  shadow-custom h-11 border-b-2 w-full bg-white">
-        <h2 className="p-3  w-full text-base font-semibold font-ITC-BK h-full  leading-8">
+        <h2 className="p-3  w-full text-base font-semibold font-ITC-BK h-full">
           YOUR BASKET
         </h2>
         <Button
