@@ -10,9 +10,6 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
 import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 
@@ -29,10 +26,11 @@ const params = new DrupalJsonApiParams()
     "field_out_of_stock",
   ])
   .addInclude(["field_category", "field_image"])
-  .addPageLimit(200);
+  .addPageLimit(Math.random() > 0.5 ? 100 : Math.random() * 100 + 100);
 
 const queryString = params.getQueryString({ encode: false });
 
+console.log(queryString);
 // const products = await drupal.getResourceCollection("node--product", {
 //   params: params.getQueryObject(),
 
@@ -44,8 +42,10 @@ try {
     process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
       "/jsonapi/node/product?jsonapi_include=1&" +
       queryString,
-    { cache: "no-store" },
-    { next: { revalidate: 0 } }
+    {
+      cache: "no-store",
+      headers: { "Cache-Control": "no-store ,  no-cache" },
+    }
   );
   if (!response.ok) {
     throw new Error("Failed to fetch data");
@@ -55,7 +55,6 @@ try {
 } catch (error) {
   console.error(error);
 }
-
 
 const productsMapped = products.map((product) => {
   const itemId = product.drupal_internal__nid;
