@@ -20,7 +20,6 @@ export const fetchCache = "force-no-store";
 function MainItems({ data }) {
   noStore();
 
-  console.log(data.Samsa[0]);
   const colStyle = useRecoilValue(colStyleState);
   const [cart, setCart] = useRecoilState(cartState);
   const [count, setCount] = useRecoilState(countState);

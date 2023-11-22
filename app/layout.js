@@ -70,7 +70,7 @@ function setCookie(name, value, days) {
 }
 
 const param21 = new DrupalJsonApiParams()
-  .addInclude(["field_logo"])
+  .addInclude(["field_logo", "field_image"])
   .addFields("node--page", [
     "title",
     "field_primary_color",

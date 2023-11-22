@@ -74,7 +74,7 @@ function NavBar({ categories }) {
   return (
     <div id="nav" className="h-12 relative shadow-custom">
       <div
-        className={`bg-white flex py-2 px-2 gap-2 z-20 overflow-hidden w-full max-w-[460px] ${
+        className={`bg-white flex py-2 px-2 gap-2 z-20 overflow-hidden w-[460px] max-w-[460px] ${
           isSticky ? "fixed top-0" : ""
         }`}
       >

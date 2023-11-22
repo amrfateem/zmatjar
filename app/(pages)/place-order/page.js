@@ -382,7 +382,7 @@ function PlaceOrder() {
             className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
             onClick={() => setErrorModal(false)}
           >
-            Change Location
+            Go back
           </Button>
         </Modal.Footer>
       </Modal>

@@ -84,7 +84,7 @@
 }
 
 .enabled\:hover\:bg-cyan-800:hover:enabled {
-  background-color: none!important;
+  background-color: var(--brand-color)!important;
 }
 
 .leaflet-pane,

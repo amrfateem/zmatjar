@@ -74,7 +74,7 @@ function Footer({
       </a>
 
       <div
-        className={`flex flex-col justify-center text-center border border-solid bg-white z-20 border-[#cbd5e0] fixed bottom-0  w-full max-w-[460px] transition-all duration-500 ease-in-out ${
+        className={`flex flex-col justify-center text-center border border-solid bg-white z-20 border-[#cbd5e0] fixed bottom-0  w-[460px] max-w-[460px] transition-all duration-500 ease-in-out ${
           offsetTop > 500 ? "" : "translate-y-full invisible"
         }`}
       >
