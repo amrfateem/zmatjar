@@ -63,10 +63,10 @@ function Footer({
       </div>
 
       <a
-        className={`flex justify-center items-center py-2 text-faded-0 text-sm bg-[#F5F5F5]  text-center ${
+        className={`flex justify-center items-center py-2 text-faded-0 text-sm bg-[#F5F5F5] text-center ${
           count > 0 ? " pb-[140px]" : "pb-[85px]"
         }`}
-        href={`https://www.zmatjar.com/?utm_content=powered-by&amp;utm_source=${subdomain}&amp;utm_medium=business-storefront&amp;utm_campaign=business-partner`}
+        href={`https://www.zmatjar.com/?utm_content=powered-by&utm_source=${subdomain}&utm_medium=business-storefront&utm_campaign=business-partner`}
         target="_blank"
         rel="noopener noreferrer"
       >
