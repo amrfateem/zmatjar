@@ -9,7 +9,7 @@ import Offers from "./common/Offers";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
-export const fetchCache = 'force-no-store'
+export const fetchCache = "force-no-store";
 
 import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
@@ -29,10 +29,34 @@ const params = new DrupalJsonApiParams()
   .addInclude(["field_category", "field_image"])
   .addPageLimit(200);
 
-const products = await drupal.getResourceCollection("node--product", {
-  params: params.getQueryObject(),
-  
-});
+const queryString = params.getQueryString({ encode: false });
+
+// const products = await drupal.getResourceCollection("node--product", {
+//   params: params.getQueryObject(),
+
+// });
+let products;
+
+try {
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+      "/jsonapi/node/product?jsonapi_include=1&" +
+      queryString,
+    {
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    },
+    { cache: "force-no-store" }
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  const data = await response.json();
+  products = data.data;
+} catch (error) {
+  console.error(error);
+}
 
 const productsMapped = products.map((product) => {
   const itemId = product.drupal_internal__nid;
@@ -126,7 +150,6 @@ sortedCategories.forEach((category) => {
   sortedCategorizedMenu[category] = categorizedMenu[category];
 });
 
-
 // PAGE DATE AND IT"S PARAMETERS
 
 const param21 = new DrupalJsonApiParams().addInclude([
@@ -134,14 +157,12 @@ const param21 = new DrupalJsonApiParams().addInclude([
   "field_business",
   "field_logo",
   "field_branch",
-  "field_branch"
-])
+  "field_branch",
+]);
 
-const page  = await drupal.getResourceCollection("node--page", {
+const page = await drupal.getResourceCollection("node--page", {
   params: param21.getQueryObject(),
-})
-
-
+});
 
 export default function Home() {
   return (
