@@ -124,9 +124,7 @@ function MainItems({ data }) {
               </h2>
               <div
                 className={`flex flex-wrap shrink-0 bg-black-100 w-full py-4 px-1justify-start ${
-                  colStyle === "grid"
-                    ? "gap-1 "
-                    : "gap-3"
+                  colStyle === "grid" ? "gap-1 " : "gap-3"
                 }`}
               >
                 {itemsToRender
@@ -173,10 +171,10 @@ function MainItems({ data }) {
                             }`}
                           ></Image>
                           <div
-                            className={`absolute rounded-full bg-white px-1 border mx-2 cursor-pointer ${
+                            className={`absolute rounded-full bg-white px-1 border  cursor-pointer ${
                               colStyle === "grid"
-                                ? " bottom-2 right-0 "
-                                : " -bottom-5 right-2 mb-2"
+                                ? " bottom-2 right-0 mx-2"
+                                : " -bottom-5 left-0 right-0 m-auto mb-2 w-fit"
                             }`}
                           >
                             {item.outOfStock == false ? (
@@ -219,7 +217,7 @@ function MainItems({ data }) {
                                 </button>
                               )
                             ) : (
-                              <button className="btn btn-secondary text-sm btn-sm p-1 w-full">
+                              <button className="btn btn-secondary text-sm btn-sm p-1 px-2 w-full">
                                 Out of stock
                               </button>
                             )}
@@ -233,12 +231,12 @@ function MainItems({ data }) {
                           }`}
                         >
                           <div className="flex flex-col gap-2">
-                          <h3 className="title mt-0 line-clamp-2 text-start text-base leading-5 font-ITC-BK float-left font-bold">
-                            {item.name}
-                          </h3>
-                          <p className=" line-clamp-2 text-faded-0 text-start text-sm leading-5 font-ITC-BK">
-                            {item.description}
-                          </p>
+                            <h3 className="title mt-0 line-clamp-2 text-start text-base leading-5 font-ITC-BK float-left font-bold">
+                              {item.name}
+                            </h3>
+                            <p className=" line-clamp-2 text-faded-0 text-start text-sm leading-5 font-ITC-BK">
+                              {item.description}
+                            </p>
                           </div>
                           <div className="price float-left text-left text-secondry leading-none">
                             <span>AED </span>

@@ -36,9 +36,7 @@ const products = await drupal.getResourceCollection("node--product", {
 const productsMapped = products.map((product) => {
   const itemId = product.drupal_internal__nid;
   const itemName = product.title;
-  const itemCategories = product.field_category.map(
-    (category) => category.name
-  );
+  const itemCategories = product.field_category.map((category) => category);
 
   const itemPrice = parseFloat(product.field_price);
   const itemDescription = product.body?.value || "";
@@ -46,14 +44,14 @@ const productsMapped = products.map((product) => {
     ? process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + product.field_image?.uri.url
     : "/svg/img-placeholder.svg";
 
-  let itemOutOfStock 
+  let itemOutOfStock;
 
   if (product.field_out_of_stock === null) {
-    itemOutOfStock = false
+    itemOutOfStock = false;
   } else if (product.field_out_of_stock === false) {
-    itemOutOfStock = false
+    itemOutOfStock = false;
   } else {
-    itemOutOfStock = true
+    itemOutOfStock = true;
   }
 
   return {
@@ -68,15 +66,16 @@ const productsMapped = products.map((product) => {
   };
 });
 
-console.log(products);
-
-const allCategories = products.reduce((categories, product) => {
-  return categories.concat(
-    product.field_category
-      .filter((category) => category.name !== "Most Selling") // Exclude 'Most Selling'
-      .map((category) => category.name)
-  );
-}, []);
+const allCategories = products
+  .reduce((categories, product) => {
+    return categories.concat(
+      product.field_category
+        .filter((category) => category.name !== "Most Selling")
+        .map((category) => ({ name: category.name, weight: category.weight }))
+    );
+  }, [])
+  .sort((a, b) => a.weight - b.weight)
+  .map((category) => category.name);
 
 const uniqueCategories = Array.from(new Set(allCategories));
 
@@ -85,19 +84,22 @@ const mostSellingProducts = productsMapped.filter((product) =>
 );
 
 let categorizedMenu = {};
+let categoryWeights = {};
 
 productsMapped.forEach((item) => {
   const hasMostSellingCategory = item.categories.some(
-    (category) => category === "Most Selling"
+    (category) => category.name === "Most Selling"
   );
 
   if (!hasMostSellingCategory) {
     item.categories.forEach((category) => {
-      if (!categorizedMenu[category]) {
-        categorizedMenu[category] = [];
+      const categoryName = category.name;
+
+      if (!categorizedMenu[categoryName]) {
+        categorizedMenu[categoryName] = [];
       }
 
-      categorizedMenu[category].push({
+      categorizedMenu[categoryName].push({
         id: item.id,
         name: item.name,
         price: item.price,
@@ -105,23 +107,42 @@ productsMapped.forEach((item) => {
         image: item.image,
         outOfStock: item.outOfStock,
       });
+
+      // Store category weight information separately
+      categoryWeights[categoryName] = category.weight;
     });
   }
 });
 
-const params2 = new DrupalJsonApiParams().addInclude([
+// Sort categories based on their order
+const sortedCategories = Object.keys(categorizedMenu).sort(
+  (a, b) => categoryWeights[a] - categoryWeights[b]
+);
+
+// Create a new object with sorted categories
+const sortedCategorizedMenu = {};
+sortedCategories.forEach((category) => {
+  sortedCategorizedMenu[category] = categorizedMenu[category];
+});
+
+
+// PAGE DATE AND IT"S PARAMETERS
+
+const param21 = new DrupalJsonApiParams().addInclude([
   "field_image",
   "field_business",
   "field_logo",
-]);
+  "field_branch",
+  "field_branch"
+])
 
-const pageData = await drupal.getResource(
-  "node--page",
-  process.env.NEXT_PUBLIC_DRUPAL_PAGE_UUID,
-  {
-    params: params2.getQueryObject(),
-  }
-);
+const pageData  = await drupal.getResourceCollection("node--page", {
+  params: param21.getQueryObject(),
+  withcache: false,
+})
+
+console.log(pageData[0]);
+
 
 export default function Home() {
   return (
@@ -131,25 +152,25 @@ export default function Home() {
           rel="icon"
           href={
             process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-            pageData.field_logo.uri.url
+            pageData[0].field_logo.uri.url
           }
           type="image/x-icon"
         />
       </Head>
-      <Header headerSrc={pageData.field_image} />
+      <Header headerSrc={pageData[0].field_image} />
       <Intro
-        title={pageData.title}
-        logo={pageData.field_logo}
-        business={pageData.field_business}
-        address={pageData.field_address}
+        title={pageData[0].title}
+        logo={pageData[0].field_logo}
+        business={pageData[0].field_business}
+        branches={pageData[0].field_branch}
       />
 
       {/* Contacts */}
       <div className="flex py-4 justify-center text-center border-t-[1px]  border-solid border-[#edf2f7] shadow-custom">
         <Contacts
-          location={pageData.field_location.uri}
-          whatsapp={pageData.field_whatsapp}
-          phone={pageData.field_phone}
+          location={pageData[0].field_location.uri}
+          whatsapp={pageData[0].field_whatsapp}
+          phone={pageData[0].field_phone}
         />
       </div>
       {/* End Contacts */}
@@ -162,16 +183,16 @@ export default function Home() {
         <MostSelling mostSelling={mostSellingProducts} />
       )}
 
-      <MainItems data={categorizedMenu} />
+      <MainItems data={sortedCategorizedMenu} />
 
       <Footer
-        charges={pageData.field_delivery_charges}
-        location={pageData.field_location.uri}
-        whatsapp={pageData.field_whatsapp}
-        phone={pageData.field_phone}
-        minimum={pageData.field_minimum_order}
-        telegramId={pageData.field_telegram_chat_id}
-        storeLang={pageData.field_communication_language}
+        charges={pageData[0].field_delivery_charges}
+        location={pageData[0].field_location.uri}
+        whatsapp={pageData[0].field_whatsapp}
+        phone={pageData[0].field_phone}
+        minimum={pageData[0].field_minimum_order}
+        telegramId={pageData[0].field_telegram_chat_id}
+        storeLang={pageData[0].field_comm_lang}
       />
     </main>
   );

@@ -132,7 +132,7 @@ function PlaceOrder() {
     else {
       try {
         const response = await fetch(
-          "https://staging-menu.digializer.com/place-order",
+          `https://${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/place-order`,
           requestOptions
         );
 

@@ -3,7 +3,6 @@ import "./globals.css";
 
 import RecoidContextProvider from "./recoilContextProvider";
 import { drupal } from "./lib/drupal";
-import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -97,16 +96,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <Head>
-        <link
-          rel="icon"
-          href={
-            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-            pageData.field_logo.uri.url
-          }
-          type="image/x-icon"
-        />
-      </Head>
       <head>
         <meta name="robots" content={pageData.field_metatags.robots} />
         <link rel="canonical" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />

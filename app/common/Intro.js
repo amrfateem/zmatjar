@@ -1,8 +1,15 @@
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import React from "react";
 
-function Intro({ title, logo, business, address }) {
+function Intro({ title, logo, business, branches }) {
+  let branchesNames = [];
   const businessNames = business.map((item) => item.name).join(" .");
+  branchesNames = branches.map((item) => ({
+    address: item.field_address,
+    map: item.field_location,
+  }));
 
   return (
     <div className="container bg-white p-4 mb-4">
@@ -25,9 +32,19 @@ function Intro({ title, logo, business, address }) {
           </small>
         </div>
       </div>
-      <div className="location text-start pt-4 text-sm">
-        <p className="text-faded-0 font-ITC-BK">{address}</p>
-      </div>
+      {branchesNames.length > 0 && (
+        <div className="location text-start pt-4 text-sm">
+          {branchesNames.map((item, index) => (
+            <p key={index} className="text-faded-0 font-ITC-BK">
+              {item.address} {" "}
+              <a href={item.map.uri}>
+                {" "}
+                <FontAwesomeIcon icon={faLocationDot} size="xl" />
+              </a>
+            </p>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -117,9 +117,9 @@ function NavBar({ categories }) {
             <div className="flex overflow-auto gap-2 scrollbar-hide">
               {categories.map((cat, index) => (
                 <Link
-                  id={`#link${index}`}
+                  id={`link${index}`}
                   to={`cat${index}`}
-                  href={`#link${index}`}
+                  href={`link${index}`}
                   key={index}
                   smooth={true}
                   spy={true}
