@@ -9,10 +9,10 @@ import Offers from "./common/Offers";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
+export const fetchCache = 'force-no-store'
 
 import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
-import Head from "next/head";
 
 const params = new DrupalJsonApiParams()
   .addFields("node--product", [
@@ -31,6 +31,7 @@ const params = new DrupalJsonApiParams()
 
 const products = await drupal.getResourceCollection("node--product", {
   params: params.getQueryObject(),
+  
 });
 
 const productsMapped = products.map((product) => {
@@ -145,16 +146,6 @@ const page  = await drupal.getResourceCollection("node--page", {
 export default function Home() {
   return (
     <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
-      <Head>
-        <link
-          rel="icon"
-          href={
-            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-            page[0].field_logo.uri.url
-          }
-          type="image/x-icon"
-        />
-      </Head>
       <Header headerSrc={page[0].field_image} />
       <Intro
         title={page[0].title}

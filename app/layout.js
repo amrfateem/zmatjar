@@ -1,6 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+export const fetchCache = 'force-no-store'
+
 import RecoidContextProvider from "./recoilContextProvider";
 import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
