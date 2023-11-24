@@ -32,14 +32,8 @@ const Map = () => {
     dragend: (e) => {
       const marker = e.target;
       const position = marker.getLatLng();
-      setDraggedPosition({
-        lng: position.lng,
-        lat: position.lat,
-      });
-      setUserLocation({
-        lng: position.lng,
-        lat: position.lat,
-      });
+      setDraggedPosition(position);
+      setUserLocation(position);
     },
   };
 
@@ -74,7 +68,7 @@ const Map = () => {
           </svg>`,
           iconUrl: "/images/marker.png",
           iconSize: [1, 1],
-          iconAnchor: [0, 0],
+          iconAnchor: [40, 40],
         })}
         position={{
           lat: userLocation.lat || localPosition?.lat || 0,
