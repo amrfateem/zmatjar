@@ -20,7 +20,9 @@ function PlaceOrder() {
 
   // States from this page
   const [selectedTime, setSelectedTime] = useState("");
-  const [deliveryTime, setDeliveryTime] = useState("");
+  const [deliveryTime, setDeliveryTime] = useState(
+    `${new Date().toISOString().split("T")[0]}T${String((new Date().getHours() + 1) % 24).padStart(2, "0")}:${new Date().getMinutes().toString().padStart(2, "0")}:00`
+  );
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [openModalTerms, setOpenModalTerms] = useState(false);
   const [phone, setPhone] = useState("");
@@ -248,11 +250,12 @@ function PlaceOrder() {
                   defaultValue={getCurrentTime()}
                   value={selectedTime === "" ? getCurrentTime() : selectedTime}
                   onChange={handleTimeChange}
+                  {...(showTimePicker && { required: true })}
                   className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full"
                 />
               )}
             </div>
-            <div className="flex flex-col space-y-1">
+            <div className="flex flex-col space-y-1" >
               <label className="text-sm font-ITC-BK">
                 Select Payment Method:
               </label>
@@ -264,7 +267,7 @@ function PlaceOrder() {
                   value="cash on delivery"
                   name="payment"
                   className="checked:text-secondry"
-                  defaultChecked={true}
+                  required
                 />
                 <label htmlFor="cash" className="ml-2">
                   Cash on Delivery
@@ -278,6 +281,7 @@ function PlaceOrder() {
                   value="card on delivery"
                   className="checked:text-secondry"
                   name="payment"
+                  required
                 />
                 <label htmlFor="card" className="ml-2">
                   Card on Delivery
