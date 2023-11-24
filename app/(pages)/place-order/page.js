@@ -96,7 +96,7 @@ function PlaceOrder() {
       subtotal: subtotal.toFixed(2),
       charges: charges,
       total: total,
-      coordinates: `${location.lng}, ${location.lat}`,
+      coordinates: `${location.lat}, ${location.lng}`,
       specialInfo: specialInfo,
       host: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL,
       telegramChatId: telegramChatId,
