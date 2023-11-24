@@ -2,6 +2,7 @@
 import {
   cartState,
   chargesState,
+  countState,
   minimumOrderState,
   specialInstructionsState,
   storeLangState,
@@ -17,7 +18,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 function PlaceOrder() {
   // Router
@@ -42,11 +43,14 @@ function PlaceOrder() {
   // States from local storage
   const charges = useRecoilValue(chargesState);
   const location = useRecoilValue(userLocationState);
-  const order = useRecoilValue(cartState);
-  const subtotal = useRecoilValue(sumState);
+  const [order, setOrder] = useRecoilState(cartState);
+  const [subtotal, setSubtotal] = useRecoilState(sumState);
   const specialInfo = useRecoilValue(specialInstructionsState);
   const telegramChatId = useRecoilValue(telegramChatIdState);
   const storeLanguage = useRecoilValue(storeLangState);
+  
+  const [sum, setSum] = useRecoilValue(sumState);
+  const [count, setCount] = useRecoilValue(countState);
 
   // Total calculated
   const total = parseInt(subtotal) + parseInt(charges);
@@ -128,8 +132,7 @@ function PlaceOrder() {
       setErrorModal(true);
       setModalErrormsg(subTotalError);
       return;
-    } 
-    else {
+    } else {
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/place-order`,
@@ -142,8 +145,16 @@ function PlaceOrder() {
 
         const responseData = await response.json();
         console.log("Success:", responseData);
+        setOrder([]);
+        setSubtotal(0);
+        setSum(0);
+        setCount(0);
         router.push("/thank-you");
       } catch (error) {
+        setOrder([]);
+        setSubtotal(0);
+        setSum(0);
+        setCount(0);
         console.error("Error:", error);
         router.push("/thank-you");
       }
@@ -248,8 +259,8 @@ function PlaceOrder() {
               {showTimePicker && (
                 <input
                   type="time"
-                  min="09:00"
-                  max="18:00"
+                  min="11:00"
+                  max="23:00"
                   defaultValue={getCurrentTime()}
                   value={selectedTime === "" ? getCurrentTime() : selectedTime}
                   onChange={handleTimeChange}
@@ -310,7 +321,10 @@ function PlaceOrder() {
           </div>
 
           <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0 shadow-custom-up ">
-            <Button type="submit" className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent">
+            <Button
+              type="submit"
+              className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent"
+            >
               place order
             </Button>
           </div>
@@ -372,9 +386,7 @@ function PlaceOrder() {
           </Button>
         </div>
         <Modal.Body>
-          <p className="text-start">
-            {modalErrormsg}
-          </p>
+          <p className="text-start">{modalErrormsg}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button

@@ -102,7 +102,7 @@ function MainItems({ data }) {
     const itemElement = document.getElementById(`item-${item.id}`);
     itemElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
-    const newUrl = `${window.location.pathname}?id=${item.id}`;
+    const newUrl = `${window.location.pathname}?${item.path}`;
     window.history.pushState({ path: newUrl }, "", newUrl);
 
     setOpenModal(true);

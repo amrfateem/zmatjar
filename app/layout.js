@@ -86,11 +86,6 @@ const page = await drupal.getResourceCollection("node--page", {
   params: param21.getQueryObject(),
 });
 
-let hostname = "";
-
-if (typeof window !== "undefined") {
-  hostname = window.location.hostname;
-}
 
 export const metadata = {
   title: page[0].title,
@@ -114,7 +109,7 @@ export const metadata = {
       url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
     },
   },
-  url: hostname,
+  url: process.env.NEXT_PUBLIC_MAIN_SITE,
   image: {
     url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_image.uri.url,
     alt: page[0].title,
@@ -128,12 +123,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <meta name="robots" content={page[0].field_metatags.robots} />
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />
-        <link rel="shortlink" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />
+        <link rel="canonical" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
+        <link rel="shortlink" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
         <link rel="icon" href={ process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url } type="image/x-icon" />
         <meta name="msapplication-TileColor" content={`#${page[0].field_primary_color}`} />
         <meta name="theme-color" content={`#${page[0].field_primary_color}`} />
-        <meta property="og:url" content={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL} />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_MAIN_SITE} />
         <meta property="og:image" content={ process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_image.uri.url }
         />
       </head>

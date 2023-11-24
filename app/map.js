@@ -1,12 +1,5 @@
 "use client";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  Rectangle,
-  Circle,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
@@ -39,8 +32,14 @@ const Map = () => {
     dragend: (e) => {
       const marker = e.target;
       const position = marker.getLatLng();
-      setDraggedPosition(position);
-      setUserLocation(position);
+      setDraggedPosition({
+        lng: position.lng,
+        lat: position.lat,
+      });
+      setUserLocation({
+        lng: position.lng,
+        lat: position.lat,
+      });
     },
   };
 
@@ -75,9 +74,8 @@ const Map = () => {
           </svg>`,
           iconUrl: "/images/marker.png",
           iconSize: [1, 1],
-          iconAnchor: [0 , 0],
-        })
-        }
+          iconAnchor: [0, 0],
+        })}
         position={{
           lat: userLocation.lat || localPosition?.lat || 0,
           lng: userLocation.lng || localPosition?.lng || 0,
