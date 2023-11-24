@@ -67,6 +67,7 @@ function DeliveryLocation() {
   );
 
   const handleConfirmLocation = () => {
+    console.log(isWithinPolygon);
     if (isWithinPolygon) {
       router.push("/place-order");
     } else {

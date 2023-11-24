@@ -6,6 +6,8 @@ import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useRecoilState, useRecoilValue } from "recoil";
+import * as turf from "@turf/turf";
+
 
 function PlaceOrder() {
   // Router
@@ -77,6 +79,9 @@ function PlaceOrder() {
     setShowTimePicker(!showTimePicker);
   };
 
+
+
+
   // Sends the order through
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
@@ -111,6 +116,36 @@ function PlaceOrder() {
       redirect: "follow",
     };
 
+
+
+    const polygonCoords = [
+      [55.14743, 25.1245014],
+      [55.0018611, 25.0025914],
+      [55.0046077, 24.8955094],
+      [55.1309505, 24.7833473],
+      [55.3589168, 24.8132671],
+      [55.6473079, 24.8780687],
+      [55.8999934, 25.1443936],
+      [55.9247127, 25.3232768],
+      [55.836822, 25.5935836],
+      [55.6198421, 25.6282578],
+      [55.4715266, 25.5242049],
+      [55.3232112, 25.4225424],
+      [55.2133479, 25.2711297],
+      [55.1501765, 25.196595],
+      [55.14743, 25.1245014],
+    ];
+  
+    const currentLocation = [
+      location.lng.toFixed(6),
+      location.lat.toFixed(6),
+    ];
+  
+    const isWithinPolygon = turf.booleanPointInPolygon(
+      turf.point(currentLocation),
+      turf.polygon([polygonCoords])
+    );
+
     if (Object.keys(order).length == 0) {
       setErrorModal(true);
       setModalErrormsg(cartError);
@@ -119,6 +154,11 @@ function PlaceOrder() {
       setErrorModal(true);
       setModalErrormsg(subTotalError);
       return;
+    } else if ( !isWithinPolygon ){
+      setErrorModal(true);
+      setModalErrormsg("We are sorry, we don't deliver to your location");
+      return;
+
     } else {
       try {
         const response = await fetch(
@@ -266,10 +306,10 @@ function PlaceOrder() {
                   id="cash"
                   value="cash on delivery"
                   name="payment"
-                  className="checked:text-secondry"
+                  className="checked:text-secondry border-gray-300"
                   required
                 />
-                <label htmlFor="cash" className="ml-2">
+                <label htmlFor="cash" className="ml-2 text-base font-ITC-BK">
                   Cash on Delivery
                 </label>
               </div>
@@ -279,11 +319,11 @@ function PlaceOrder() {
                   type="radio"
                   id="card"
                   value="card on delivery"
-                  className="checked:text-secondry"
+                  className="checked:text-secondry border-gray-300"
                   name="payment"
                   required
                 />
-                <label htmlFor="card" className="ml-2">
+                <label htmlFor="card" className="ml-2 text-base font-ITC-BK">
                   Card on Delivery
                 </label>
               </div>
@@ -293,10 +333,12 @@ function PlaceOrder() {
             <div className="flex items-center space-x-2">
               <input
                 type="checkbox"
+                name="acknowledge"
+                id="acknowledge"
                 required
                 className="form-checkbox border border-gray-300 rounded-md px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
               />
-              <p className="text-xs font-ITC-BK">
+              <label htmlFor="acknowledge" className="text-sm font-ITC-BK">
                 I acknowledge that I have read and agree to the{" "}
                 <a
                   className="text-secondry underline"
@@ -304,7 +346,7 @@ function PlaceOrder() {
                 >
                   Terms and conditions
                 </a>
-              </p>
+              </label>
             </div>
           </div>
 

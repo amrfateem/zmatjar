@@ -76,7 +76,7 @@ export const colStyleState = atom({
 
 export const userLocationState = atom({
   key: "userLocationState",
-  default: { lng: 55.296249, lat: 25.276987 },
+  default: { lng: 0 ,lat: 0 },
   effects: [localStorageEffect("userLocationState")],
 });
 
