@@ -12,25 +12,22 @@ import { unstable_noStore as noStore } from "next/cache";
 config.autoAddCss = false;
 
 export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 
 const params = new DrupalJsonApiParams()
-  .addFields("node--product", [ "path", "title", "body", "field_price", "field_category", "field_image", "drupal_internal__nid", "body", "field_out_of_stock", "field_path" ])
+  .addFields("node--product", ["path", "title", "body", "field_price", "field_category", "field_image", "drupal_internal__nid", "body", "field_out_of_stock", "field_path"])
   .addInclude(["field_category", "field_image"])
-  .addPageLimit(
-    Math.random() > 0.5
-      ? Math.floor(Math.random() * 100) + 101
-      : Math.floor(Math.random() * 100) + 101
-  );
+  .addPageLimit(200);
 
 const queryString = params.getQueryString({ encode: false });
 
 let products;
 
 try {
-  const response = await fetch( process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + "/jsonapi/node/product?jsonapi_include=1&" + queryString, { next: { revalidate: 10 } }, { cache: 'no-store' } );
+  const response = await fetch(process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + "/jsonapi/node/product?jsonapi_include=1&" + queryString, { next: { revalidate: 0 } }, { cache: 'no-store' });
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }

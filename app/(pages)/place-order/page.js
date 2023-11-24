@@ -1,18 +1,5 @@
 "use client";
-import {
-  cartState,
-  chargesState,
-  countState,
-  minimumOrderState,
-  specialInstructionsState,
-  storeLangState,
-  sumState,
-  telegramChatIdState,
-  userLocationState,
-} from "@/app/atoms";
-import placeOrder from "@/app/lib/placeOrder";
-import { faX } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cartState, chargesState, countState, minimumOrderState, specialInstructionsState, storeLangState, sumState, telegramChatIdState, userLocationState, } from "@/app/atoms";
 import { Button, Modal } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -48,9 +35,9 @@ function PlaceOrder() {
   const specialInfo = useRecoilValue(specialInstructionsState);
   const telegramChatId = useRecoilValue(telegramChatIdState);
   const storeLanguage = useRecoilValue(storeLangState);
-  
-  const [sum, setSum] = useRecoilValue(sumState);
-  const [count, setCount] = useRecoilValue(countState);
+
+  const [sum, setSum] = useRecoilState(sumState);
+  const [count, setCount] = useRecoilState(countState);
 
   // Total calculated
   const total = parseInt(subtotal) + parseInt(charges);
@@ -123,12 +110,10 @@ function PlaceOrder() {
     };
 
     if (Object.keys(order).length == 0) {
-      console.log("cart is empty");
       setErrorModal(true);
       setModalErrormsg(cartError);
       return;
     } else if (subtotal.toFixed(2) < minimumOrder) {
-      console.log("subtotal is lower than minimum order");
       setErrorModal(true);
       setModalErrormsg(subTotalError);
       return;
@@ -212,9 +197,8 @@ function PlaceOrder() {
                   required: true,
                 }}
                 country={"ae"}
-                onChange={(phone, country, e, data) => {
-                  let phoneNum = phone.slice(country.dialCode.length);
-                  setPhone(phoneNum);
+                onChange={(phone, country) => {
+                  setPhone("+"+phone);
                   setCountry(country.name);
                   setCountryCode(country.countryCode);
                 }}
