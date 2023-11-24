@@ -8,6 +8,7 @@ export const fetchCache = 'force-no-store'
 import RecoidContextProvider from "./recoilContextProvider";
 import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -79,6 +80,7 @@ const param21 = new DrupalJsonApiParams()
     "field_communication_language",
     "field_metatags",
     "field_image",
+    "field_gtm_id",
     "body",
   ]);
 
@@ -115,6 +117,8 @@ export const metadata = {
     alt: page[0].title,
   },
 
+
+
   theme_color: `#${page[0].field_primary_color}`,
 };
 
@@ -130,9 +134,20 @@ export default function RootLayout({ children }) {
         <meta name="theme-color" content={`#${page[0].field_primary_color}`} />
         <meta property="og:url" content={process.env.NEXT_PUBLIC_MAIN_SITE} />
         <meta property="og:image" content={ process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_image.uri.url }
+        
         />
       </head>
       <body className={inter.className}>
+      <Script src={`https://www.googletagmanager.com/gtag/js?id=${page[0].field_gtm_id}`} />
+      <Script id="google-analytics">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+ 
+          gtag('config', ${page[0].field_gtm_id}});
+        `}
+      </Script>
         <style
           dangerouslySetInnerHTML={{
             __html: ` :root { --brand-color:  #${

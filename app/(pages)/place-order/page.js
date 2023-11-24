@@ -8,7 +8,6 @@ import "react-phone-input-2/lib/style.css";
 import { useRecoilState, useRecoilValue } from "recoil";
 import * as turf from "@turf/turf";
 
-
 function PlaceOrder() {
   // Router
   const router = useRouter();
@@ -16,6 +15,7 @@ function PlaceOrder() {
   // Handling User error
   const [errorModal, setErrorModal] = useState(false);
   const [modalErrormsg, setModalErrormsg] = useState("");
+  const [warning, setWarning] = useState(false);
   const minimumOrder = useRecoilValue(minimumOrderState);
   const cartError = "Your cart is empty";
   const subTotalError = "Your order subtotal is lower than the minimum order";
@@ -23,7 +23,12 @@ function PlaceOrder() {
   // States from this page
   const [selectedTime, setSelectedTime] = useState("");
   const [deliveryTime, setDeliveryTime] = useState(
-    `${new Date().toISOString().split("T")[0]}T${String((new Date().getHours() + 1) % 24).padStart(2, "0")}:${new Date().getMinutes().toString().padStart(2, "0")}:00`
+    `${new Date().toISOString().split("T")[0]}T${String(
+      (new Date().getHours() + 1) % 24
+    ).padStart(2, "0")}:${new Date()
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:00`
   );
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [openModalTerms, setOpenModalTerms] = useState(false);
@@ -50,20 +55,23 @@ function PlaceOrder() {
   const handleTimeChange = (e) => {
     const currentDate = new Date();
     const selectedTime = e.target.value;
-    setSelectedTime(selectedTime);
+
     const combinedDateTime = `${
       currentDate.toISOString().split("T")[0]
     }T${selectedTime}:00`;
     const scheduledDateTime = new Date(combinedDateTime);
     if (scheduledDateTime < currentDate) {
-      // If so, set the date to the next day
-      scheduledDateTime.setDate(currentDate.getDate() + 1);
+      // alert the user and trigger validation error
+      setWarning(true);
+    } else {
+      setWarning(false);
+      setSelectedTime(selectedTime);
+      const year = scheduledDateTime.getFullYear();
+      const month = String(scheduledDateTime.getMonth() + 1).padStart(2, "0");
+      const day = String(scheduledDateTime.getDate()).padStart(2, "0");
+      const formattedDateTime = `${year}-${month}-${day}T${selectedTime}:00`;
+      setDeliveryTime(formattedDateTime);
     }
-    const year = scheduledDateTime.getFullYear();
-    const month = String(scheduledDateTime.getMonth() + 1).padStart(2, "0");
-    const day = String(scheduledDateTime.getDate()).padStart(2, "0");
-    const formattedDateTime = `${year}-${month}-${day}T${selectedTime}:00`;
-    setDeliveryTime(formattedDateTime);
   };
 
   // Gets the current time and sends it back
@@ -78,9 +86,6 @@ function PlaceOrder() {
   const handleCheckboxChange = () => {
     setShowTimePicker(!showTimePicker);
   };
-
-
-
 
   // Sends the order through
   const handlePlaceOrder = async (e) => {
@@ -116,8 +121,6 @@ function PlaceOrder() {
       redirect: "follow",
     };
 
-
-
     const polygonCoords = [
       [55.14743, 25.1245014],
       [55.0018611, 25.0025914],
@@ -135,12 +138,9 @@ function PlaceOrder() {
       [55.1501765, 25.196595],
       [55.14743, 25.1245014],
     ];
-  
-    const currentLocation = [
-      location.lng.toFixed(6),
-      location.lat.toFixed(6),
-    ];
-  
+
+    const currentLocation = [location.lng.toFixed(6), location.lat.toFixed(6)];
+
     const isWithinPolygon = turf.booleanPointInPolygon(
       turf.point(currentLocation),
       turf.polygon([polygonCoords])
@@ -240,7 +240,7 @@ function PlaceOrder() {
                 }}
                 country={"ae"}
                 onChange={(phone, country) => {
-                  setPhone("+"+phone);
+                  setPhone("+" + phone);
                   setCountry(country.name);
                   setCountryCode(country.countryCode);
                 }}
@@ -289,13 +289,18 @@ function PlaceOrder() {
                   max="23:00"
                   defaultValue={getCurrentTime()}
                   value={selectedTime === "" ? getCurrentTime() : selectedTime}
-                  onChange={handleTimeChange}
+                  onInput={handleTimeChange}
                   {...(showTimePicker && { required: true })}
                   className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full"
                 />
               )}
+              {warning && (
+                <p className="text-red-600 text-xs">
+                  Can't enter a past time
+                </p>
+              )}
             </div>
-            <div className="flex flex-col space-y-1" >
+            <div className="flex flex-col space-y-1">
               <label className="text-sm font-ITC-BK">
                 Select Payment Method:
               </label>
