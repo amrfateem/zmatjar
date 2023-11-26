@@ -44,6 +44,7 @@ function PlaceOrder() {
   const specialInfo = useRecoilValue(specialInstructionsState);
   const telegramChatId = useRecoilValue(telegramChatIdState);
   const storeLanguage = useRecoilValue(storeLangState);
+  const [sending, setSending] = useState(false);
 
   const [sum, setSum] = useRecoilState(sumState);
   const [count, setCount] = useRecoilState(countState);
@@ -89,6 +90,8 @@ function PlaceOrder() {
 
   // Sends the order through
   const handlePlaceOrder = async (e) => {
+
+    setSending(true);
     e.preventDefault();
 
     let headers = new Headers();
@@ -145,8 +148,6 @@ function PlaceOrder() {
       turf.point(currentLocation),
       turf.polygon([polygonCoords])
     );
-
-    console.log(data);
 
     if (Object.keys(order).length == 0) {
       setErrorModal(true);
@@ -359,10 +360,11 @@ function PlaceOrder() {
 
           <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0 shadow-custom-up ">
             <Button
+            disabled={sending}
               type="submit"
               className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent"
             >
-              place order
+              {sending ? "Placing Your Order..." : "Place Order"}
             </Button>
           </div>
         </form>
