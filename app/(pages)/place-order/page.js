@@ -179,13 +179,16 @@ function PlaceOrder() {
         setSubtotal(0);
         setSum(0);
         setCount(0);
+        setSending(false);
         router.push("/thank-you");
+
       } catch (error) {
         setOrder([]);
         setSubtotal(0);
         setSum(0);
         setCount(0);
         console.error("Error:", error);
+        setSending(false);
         router.push("/thank-you");
       }
     }
