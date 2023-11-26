@@ -24,7 +24,7 @@ function PlaceOrder() {
   const [selectedTime, setSelectedTime] = useState("");
   const [deliveryTime, setDeliveryTime] = useState(
     `${new Date().toISOString().split("T")[0]}T${String(
-      (new Date().getHours() + 1) % 24
+      (new Date().getUTCHours() + 1) % 24
     ).padStart(2, "0")}:${new Date()
       .getMinutes()
       .toString()
@@ -53,12 +53,10 @@ function PlaceOrder() {
 
   // Gets the correct time format and sends it back
   const handleTimeChange = (e) => {
-    const currentDate = new Date();
+    const currentDate = new Date().toISOString();
     const selectedTime = e.target.value;
 
-    const combinedDateTime = `${
-      currentDate.toISOString().split("T")[0]
-    }T${selectedTime}:00`;
+    const combinedDateTime = `${currentDate.split("T")[0] }T${selectedTime}:00`;
     const scheduledDateTime = new Date(combinedDateTime);
     if (scheduledDateTime < currentDate) {
       // alert the user and trigger validation error
@@ -66,10 +64,12 @@ function PlaceOrder() {
     } else {
       setWarning(false);
       setSelectedTime(selectedTime);
-      const year = scheduledDateTime.getFullYear();
-      const month = String(scheduledDateTime.getMonth() + 1).padStart(2, "0");
-      const day = String(scheduledDateTime.getDate()).padStart(2, "0");
-      const formattedDateTime = `${year}-${month}-${day}T${selectedTime}:00`;
+      const year = scheduledDateTime.getUTCFullYear();
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
+      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
+      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+      const formattedDateTime = `${year}-${month}-${day}T${hours+":"+minutes}:00`;
       setDeliveryTime(formattedDateTime);
     }
   };
@@ -145,6 +145,8 @@ function PlaceOrder() {
       turf.point(currentLocation),
       turf.polygon([polygonCoords])
     );
+
+    console.log(data);
 
     if (Object.keys(order).length == 0) {
       setErrorModal(true);
