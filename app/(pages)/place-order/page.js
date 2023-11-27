@@ -2,11 +2,16 @@
 import { cartState, chargesState, countState, minimumOrderState, specialInstructionsState, storeLangState, sumState, telegramChatIdState, userLocationState, } from "@/app/atoms";
 import { Button, Modal } from "flowbite-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useRecoilState, useRecoilValue } from "recoil";
 import * as turf from "@turf/turf";
+
+import IntlTelInput from "react-intl-tel-input";
+import "react-intl-tel-input/dist/main.css";
+
+import isValidPhoneNumber from "libphonenumber-js";
 
 function PlaceOrder() {
   // Router
@@ -20,17 +25,32 @@ function PlaceOrder() {
   const cartError = "Your cart is empty";
   const subTotalError = "Your order subtotal is lower than the minimum order";
 
+  const [phoneError, setPhoneError] = useState(false);
+
   // States from this page
   const [selectedTime, setSelectedTime] = useState("");
-  const [deliveryTime, setDeliveryTime] = useState(
-    `${new Date().toISOString().split("T")[0]}T${String(
-      (new Date().getUTCHours() + 1) % 24
-    ).padStart(2, "0")}:${new Date()
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}:00`
-  );
+  const [deliveryTime, setDeliveryTime] = useState( `${new Date().toISOString().split("T")[0]}T${String( (new Date().getUTCHours() + 1) % 24 ).padStart(2, "0")}:${new Date() .getMinutes() .toString() .padStart(2, "0")}:00` );
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [closingTime, setClosingTime] = useState(false)
+
+  useEffect(() => {
+    const checkTime = () => {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, "0");
+      const minutes = now.getMinutes().toString().padStart(2, "0");
+      const currentTime = `${hours}:${minutes}`;
+
+      if (currentTime >= "23:00" || currentTime < "11:00") {
+        setShowTimePicker(true);
+        setClosingTime(true)
+      }
+    };
+
+    checkTime(); // Call the function when the component mounts
+  }, []);
+
+
+  // Terms modal
   const [openModalTerms, setOpenModalTerms] = useState(false);
   const [phone, setPhone] = useState("");
   const [country, setCountry] = useState("");
@@ -57,8 +77,9 @@ function PlaceOrder() {
     const currentDate = new Date().toISOString();
     const selectedTime = e.target.value;
 
-    const combinedDateTime = `${currentDate.split("T")[0] }T${selectedTime}:00`;
+    const combinedDateTime = `${currentDate.split("T")[0]}T${selectedTime}:00`;
     const scheduledDateTime = new Date(combinedDateTime);
+
     if (scheduledDateTime < currentDate) {
       // alert the user and trigger validation error
       setWarning(true);
@@ -66,11 +87,11 @@ function PlaceOrder() {
       setWarning(false);
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
       const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
-      const formattedDateTime = `${year}-${month}-${day}T${hours+":"+minutes}:00`;
+      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
       setDeliveryTime(formattedDateTime);
     }
   };
@@ -83,6 +104,7 @@ function PlaceOrder() {
     return `${hours}:${minutes}`;
   };
 
+
   // Shows the time picker
   const handleCheckboxChange = () => {
     setShowTimePicker(!showTimePicker);
@@ -90,7 +112,6 @@ function PlaceOrder() {
 
   // Sends the order through
   const handlePlaceOrder = async (e) => {
-
     setSending(true);
     e.preventDefault();
 
@@ -157,11 +178,12 @@ function PlaceOrder() {
       setErrorModal(true);
       setModalErrormsg(subTotalError);
       return;
-    } else if ( !isWithinPolygon ){
+    } else if (!isWithinPolygon) {
       setErrorModal(true);
       setModalErrormsg("We are sorry, we don't deliver to your location");
       return;
-
+    } else if (!isValidPhoneNumber(phone).isValid()) {
+      setPhoneError(true);
     } else {
       try {
         const response = await fetch(
@@ -181,7 +203,6 @@ function PlaceOrder() {
         setCount(0);
         setSending(false);
         router.push("/thank-you");
-
       } catch (error) {
         setOrder([]);
         setSubtotal(0);
@@ -239,21 +260,35 @@ function PlaceOrder() {
               <label className="text-sm font-ITC-BK">
                 Phone <span className="text-red-600">*</span>
               </label>
-              <PhoneInput
-                countryCodeEditable={false}
-                inputProps={{
+              <IntlTelInput
+                containerClassName="intl-tel-input"
+                inputClassName="form-control"
+                name="phone"
+                defaultCountry="ae"
+                separateDialCode={true}
+                telInputProps={{
                   required: true,
+
+                  className:
+                    "border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry",
                 }}
-                country={"ae"}
-                onChange={(phone, country) => {
-                  setPhone("+" + phone);
-                  setCountry(country.name);
-                  setCountryCode(country.countryCode);
+                onPhoneNumberChange={(
+                  status,
+                  value,
+                  countryData,
+                  number,
+                  id
+                ) => {
+                  setPhone(number);
+                  setCountry(countryData.name);
+                  setCountryCode(countryData.dialCode);
                 }}
-                enableSearch={true}
-                specialLabel=""
-                inputStyle={{ width: "100%", height: "42px" }}
               />
+              {phoneError && (
+                <p className="text-red-600 text-xs">
+                  Please enter a valid phone number
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col space-y-1">
@@ -282,6 +317,8 @@ function PlaceOrder() {
                   type="checkbox"
                   className="form-checkbox border border-gray-300 rounded-md mr-2 px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
                   onChange={handleCheckboxChange}
+                  checked={showTimePicker}
+                  disabled={closingTime}
                 />
                 <label className="text-sm font-ITC-BK pb-2">
                   Schedule delivery ?
@@ -301,9 +338,7 @@ function PlaceOrder() {
                 />
               )}
               {warning && (
-                <p className="text-red-600 text-xs">
-                  Can't enter a past time
-                </p>
+                <p className="text-red-600 text-xs">Can't enter a past time</p>
               )}
             </div>
             <div className="flex flex-col space-y-1">
@@ -363,7 +398,7 @@ function PlaceOrder() {
 
           <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0 shadow-custom-up ">
             <Button
-            disabled={sending}
+              disabled={sending}
               type="submit"
               className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent"
             >

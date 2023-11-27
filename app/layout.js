@@ -129,36 +129,44 @@ export default function RootLayout({ children }) {
         <meta name="robots" content={page[0].field_metatags.robots} />
         <link rel="canonical" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
         <link rel="shortlink" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
-        <link rel="icon" href={ process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url } type="image/x-icon" />
+        <link rel="icon" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url} type="image/x-icon" />
         <meta name="msapplication-TileColor" content={`#${page[0].field_primary_color}`} />
         <meta name="theme-color" content={`#${page[0].field_primary_color}`} />
         <meta property="og:url" content={process.env.NEXT_PUBLIC_MAIN_SITE} />
-        <meta property="og:image" content={ process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_image.uri.url }
-        
+        <meta property="og:image" content={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_image.uri.url}
+
+        />
+
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer',${page[0].field_gtm_id});
+          `,
+          }}
         />
       </head>
       <body className={inter.className}>
-      <Script src={`https://www.googletagmanager.com/gtag/js?id=${page[0].field_gtm_id}`} />
-      <Script id="google-analytics">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
- 
-          gtag('config', ${page[0].field_gtm_id}});
-        `}
-      </Script>
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=${page[0].field_gtm_id}`}
+          height="0"
+          width="0"
+          style={{ display: 'none', visibility: 'hidden' }}
+        ></iframe>
+      </noscript>
         <style
           dangerouslySetInnerHTML={{
-            __html: ` :root { --brand-color:  #${
-              page[0].field_primary_color
+            __html: ` :root { --brand-color:  #${page[0].field_primary_color
                 ? page[0].field_primary_color
                 : "000000"
-            }; --brand-color-bg:  #${
-              page[0].field_primary_color
+              }; --brand-color-bg:  #${page[0].field_primary_color
                 ? page[0].field_primary_color
                 : "000000"
-            }45; }`,
+              }45; }`,
           }}
         />
         <RecoidContextProvider>{children}</RecoidContextProvider>
