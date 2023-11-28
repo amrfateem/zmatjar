@@ -75,12 +75,13 @@ function PlaceOrder() {
   // Gets the correct time format and sends it back
   const handleTimeChange = (e) => {
     const currentDate = new Date().toISOString();
+    const currentLocal = new Date()
     const selectedTime = e.target.value;
 
     const combinedDateTime = `${currentDate.split("T")[0]}T${selectedTime}:00`;
     const scheduledDateTime = new Date(combinedDateTime);
 
-    if (scheduledDateTime < currentDate) {
+    if (scheduledDateTime < currentLocal) {
       // alert the user and trigger validation error
       setWarning(true);
     } else {
@@ -281,7 +282,7 @@ function PlaceOrder() {
                 ) => {
                   setPhone(number);
                   setCountry(countryData.iso2);
-                  setCountryCode(countryData.dialCode);
+                  setCountryCode(countryData.iso2);
                 }}
               />
               {phoneError && (
