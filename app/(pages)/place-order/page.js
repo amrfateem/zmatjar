@@ -280,7 +280,7 @@ function PlaceOrder() {
                   id
                 ) => {
                   setPhone(number);
-                  setCountry(countryData.name);
+                  setCountry(countryData.iso2);
                   setCountryCode(countryData.dialCode);
                 }}
               />
