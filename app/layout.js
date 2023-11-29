@@ -1,9 +1,9 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-export const fetchCache = 'force-no-store'
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 import RecoidContextProvider from "./recoilContextProvider";
 import { drupal } from "./lib/drupal";
@@ -75,6 +75,7 @@ const param21 = new DrupalJsonApiParams()
   .addFields("node--page", [
     "title",
     "field_primary_color",
+    "field_primary_color",
     "field_logo",
     "field_telegram_chat_id",
     "field_communication_language",
@@ -84,57 +85,96 @@ const param21 = new DrupalJsonApiParams()
     "body",
   ]);
 
-const page = await drupal.getResourceCollection("node--page", {
-  params: param21.getQueryObject(),
-});
+let pageData;
 
+const queryString = param21.getQueryString({ encode: false });
+
+try {
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+      "/jsonapi/node/page?jsonapi_include=1&" +
+      queryString,
+    { next: { revalidate: 0 } },
+    { cache: "no-store" }
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  const data = await response.json();
+  pageData = data.data;
+} catch (error) {
+  console.error(error);
+}
 
 export const metadata = {
-  title: page[0].title,
-  description: page[0].body.value,
+  title: pageData[0].title,
+  description: pageData[0].body?.value,
   icons: {
     icon: [
       {
         url:
-          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+          pageData[0].field_logo.uri.url,
       },
       new URL(
-        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
-        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url
+        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+          pageData[0].field_logo.uri.url,
+        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData[0].field_logo.uri.url
       ),
     ],
     shortcut:
-      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
-    apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData[0].field_logo.uri.url,
+    apple:
+      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData[0].field_logo.uri.url,
     other: {
       rel: "apple-touch-icon-precomposed",
-      url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+      url:
+        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+        pageData[0].field_logo.uri.url,
     },
   },
   url: process.env.NEXT_PUBLIC_MAIN_SITE,
   image: {
-    url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_image.uri.url,
-    alt: page[0].title,
+    url:
+      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData[0].field_image.uri.url,
+    alt: pageData[0].title,
   },
 
-
-
-  theme_color: `#${page[0].field_primary_color}`,
+  theme_color: `#${pageData[0].field_primary_color}`,
 };
+
+console.log(pageData);
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <meta name="robots" content={page[0].field_metatags.robots} />
+        <meta name="robots" content={pageData[0].field_metatags?.robots} />
         <link rel="canonical" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
         <link rel="shortlink" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
-        <link rel="icon" href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url} type="image/x-icon" />
-        <meta name="msapplication-TileColor" content={`#${page[0].field_primary_color}`} />
-        <meta name="theme-color" content={`#${page[0].field_primary_color}`} />
+        <link
+          rel="icon"
+          href={
+            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+            pageData[0].field_logo.uri.url
+          }
+          type="image/x-icon"
+        />
+        <meta
+          name="msapplication-TileColor"
+          content={`#${pageData[0].field_primary_color}`}
+        />
+        <meta
+          name="theme-color"
+          content={`#${pageData[0].field_primary_color}`}
+        />
         <meta property="og:url" content={process.env.NEXT_PUBLIC_MAIN_SITE} />
-        <meta property="og:image" content={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_image.uri.url}
-
+        <meta
+          property="og:image"
+          content={
+            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+            pageData[0].field_image.uri.url
+          }
         />
 
         <script
@@ -144,29 +184,23 @@ export default function RootLayout({ children }) {
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer',"${page[0].field_gtm_id}");
+            })(window,document,'script','dataLayer',"${pageData[0].field_gtm_id}");
           `,
           }}
         />
       </head>
       <body className={inter.className}>
-      <noscript>
-        <iframe
-          src={`https://www.googletagmanager.com/ns.html?id=${page[0].field_gtm_id}`}
-          height="0"
-          width="0"
-          style={{ display: 'none', visibility: 'hidden' }}
-        ></iframe>
-      </noscript>
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${pageData[0].field_gtm_id}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
         <style
           dangerouslySetInnerHTML={{
-            __html: ` :root { --brand-color:  #${page[0].field_primary_color
-                ? page[0].field_primary_color
-                : "000000"
-              }; --brand-color-bg:  #${page[0].field_primary_color
-                ? page[0].field_primary_color
-                : "000000"
-              }45; }`,
+            __html: ` :root { --brand-color:  #${pageData[0]?.field_primary_color}; --brand-color-bg:  #${pageData[0]?.field_primary_color}45; }`,
           }}
         />
         <RecoidContextProvider>{children}</RecoidContextProvider>
