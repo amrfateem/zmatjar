@@ -34,15 +34,21 @@ function DeliveryLocation() {
         if (result.state === "granted") {
           grantLocation();
           setconfirmLocation(false);
-
+          alert("granted");
         } else if (result.state === "prompt") {
           setGeoState("prompt");
           setconfirmLocation(true);
-          setShareMessage( "Please share your location to get the delivery location." );
+          setShareMessage(
+            "Please share your location to get the delivery location."
+          );
+          alert("prompt");
         } else if (result.state === "denied") {
           setGeoState("denied");
           setconfirmLocation(true);
-          setShareMessage( "Turn on your location settings to allow us to detect your location" );
+          setShareMessage(
+            "Turn on your location settings to allow us to detect your location"
+          );
+          alert("denied");
         }
         console.log(result.state);
       });
@@ -310,7 +316,7 @@ function DeliveryLocation() {
               <Button
                 color={"bg-secondry"}
                 className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-                onClick={() => setTrigger(prev => prev + 1)}
+                onClick={() => setTrigger((prev) => prev + 1)}
               >
                 Turned on
               </Button>
