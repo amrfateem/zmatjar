@@ -34,23 +34,9 @@ function DeliveryLocation() {
         if (result.state === "granted") {
           grantLocation();
           setconfirmLocation(false);
-          alert("granted");
-        } else if (result.state === "prompt") {
-          setGeoState("prompt");
-          setconfirmLocation(true);
-          setShareMessage(
-            "Please share your location to get the delivery location."
-          );
-          alert("prompt");
-        } else if (result.state === "denied") {
-          setGeoState("denied");
-          setconfirmLocation(true);
-          setShareMessage(
-            "Turn on your location settings to allow us to detect your location"
-          );
-          alert("denied");
+        } else{
+          setconfirmLocation(false);
         }
-        console.log(result.state);
       });
     }
   }, [trigger]);
