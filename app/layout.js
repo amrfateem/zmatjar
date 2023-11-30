@@ -143,7 +143,6 @@ export const metadata = {
   theme_color: `#${pageData[0].field_primary_color}`,
 };
 
-console.log(pageData);
 
 export default function RootLayout({ children }) {
   return (

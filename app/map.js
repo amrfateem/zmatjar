@@ -1,37 +1,32 @@
 "use client";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { userLocationState } from "./atoms";
+import L from "leaflet";
 
 const Map = () => {
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
   const [localPosition, setLocalPosition] = useState(null);
   const [draggedPosition, setDraggedPosition] = useState(null);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { longitude, latitude } = position.coords;
-          setLocalPosition({ lng: longitude, lat: latitude });
-          setUserLocation({ lng: longitude, lat: latitude });
-        },
-        (error) => {
-          console.error("Error getting location:", error.message);
-          setLocalPosition(null);
-        }
-      );
+  const RecenterAutomatically = ({ userLocation }) => {
+    const map = useMap();
+    if (userLocation) {
+      map.setView(userLocation, 12);
+      return null;
     }
-  }, []);
+  };
 
   const eventHandlers = {
     dragend: (e) => {
       const marker = e.target;
       const position = marker.getLatLng();
+      const map = marker._map;
+      map.panTo(position);
       setDraggedPosition(position);
       setUserLocation(position);
     },
@@ -39,9 +34,10 @@ const Map = () => {
 
   return (
     <MapContainer
+      id="deliveryMap"
       center={{
-        lat: userLocation.lat || localPosition?.lat || 0,
-        lng: userLocation.lng || localPosition?.lng || 0,
+        lat: userLocation.lat,
+        lng: userLocation.lng,
       }}
       className="space-y-6 w-full h-full"
       scrollWheelZoom={false}
@@ -71,13 +67,14 @@ const Map = () => {
           iconAnchor: [40, 40],
         })}
         position={{
-          lat: userLocation.lat || localPosition?.lat || 0,
-          lng: userLocation.lng || localPosition?.lng || 0,
+          lat: userLocation.lat,
+          lng: userLocation.lng,
         }}
         eventHandlers={eventHandlers}
       >
         <Popup>Your Location</Popup>
       </Marker>
+      <RecenterAutomatically userLocation={userLocation} />
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution=""

@@ -49,7 +49,6 @@ function DeliveryLocation() {
           setUserLocation({ lat: latitude, lng: longitude });
           setconfirmLocation(false);
           setconfirmError(false);
-          
         },
         (error) => {
           console.error("Error getting location:", error.message);
@@ -66,12 +65,16 @@ function DeliveryLocation() {
   };
 
   const setDefaultPosition = () => {
-    setUserLocation(defaultPosition);
-    setLocalPosition(defaultPosition);
     setconfirmLocation(false);
     setconfirmError(false);
+    setUserLocation(defaultPosition);
+    setLocalPosition(defaultPosition);
   };
 
+  useEffect(() => {
+    setUserLocation(defaultPosition);
+    setLocalPosition(defaultPosition);
+  }, []);
   const polygonCoords = [
     [55.14743, 25.1245014],
     [55.0018611, 25.0025914],
