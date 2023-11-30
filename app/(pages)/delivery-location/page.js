@@ -31,17 +31,44 @@ function DeliveryLocation() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
-        if (result.state === "granted") {
-          grantLocation();
+        // if (result.state === "granted") {
+        //   grantLocation();
+        //   setconfirmLocation(false);
+        // } else if (result.state === "prompt") {
+        //   grantLocation();
+        //   setconfirmLocation(false);
+        //   setGeoState(result.state);
+        // } else if (result.state === "denied") {
+        //   setconfirmLocation(true);
+        //   setGeoState(result.state);
+        //   setShareMessage(
+        //     "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
+        //   );
+        // }
+      
+
+      if (result.state === "granted") {
+        // Geolocation granted
+        grantLocation();
           setconfirmLocation(false);
-        } else{
-          setGeoState("denied");
-          setconfirmLocation(true);
-          setShareMessage(
-            "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
-          );
-        }
-      });
+      } else if (result.state === "prompt" || result.state === "denied") {
+        // Check the actual geolocation status
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            grantLocation();
+          setconfirmLocation(false);
+          },
+          function (error) {
+            // Geolocation denied or error
+            setconfirmLocation(true);
+            setGeoState(result.state);
+            setShareMessage(
+              "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
+            );
+          }
+        );
+      }
+    });
     }
   }, [trigger]);
 
@@ -63,10 +90,7 @@ function DeliveryLocation() {
     }
   };
 
-  const defaultPosition = {
-    lat: 25.2048,
-    lng: 55.2708,
-  };
+  const defaultPosition = { lat: 25.2048, lng: 55.2708, };
 
   const setDefaultPosition = () => {
     setconfirmLocation(false);
