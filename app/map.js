@@ -72,7 +72,7 @@ const Map = () => {
         eventHandlers={eventHandlers}
       >
         <Tooltip direction="top" offset={[-20, -40]} opacity={1} permanent>
-          <p className="text-xs text-center">Kindly drag the pin <br/> the delivery location</p>
+          <p className="text-[10px] text-center">Kindly drag the pin <br/> the delivery location</p>
         </Tooltip>
       </Marker>
       <RecenterAutomatically userLocation={userLocation} />

@@ -38,16 +38,13 @@ function DeliveryLocation() {
         } else if (result.state === "prompt") {
           setGeoState("prompt");
           setconfirmLocation(true);
-          setShareMessage(
-            "Please share your location to get the delivery location."
-          );
+          setShareMessage( "Please share your location to get the delivery location." );
         } else if (result.state === "denied") {
           setGeoState("denied");
           setconfirmLocation(true);
-          setShareMessage(
-            "Turn on your location settings to allow us to detect your location"
-          );
+          setShareMessage( "Turn on your location settings to allow us to detect your location" );
         }
+        console.log(result.state);
       });
     }
   }, [trigger]);
@@ -250,7 +247,7 @@ function DeliveryLocation() {
         }}
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
-          <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-BK">
+          <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold ">
             Share delivery location
           </h2>
           <Button
@@ -274,9 +271,9 @@ function DeliveryLocation() {
           </Button>
         </div>
         <Modal.Body>
-          <p className="text-start">{shareMessage}</p>
+          <p className="text-start font-ITC-BK">{shareMessage}</p>
           {confirmError && (
-            <p className="text-start text-red-500">
+            <p className="text-start text-red-500 font-ITC-BK">
               Location permission is blocked. Please allow it manually from your
               browser settings.
             </p>
