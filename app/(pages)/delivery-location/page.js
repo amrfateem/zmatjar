@@ -45,30 +45,31 @@ function DeliveryLocation() {
         //     "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
         //   );
         // }
-      
 
-      if (result.state === "granted") {
-        // Geolocation granted
-        grantLocation();
+        if (result.state === "granted") {
+          // Geolocation granted
+          grantLocation();
           setconfirmLocation(false);
-      } else if (result.state === "prompt" || result.state === "denied") {
-        // Check the actual geolocation status
-        navigator.geolocation.getCurrentPosition(
-          function (position) {
-            grantLocation();
-          setconfirmLocation(false);
-          },
-          function (error) {
-            // Geolocation denied or error
-            setconfirmLocation(true);
-            setGeoState(result.state);
-            setShareMessage(
-              "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
-            );
-          }
-        );
-      }
-    });
+        } else if (result.state === "prompt" || result.state === "denied") {
+          // Check the actual geolocation status
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              grantLocation();
+              setconfirmLocation(false);
+            },
+            function (error) {
+              // Geolocation denied or error
+              setconfirmLocation(true);
+              setGeoState(result.state);
+              setShareMessage(
+                "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
+              );
+            }
+            ,
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+          );
+        }
+      });
     }
   }, [trigger]);
 
@@ -90,7 +91,7 @@ function DeliveryLocation() {
     }
   };
 
-  const defaultPosition = { lat: 25.2048, lng: 55.2708, };
+  const defaultPosition = { lat: 25.2048, lng: 55.2708 };
 
   const setDefaultPosition = () => {
     setconfirmLocation(false);
@@ -327,7 +328,6 @@ function DeliveryLocation() {
               >
                 Ok
               </Button>
-             
             </>
           )}
         </Modal.Footer>
