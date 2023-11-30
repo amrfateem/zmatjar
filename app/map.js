@@ -71,10 +71,9 @@ const Map = () => {
         }}
         eventHandlers={eventHandlers}
       >
-        <Popup
-        
-        offset={[-20, -30]}
-        >Kindly drag the pin to the delivery location</Popup>
+        <Popup offset={[-20, -30]} autoClose={false}>
+          Kindly drag the pin to the delivery location
+        </Popup>
       </Marker>
       <RecenterAutomatically userLocation={userLocation} />
       <TileLayer

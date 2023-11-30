@@ -59,6 +59,7 @@ function DeliveryLocation() {
           const { latitude, longitude } = position.coords;
           setLocalPosition({ lat: latitude, lng: longitude });
           setUserLocation({ lat: latitude, lng: longitude });
+          setconfirmLocation(false);
         },
         (error) => {
           console.error("Error getting location:", error.message);
