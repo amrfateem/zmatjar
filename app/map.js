@@ -1,5 +1,5 @@
 "use client";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
@@ -71,9 +71,9 @@ const Map = () => {
         }}
         eventHandlers={eventHandlers}
       >
-        <Popup offset={[-20, -30]} autoClose={false}>
-          Kindly drag the pin to the delivery location
-        </Popup>
+        <Tooltip direction="top" offset={[-20, -40]} opacity={1} permanent>
+          <p className="text-xs text-center">Kindly drag the pin <br/> the delivery location</p>
+        </Tooltip>
       </Marker>
       <RecenterAutomatically userLocation={userLocation} />
       <TileLayer
