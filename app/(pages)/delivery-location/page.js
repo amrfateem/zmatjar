@@ -31,7 +31,7 @@ function DeliveryLocation() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
-        if (result.state === "granted" || result.state === "prompt") {
+        if (result.state === "granted") {
           grantLocation();
           setconfirmLocation(false);
         } else{
