@@ -1,5 +1,12 @@
 "use client";
-import { MapContainer, TileLayer, Marker, Popup, useMap, Tooltip } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  Tooltip,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
@@ -16,7 +23,7 @@ const Map = () => {
   const RecenterAutomatically = ({ userLocation }) => {
     const map = useMap();
     if (userLocation) {
-      map.setView(userLocation, 12);
+      map.setView(userLocation, map.getZoom());
     }
   };
 
@@ -46,9 +53,9 @@ const Map = () => {
       <Marker
         draggable={true}
         icon={L.divIcon({
-          className: "active-svg",
-          html: `<svg xmlns="http://www.w3.org/2000/svg" width="40"
-          height="40"  version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 324.2 367.8">
+          className: "active-svg leaflet-marker-icon leaflet-zoom-animated leaflet-interactive",
+          html: `<svg xmlns="http://www.w3.org/2000/svg" width="45"
+          height="51"  version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 324.2 367.8">
           <style type="text/css">
             .st1{fill:#EBA721;}
             .st2{fill:none;}
@@ -62,8 +69,10 @@ const Map = () => {
           </g>
           </svg>`,
           iconUrl: "/images/marker.png",
-          iconSize: [1, 1],
-          iconAnchor: [40, 40],
+          iconSize: [45, 51],
+          shadowSize: [50, 64],
+          iconAnchor: [22, 58],
+          shadowAnchor: [13, 72],
         })}
         position={{
           lat: userLocation.lat,
@@ -71,8 +80,10 @@ const Map = () => {
         }}
         eventHandlers={eventHandlers}
       >
-        <Tooltip direction="top" offset={[-20, -40]} opacity={1} permanent>
-          <p className="text-[10px] text-center">Kindly drag the pin <br/> the delivery location</p>
+        <Tooltip direction="top" offset={[0, -60]} opacity={1} permanent>
+          <p className="text-[10px] text-center">
+            Kindly drag the pin <br /> the delivery location
+          </p>
         </Tooltip>
       </Marker>
       <RecenterAutomatically userLocation={userLocation} />
