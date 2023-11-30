@@ -87,6 +87,7 @@ function DeliveryLocation() {
           setLocalPosition(null);
           setconfirmError(true);
         }
+        , { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       );
     }
   };
