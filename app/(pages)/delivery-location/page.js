@@ -31,11 +31,15 @@ function DeliveryLocation() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
-        if (result.state === "granted") {
+        if (result.state === "granted" || result.state === "prompt") {
           grantLocation();
           setconfirmLocation(false);
         } else{
-          setconfirmLocation(false);
+          setGeoState("denied");
+          setconfirmLocation(true);
+          setShareMessage(
+            "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
+          );
         }
       });
     }
@@ -297,15 +301,9 @@ function DeliveryLocation() {
                 className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
                 onClick={() => setDefaultPosition()}
               >
-                Share manually
+                Ok
               </Button>
-              <Button
-                color={"bg-secondry"}
-                className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-                onClick={() => setTrigger((prev) => prev + 1)}
-              >
-                Turned on
-              </Button>
+             
             </>
           )}
         </Modal.Footer>
