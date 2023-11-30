@@ -21,24 +21,34 @@ function DeliveryLocation() {
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
   const [localPosition, setLocalPosition] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [confirmLocation, setconfirmLocation] = useState(true);
+  const [confirmLocation, setconfirmLocation] = useState(false);
   const [confirmError, setconfirmError] = useState(false);
 
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         const { latitude, longitude } = position.coords;
-  //         setLocalPosition({ lat: latitude, lng: longitude });
-  //         setUserLocation({ lat: latitude, lng: longitude });
-  //       },
-  //       (error) => {
-  //         console.error("Error getting location:", error.message);
-  //         setLocalPosition(null);
-  //       }
-  //     );
-  //   }
-  // }, []);
+  const [shareMessage, setShareMessage] = useState("");
+  const [geoState, setGeoState] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      navigator.permissions.query({ name: "geolocation" }).then((result) => {
+        if (result.state === "granted") {
+          setGeoState("granted");
+          setconfirmLocation(true);
+          setShareMessage("Kindly drag the pin to the delivery location");
+          grantLocation();
+        } else if (result.state === "prompt") {
+          setGeoState("prompt");
+          setconfirmLocation(true);
+          setShareMessage(
+            "Please share your location to get the delivery location."
+          );
+        } else if (result.state === "denied") {
+          setGeoState("denied");
+          setconfirmLocation(true);
+          setShareMessage("Kindly drag the pin to the delivery location");
+        }
+      });
+    }
+  }, []);
 
   const grantLocation = () => {
     if (typeof window !== "undefined") {
@@ -47,8 +57,6 @@ function DeliveryLocation() {
           const { latitude, longitude } = position.coords;
           setLocalPosition({ lat: latitude, lng: longitude });
           setUserLocation({ lat: latitude, lng: longitude });
-          setconfirmLocation(false);
-          setconfirmError(false);
         },
         (error) => {
           console.error("Error getting location:", error.message);
@@ -239,7 +247,7 @@ function DeliveryLocation() {
         }}
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
-          <h2 className="px-6 py-2 w-full text-base font-semibold font-ITC-BK">
+          <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-BK">
             Share your location
           </h2>
           <Button
@@ -263,9 +271,7 @@ function DeliveryLocation() {
           </Button>
         </div>
         <Modal.Body>
-          <p className="text-start">
-            Please allow location permission to continue.
-          </p>
+          <p className="text-start">{shareMessage}</p>
           {confirmError && (
             <p className="text-start text-red-500">
               Location permission is blocked. Please allow it manually from your
@@ -274,20 +280,46 @@ function DeliveryLocation() {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            color={"bg-secondry"}
-            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-            onClick={() => grantLocation()}
-          >
-            Grant Permission
-          </Button>
-          <Button
-            color={"bg-secondry"}
-            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-            onClick={() => setDefaultPosition()}
-          >
-            Deny
-          </Button>
+          {geoState === "prompt" && (
+            <>
+              <Button
+                color={"bg-secondry"}
+                className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+                onClick={() => grantLocation()}
+              >
+                Get Permission
+              </Button>
+              <Button
+                color={"bg-secondry"}
+                className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+                onClick={() => setDefaultPosition()}
+              >
+                Deny
+              </Button>
+            </>
+          )}
+          {geoState === "granted" && (
+            <>
+              <Button
+                color={"bg-secondry"}
+                className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+                onClick={() => setconfirmLocation(false)}
+              >
+                Ok
+              </Button>
+            </>
+          )}
+          {geoState === "denied" && (
+            <>
+              <Button
+                color={"bg-secondry"}
+                className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+                onClick={() => setconfirmLocation(false)}
+              >
+                Ok
+              </Button>
+            </>
+          )}
         </Modal.Footer>
       </Modal>
     </div>
