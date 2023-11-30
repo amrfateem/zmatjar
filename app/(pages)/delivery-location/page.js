@@ -23,6 +23,7 @@ function DeliveryLocation() {
   const [showModal, setShowModal] = useState(false);
   const [confirmLocation, setconfirmLocation] = useState(false);
   const [confirmError, setconfirmError] = useState(false);
+  const [trigger, setTrigger] = useState(0);
 
   const [shareMessage, setShareMessage] = useState("");
   const [geoState, setGeoState] = useState("");
@@ -31,10 +32,9 @@ function DeliveryLocation() {
     if (typeof window !== "undefined") {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
         if (result.state === "granted") {
-          setGeoState("granted");
-          setconfirmLocation(true);
-          setShareMessage("Kindly drag the pin to the delivery location");
           grantLocation();
+          setconfirmLocation(false);
+
         } else if (result.state === "prompt") {
           setGeoState("prompt");
           setconfirmLocation(true);
@@ -44,11 +44,13 @@ function DeliveryLocation() {
         } else if (result.state === "denied") {
           setGeoState("denied");
           setconfirmLocation(true);
-          setShareMessage("Kindly drag the pin to the delivery location");
+          setShareMessage(
+            "Turn on your location settings to allow us to detect your location"
+          );
         }
       });
     }
-  }, []);
+  }, [trigger]);
 
   const grantLocation = () => {
     if (typeof window !== "undefined") {
@@ -248,7 +250,7 @@ function DeliveryLocation() {
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
           <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-BK">
-            Share your location
+            Share delivery location
           </h2>
           <Button
             theme={{
@@ -298,25 +300,21 @@ function DeliveryLocation() {
               </Button>
             </>
           )}
-          {geoState === "granted" && (
-            <>
-              <Button
-                color={"bg-secondry"}
-                className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-                onClick={() => setconfirmLocation(false)}
-              >
-                Ok
-              </Button>
-            </>
-          )}
           {geoState === "denied" && (
             <>
               <Button
                 color={"bg-secondry"}
                 className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-                onClick={() => setconfirmLocation(false)}
+                onClick={() => setDefaultPosition()}
               >
-                Ok
+                Share manually
+              </Button>
+              <Button
+                color={"bg-secondry"}
+                className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+                onClick={() => setTrigger(prev => prev + 1)}
+              >
+                Turned on
               </Button>
             </>
           )}

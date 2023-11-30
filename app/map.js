@@ -17,7 +17,6 @@ const Map = () => {
     const map = useMap();
     if (userLocation) {
       map.setView(userLocation, 12);
-      return null;
     }
   };
 
@@ -72,7 +71,10 @@ const Map = () => {
         }}
         eventHandlers={eventHandlers}
       >
-        <Popup>Your Location</Popup>
+        <Popup
+        
+        offset={[-20, -30]}
+        >Kindly drag the pin to the delivery location</Popup>
       </Marker>
       <RecenterAutomatically userLocation={userLocation} />
       <TileLayer
