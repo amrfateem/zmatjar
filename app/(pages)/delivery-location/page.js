@@ -22,9 +22,6 @@ function DeliveryLocation() {
   const [confirmError, setconfirmError] = useState(false);
   const [trigger, setTrigger] = useState(0);
 
-  const [shareMessage, setShareMessage] = useState("");
-  const [geoState, setGeoState] = useState("");
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
@@ -37,18 +34,10 @@ function DeliveryLocation() {
           navigator.geolocation.getCurrentPosition(
             function (position) {
               setconfirmLocation(true);
-              setGeoState(result.state);
-              setShareMessage(
-                "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
-              );
             },
             function (error) {
               // Geolocation denied or error
               setconfirmLocation(true);
-              setGeoState(result.state);
-              setShareMessage(
-                "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
-              );
             },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
           );
@@ -92,8 +81,7 @@ function DeliveryLocation() {
         },
         (error) => {
           console.error("Error getting location:", error.message);
-          setLocalPosition(null);
-          setconfirmError(true);
+          setconfirmLocation(true);
         },
         { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       );
@@ -176,6 +164,13 @@ function DeliveryLocation() {
       {localPosition && (
         <Suspense fallback={<div>Loading...</div>}>
           <Map />
+          <Button
+            color={"bg-secondry"}
+            className="uppercase bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent z-500 focus:z-500 absolute bottom-[9%] right-4 "
+            onClick={() => grantLocation()}
+          >
+            Pin my location
+          </Button>
         </Suspense>
       )}
       {!localPosition && (
@@ -298,37 +293,19 @@ function DeliveryLocation() {
           </Button>
         </div>
         <Modal.Body>
-          <p className="text-start font-ITC-BK">{shareMessage}</p>
-          {confirmError && (
-            <p className="text-start text-red-500 font-ITC-BK">
-              Location permission is blocked. Please allow it manually from your
-              browser settings.
-            </p>
-          )}
+          <p className="text-start font-ITC-BK">
+            To detect your location as a delivery location, kindly turn on your
+            location settings.
+          </p>
         </Modal.Body>
         <Modal.Footer>
-          {geoState === "prompt" && (
-            <>
-              <Button
-                color={"bg-secondry"}
-                className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-                onClick={() => grantLocation()}
-              >
-                Ok
-              </Button>
-            </>
-          )}
-          {geoState === "denied" && (
-            <>
-              <Button
-                color={"bg-secondry"}
-                className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-                onClick={() => setDefaultPosition()}
-              >
-                Ok
-              </Button>
-            </>
-          )}
+          <Button
+            color={"bg-secondry"}
+            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+            onClick={() => setDefaultPosition()}
+          >
+            Ok
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
