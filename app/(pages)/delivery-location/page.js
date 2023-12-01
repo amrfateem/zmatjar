@@ -1,5 +1,5 @@
 "use client";
-import { Button, Modal } from "flowbite-react";
+import { Button, Modal, Tooltip } from "flowbite-react";
 import { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { userLocationState } from "../../atoms";
@@ -8,6 +8,8 @@ import * as turf from "@turf/turf";
 import dynamic from "next/dynamic";
 
 import { useRouter } from "next/navigation";
+import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Map = dynamic(() => import("../../map"), {
   ssr: false,
@@ -163,14 +165,16 @@ function DeliveryLocation() {
       </div>
       {localPosition && (
         <Suspense fallback={<div>Loading...</div>}>
-          <Map />
-          <Button
-            color={"bg-secondry"}
-            className="uppercase bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent z-500 focus:z-500 absolute bottom-[9%] right-4 "
-            onClick={() => grantLocation()}
-          >
-            Pin my location
-          </Button>
+          <Map grant={grantLocation} />
+          <div className="icon-place absolute bottom-[12%] right-4 z-500 focus:z-500">
+            <Tooltip id="toolrip"  content="Pin my location" placement="left" trigger="hover" className="visible opacity-100 font-ITC-BK " style="light" >
+              <Button
+                color={"bg-secondry"}
+                className="uppercase bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent focus:z-500"
+                onClick={() => grantLocation()}
+              ><FontAwesomeIcon icon={faLocationArrow} style={{color: "#ffffff",}} size="lg" /></Button>
+            </Tooltip>
+          </div>
         </Suspense>
       )}
       {!localPosition && (
@@ -302,7 +306,7 @@ function DeliveryLocation() {
           <Button
             color={"bg-secondry"}
             className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-            onClick={() => setDefaultPosition()}
+            onClick={() => setconfirmLocation(false)}
           >
             Ok
           </Button>

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { userLocationState } from "./atoms";
 import L from "leaflet";
 
-const Map = () => {
+const Map = ({grant}) => {
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
   const [draggedPosition, setDraggedPosition] = useState(null);
 
@@ -74,7 +74,7 @@ const Map = () => {
       >
         <Tooltip direction="top" offset={[0, -60]} opacity={1} permanent>
           <p className="text-[10px] text-center">
-            Kindly drag the pin <br /> the delivery location
+            Kindly drag the pin <br /> to the delivery location
           </p>
         </Tooltip>
       </Marker>

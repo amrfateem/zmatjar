@@ -99,7 +99,7 @@
 }
 
 .focus\:ring-secondry:focus {
-  --tw-ring-color: none;
+  --tw-ring-color: none!important;
 }
 
 /* For IE, Edge and Firefox */
