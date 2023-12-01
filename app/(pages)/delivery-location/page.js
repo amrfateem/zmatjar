@@ -54,7 +54,7 @@ function DeliveryLocation() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://demo.zmatjar.com/jsonapi/node/page?&fields[node--page]=field_default_location&jsonapi_include=1",
+          `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/node/page?&fields[node--page]=field_default_location&jsonapi_include=1`,
           { cache: "no-store" }
         );
 
