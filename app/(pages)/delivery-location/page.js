@@ -36,10 +36,12 @@ function DeliveryLocation() {
           navigator.geolocation.getCurrentPosition(
             function (position) {
               setconfirmLocation(true);
+              setDefaultPosition();
             },
             function (error) {
               // Geolocation denied or error
               setconfirmLocation(true);
+              setDefaultPosition();
             },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
           );
@@ -48,7 +50,7 @@ function DeliveryLocation() {
     }
   }, [trigger]);
 
-  const [storeLocation, setStoreLocation] = useState("25.2048,55.2708");
+  const [storeLocation, setStoreLocation] = useState("0,0");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,7 +65,8 @@ function DeliveryLocation() {
         }
 
         const data = await response.json();
-        setStoreLocation(data.data[0].field_default_location);
+        setStoreLocation(data.data[0].field_default_location)
+        console.log(storeLocation);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -92,17 +95,20 @@ function DeliveryLocation() {
 
   const [latitude, longitude] = storeLocation.split(",");
   const defaultPosition = { lat: latitude, lng: longitude };
+
   const setDefaultPosition = () => {
     setconfirmLocation(false);
     setconfirmError(false);
     setUserLocation(defaultPosition);
     setLocalPosition(defaultPosition);
+    console.log(defaultPosition);
   };
 
   useEffect(() => {
     setUserLocation(defaultPosition);
     setLocalPosition(defaultPosition);
-  }, []);
+    setDefaultPosition();
+  }, [storeLocation]);
   const polygonCoords = [
     [55.14743, 25.1245014],
     [55.0018611, 25.0025914],
