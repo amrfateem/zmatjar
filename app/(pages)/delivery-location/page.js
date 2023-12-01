@@ -42,16 +42,13 @@ function DeliveryLocation() {
           // Permissions API not supported, assume geolocation is granted
           navigator.geolocation.getCurrentPosition(
             (position) => {
-              setDefaultPosition();
-              setconfirmLocation(true);
-              console.log("here");
+              grantLocation();
+              setconfirmLocation(false);
             },
             (error) => {
               // Geolocation denied or error
               setDefaultPosition();
               setconfirmLocation(true);
-
-              console.log("here");
             },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
           );
@@ -64,7 +61,6 @@ function DeliveryLocation() {
         if (result.state === "granted") {
           // Geolocation granted
           grantLocation();
-          console.log("here");
         } else {
           setDefaultPosition();
           setconfirmLocation(true);
@@ -73,13 +69,11 @@ function DeliveryLocation() {
             (position) => {
               grantLocation();
               setconfirmLocation(false);
-              console.log("here");
             },
             (error) => {
               // Geolocation denied or error
               setDefaultPosition();
               setconfirmLocation(true);
-              console.log("here");
             },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
           );
@@ -88,7 +82,6 @@ function DeliveryLocation() {
         // Handle any unexpected errors
         setconfirmLocation(true);
         setDefaultPosition();
-        console.log("here");
       }
     };
 
@@ -128,9 +121,10 @@ function DeliveryLocation() {
           const { latitude, longitude } = position.coords;
           setLocalPosition({ lat: latitude, lng: longitude });
           setUserLocation({ lat: latitude, lng: longitude });
+          setconfirmLocation(false);
         },
         (error) => {
-          console.error("Error getting location:", error.message);
+          setconfirmLocation(true);
         },
         { enableHighAccuracy: true, maximumAge: 0 }
       );
@@ -148,7 +142,6 @@ function DeliveryLocation() {
   };
 
   useEffect(() => {
-    console.log(confirmLocation);
     if (confirmLocation) {
       setUserLocation(defaultPosition);
       setLocalPosition(defaultPosition);
@@ -181,7 +174,6 @@ function DeliveryLocation() {
   );
 
   const handleConfirmLocation = () => {
-    console.log(isWithinPolygon);
     if (isWithinPolygon) {
       router.push("/place-order");
     } else {
