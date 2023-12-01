@@ -10,7 +10,6 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 
 const Map = dynamic(() => import("../../map"), {
   ssr: false,
@@ -26,20 +25,39 @@ function DeliveryLocation() {
   const [trigger, setTrigger] = useState(0);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      navigator.permissions.query({ name: "geolocation" }).then((result) => {
-        if (result.state === "granted") {
+    const checkGeolocationSupport = () => {
+      if (typeof navigator === 'undefined' || !navigator.geolocation) {
+        // Geolocation not supported
+        setconfirmLocation(true);
+        setDefaultPosition();
+        return false;
+      }
+      return true;
+    };
+  
+    const checkPermissions = async () => {
+      try {
+        if (typeof navigator.permissions === 'undefined') {
+          // Permissions API not supported, assume geolocation is granted
+          grantLocation();
+          setconfirmLocation(false);
+          return;
+        }
+  
+        const result = await navigator.permissions.query({ name: 'geolocation' });
+  
+        if (result.state === 'granted') {
           // Geolocation granted
           grantLocation();
           setconfirmLocation(false);
-        } else if (result.state === "prompt" || result.state === "denied") {
+        } else {
           // Check the actual geolocation status
           navigator.geolocation.getCurrentPosition(
-            function (position) {
+            (position) => {
               setconfirmLocation(true);
               setDefaultPosition();
             },
-            function (error) {
+            (error) => {
               // Geolocation denied or error
               setconfirmLocation(true);
               setDefaultPosition();
@@ -47,9 +65,19 @@ function DeliveryLocation() {
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
           );
         }
-      });
+      } catch (error) {
+        // Handle any unexpected errors
+        console.error('Error checking geolocation permissions:', error);
+        setconfirmLocation(true);
+        setDefaultPosition();
+      }
+    };
+  
+    if (checkGeolocationSupport()) {
+      checkPermissions();
     }
   }, [trigger]);
+  
 
   const [storeLocation, setStoreLocation] = useState("0,0");
 
@@ -145,7 +173,6 @@ function DeliveryLocation() {
   };
 
   return (
-    <ErrorBoundary FallbackComponent={Error}>
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-[100dvh] flex flex-col">
       <div className="header flex justify-between items-center h-11 text-center shadow-custom border-b-2">
         <h2 className="py-2  w-full text-base font-semibold text font-ITC-BK">
@@ -334,7 +361,6 @@ function DeliveryLocation() {
         </Modal.Footer>
       </Modal>
     </div>
-    </ErrorBoundary>
   );
 }
 
