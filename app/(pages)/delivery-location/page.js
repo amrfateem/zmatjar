@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 
 const Map = dynamic(() => import("../../map"), {
   ssr: false,
@@ -144,6 +145,7 @@ function DeliveryLocation() {
   };
 
   return (
+    <ErrorBoundary FallbackComponent={Error}>
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-[100dvh] flex flex-col">
       <div className="header flex justify-between items-center h-11 text-center shadow-custom border-b-2">
         <h2 className="py-2  w-full text-base font-semibold text font-ITC-BK">
@@ -332,6 +334,7 @@ function DeliveryLocation() {
         </Modal.Footer>
       </Modal>
     </div>
+    </ErrorBoundary>
   );
 }
 
