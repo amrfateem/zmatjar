@@ -108,7 +108,7 @@ try {
 
 export const metadata = {
   title: pageData[0].title,
-  description: pageData[0].body?.value,
+  description: pageData[0].body.value,
   icons: {
     icon: [
       {
