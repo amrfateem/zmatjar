@@ -166,11 +166,11 @@ function DeliveryLocation() {
       {localPosition && (
         <Suspense fallback={<div>Loading...</div>}>
           <Map grant={grantLocation} />
-          <div className="icon-place absolute bottom-[12%] right-4 z-500 focus:z-500">
+          <div className="icon-place absolute bottom-[12%] right-4 z-50 focus:z-50">
             <Tooltip id="toolrip"  content="Pin my location" placement="left" trigger="hover" className="visible opacity-100 text-[10px] text-center tooltip-style" style="light" >
               <Button
                 color={"bg-secondry"}
-                className="uppercase bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent focus:z-500"
+                className="uppercase bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent focus:z-50"
                 onClick={() => grantLocation()}
               ><FontAwesomeIcon icon={faLocationArrow} style={{color: "#ffffff",}} size="lg" /></Button>
             </Tooltip>
