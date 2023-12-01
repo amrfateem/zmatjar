@@ -26,58 +26,76 @@ function DeliveryLocation() {
 
   useEffect(() => {
     const checkGeolocationSupport = () => {
-      if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      if (typeof navigator === "undefined" || !navigator.geolocation) {
         // Geolocation not supported
-        setconfirmLocation(true);
         setDefaultPosition();
+        setconfirmLocation(true);
+
         return false;
       }
       return true;
     };
-  
+
     const checkPermissions = async () => {
       try {
-        if (typeof navigator.permissions === 'undefined') {
+        if (typeof navigator.permissions === "undefined") {
           // Permissions API not supported, assume geolocation is granted
-          grantLocation();
-          setconfirmLocation(false);
-          return;
-        }
-  
-        const result = await navigator.permissions.query({ name: 'geolocation' });
-  
-        if (result.state === 'granted') {
-          // Geolocation granted
-          grantLocation();
-          setconfirmLocation(false);
-        } else {
-          // Check the actual geolocation status
           navigator.geolocation.getCurrentPosition(
             (position) => {
-              setconfirmLocation(true);
               setDefaultPosition();
+              setconfirmLocation(true);
+              console.log("here");
             },
             (error) => {
               // Geolocation denied or error
-              setconfirmLocation(true);
               setDefaultPosition();
+              setconfirmLocation(true);
+
+              console.log("here");
+            },
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+          );
+        }
+
+        const result = await navigator.permissions.query({
+          name: "geolocation",
+        });
+
+        if (result.state === "granted") {
+          // Geolocation granted
+          grantLocation();
+          console.log("here");
+        } else {
+          setDefaultPosition();
+          setconfirmLocation(true);
+          // Check the actual geolocation status
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              grantLocation();
+              setconfirmLocation(false);
+              console.log("here");
+            },
+            (error) => {
+              // Geolocation denied or error
+              setDefaultPosition();
+              setconfirmLocation(true);
+              console.log("here");
             },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
           );
         }
       } catch (error) {
         // Handle any unexpected errors
-        console.error('Error checking geolocation permissions:', error);
         setconfirmLocation(true);
         setDefaultPosition();
+        console.log("here");
       }
     };
-  
+
     if (checkGeolocationSupport()) {
       checkPermissions();
     }
   }, [trigger]);
-  
 
   const [storeLocation, setStoreLocation] = useState("0,0");
 
@@ -94,8 +112,7 @@ function DeliveryLocation() {
         }
 
         const data = await response.json();
-        setStoreLocation(data.data[0].field_default_location)
-        console.log(storeLocation);
+        return setStoreLocation(data.data[0].field_default_location);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -111,13 +128,11 @@ function DeliveryLocation() {
           const { latitude, longitude } = position.coords;
           setLocalPosition({ lat: latitude, lng: longitude });
           setUserLocation({ lat: latitude, lng: longitude });
-          setconfirmLocation(false);
         },
         (error) => {
           console.error("Error getting location:", error.message);
-          setconfirmLocation(true);
         },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        { enableHighAccuracy: true, maximumAge: 0 }
       );
     }
   };
@@ -130,14 +145,16 @@ function DeliveryLocation() {
     setconfirmError(false);
     setUserLocation(defaultPosition);
     setLocalPosition(defaultPosition);
-    console.log(defaultPosition);
   };
 
   useEffect(() => {
-    setUserLocation(defaultPosition);
-    setLocalPosition(defaultPosition);
-    setDefaultPosition();
+    console.log(confirmLocation);
+    if (confirmLocation) {
+      setUserLocation(defaultPosition);
+      setLocalPosition(defaultPosition);
+    }
   }, [storeLocation]);
+
   const polygonCoords = [
     [55.14743, 25.1245014],
     [55.0018611, 25.0025914],
