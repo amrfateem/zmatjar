@@ -1,12 +1,5 @@
 "use client";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMap,
-  Tooltip,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, Tooltip, } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
@@ -17,7 +10,6 @@ import L from "leaflet";
 
 const Map = () => {
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
-  const [localPosition, setLocalPosition] = useState(null);
   const [draggedPosition, setDraggedPosition] = useState(null);
 
   const RecenterAutomatically = ({ userLocation }) => {

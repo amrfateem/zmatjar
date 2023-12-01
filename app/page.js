@@ -24,6 +24,8 @@ const params = new DrupalJsonApiParams()
 
 const queryString = params.getQueryString({ encode: false });
 
+console.log(queryString);
+
 let products;
 
 try {

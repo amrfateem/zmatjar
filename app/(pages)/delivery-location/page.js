@@ -7,9 +7,6 @@ import * as turf from "@turf/turf";
 
 import dynamic from "next/dynamic";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
-
 import { useRouter } from "next/navigation";
 
 const Map = dynamic(() => import("../../map"), {
@@ -31,21 +28,6 @@ function DeliveryLocation() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
-        // if (result.state === "granted") {
-        //   grantLocation();
-        //   setconfirmLocation(false);
-        // } else if (result.state === "prompt") {
-        //   grantLocation();
-        //   setconfirmLocation(false);
-        //   setGeoState(result.state);
-        // } else if (result.state === "denied") {
-        //   setconfirmLocation(true);
-        //   setGeoState(result.state);
-        //   setShareMessage(
-        //     "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
-        //   );
-        // }
-
         if (result.state === "granted") {
           // Geolocation granted
           grantLocation();
@@ -54,8 +36,11 @@ function DeliveryLocation() {
           // Check the actual geolocation status
           navigator.geolocation.getCurrentPosition(
             function (position) {
-              grantLocation();
-              setconfirmLocation(false);
+              setconfirmLocation(true);
+              setGeoState(result.state);
+              setShareMessage(
+                "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
+              );
             },
             function (error) {
               // Geolocation denied or error
@@ -64,14 +49,37 @@ function DeliveryLocation() {
               setShareMessage(
                 "To detect your location as a delivery location, kindly turn on your location settings and refresh the page."
               );
-            }
-            ,
+            },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
           );
         }
       });
     }
   }, [trigger]);
+
+  const [storeLocation, setStoreLocation] = useState("25.2048,55.2708");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://demo.zmatjar.com/jsonapi/node/page?&fields[node--page]=field_default_location&jsonapi_include=1",
+          { cache: "no-store" }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setStoreLocation(data.data[0].field_default_location);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const grantLocation = () => {
     if (typeof window !== "undefined") {
@@ -86,14 +94,14 @@ function DeliveryLocation() {
           console.error("Error getting location:", error.message);
           setLocalPosition(null);
           setconfirmError(true);
-        }
-        , { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       );
     }
   };
 
-  const defaultPosition = { lat: 25.2048, lng: 55.2708 };
-
+  const [latitude, longitude] = storeLocation.split(",");
+  const defaultPosition = { lat: latitude, lng: longitude };
   const setDefaultPosition = () => {
     setconfirmLocation(false);
     setconfirmError(false);
@@ -123,10 +131,7 @@ function DeliveryLocation() {
     [55.14743, 25.1245014],
   ];
 
-  const currentLocation = [
-    userLocation.lng.toFixed(6),
-    userLocation.lat.toFixed(6),
-  ];
+  const currentLocation = [userLocation.lng, userLocation.lat];
 
   const isWithinPolygon = turf.booleanPointInPolygon(
     turf.point(currentLocation),
@@ -210,7 +215,7 @@ function DeliveryLocation() {
         }}
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
-          <h2 className="px-6 py-2 w-full text-base font-semibold font-ITC-BK">
+          <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold ">
             We're not there yet
           </h2>
           <Button
@@ -242,7 +247,7 @@ function DeliveryLocation() {
           <Button
             color={"bg-secondry"}
             className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-            onClick={() => setconfirmLocation(false)}
+            onClick={() => setShowModal(false)}
           >
             Change Location
           </Button>
@@ -309,14 +314,7 @@ function DeliveryLocation() {
                 className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
                 onClick={() => grantLocation()}
               >
-                Get Permission
-              </Button>
-              <Button
-                color={"bg-secondry"}
-                className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
-                onClick={() => setDefaultPosition()}
-              >
-                Deny
+                Ok
               </Button>
             </>
           )}
