@@ -40,7 +40,7 @@ const Map = ({grant}) => {
       className="space-y-6 w-full h-full"
       scrollWheelZoom={false}
       attributionControl={false}
-      zoom={12}
+      zoom={14}
     >
       <Marker
         draggable={true}
