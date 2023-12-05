@@ -21,6 +21,7 @@ function Intro({ title, logo, business, branches }) {
             quality={100}
             width={64}
             height={64}
+            className="rounded-md"
           ></Image>
         </div>
         <div className="details text-start pt-2">
