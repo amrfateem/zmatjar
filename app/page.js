@@ -11,25 +11,40 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { unstable_noStore as noStore } from "next/cache";
 config.autoAddCss = false;
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 
 const params = new DrupalJsonApiParams()
-  .addFields("node--product", ["path", "title", "body", "field_price", "field_category", "field_image", "drupal_internal__nid", "body", "field_out_of_stock", "field_path"])
+  .addFields("node--product", [
+    "path",
+    "title",
+    "body",
+    "field_price",
+    "field_category",
+    "field_image",
+    "drupal_internal__nid",
+    "body",
+    "field_out_of_stock",
+    "field_path",
+  ])
   .addInclude(["field_category", "field_image"])
   .addPageLimit(200);
 
 const queryString = params.getQueryString({ encode: false });
 
-console.log(queryString);
-
 let products;
 
 try {
-  const response = await fetch(process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + "/jsonapi/node/product?jsonapi_include=1&" + queryString, { next: { revalidate: 0 } }, { cache: 'no-store' });
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+      "/jsonapi/node/product?jsonapi_include=1&" +
+      queryString,
+    { next: { revalidate: 0 } },
+    { cache: "no-store" }
+  );
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }
@@ -43,7 +58,7 @@ const productsMapped = products.map((product) => {
   const itemId = product.drupal_internal__nid;
   const itemName = product.title;
   const itemCategories = product.field_category.map((category) => category);
-  const itemPath = product.field_path
+  const itemPath = product.field_path;
 
   const itemPrice = parseFloat(product.field_price);
   const itemDescription = product.body?.value || "";
@@ -69,7 +84,7 @@ const productsMapped = products.map((product) => {
     description: itemDescription,
     image: itemImage,
     outOfStock: itemOutOfStock,
-    path: itemPath
+    path: itemPath,
     // Add other properties you need
   };
 });
@@ -88,7 +103,7 @@ const allCategories = products
 const uniqueCategories = Array.from(new Set(allCategories));
 
 const mostSellingProducts = productsMapped.filter((product) =>
-  product.categories.includes("Most Selling")
+product.categories.some((category) => category.name === "Most Selling")
 );
 
 let categorizedMenu = {};
