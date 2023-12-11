@@ -2,7 +2,11 @@
 import { Button, Modal, TextInput, Tooltip } from "flowbite-react";
 import { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { bypassGeoState, manualAddressState, userLocationState } from "../../atoms";
+import {
+  bypassGeoState,
+  manualAddressState,
+  userLocationState,
+} from "../../atoms";
 import * as turf from "@turf/turf";
 
 import dynamic from "next/dynamic";
@@ -23,10 +27,12 @@ function DeliveryLocation() {
   const [confirmLocation, setconfirmLocation] = useState(false);
   const [confirmError, setconfirmError] = useState(false);
   const [trigger, setTrigger] = useState(0);
+  const [isDenied, setIsDenied] = useState(false);
 
   const [manualAddress, setmanualAddress] = useState(false);
-  const [manualAddressValue, setmanualAddressValue] = useRecoilState(manualAddressState)
-  const [bypassGeo , setBypassGeo] = useRecoilState(bypassGeoState)
+  const [manualAddressValue, setmanualAddressValue] =
+    useRecoilState(manualAddressState);
+  const [bypassGeo, setBypassGeo] = useRecoilState(bypassGeoState);
 
   useEffect(() => {
     const checkGeolocationSupport = () => {
@@ -34,6 +40,7 @@ function DeliveryLocation() {
         // Geolocation not supported
         setDefaultPosition();
         setconfirmLocation(true);
+        setIsDenied(true);
 
         return false;
       }
@@ -53,6 +60,7 @@ function DeliveryLocation() {
               // Geolocation denied or error
               setDefaultPosition();
               setconfirmLocation(true);
+              setIsDenied(true);
             },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
           );
@@ -78,6 +86,7 @@ function DeliveryLocation() {
               // Geolocation denied or error
               setDefaultPosition();
               setconfirmLocation(true);
+              setIsDenied(true);
             },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
           );
@@ -85,6 +94,8 @@ function DeliveryLocation() {
       } catch (error) {
         // Handle any unexpected errors
         setconfirmLocation(true);
+        setIsDenied(true);
+
         setDefaultPosition();
       }
     };
@@ -187,10 +198,10 @@ function DeliveryLocation() {
 
   const handleManualLocation = () => {
     if (manualAddressValue) {
-      setBypassGeo(true)
+      setBypassGeo(true);
       router.push("/place-order");
     }
-  }
+  };
 
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-[100dvh] flex flex-col">
@@ -243,15 +254,17 @@ function DeliveryLocation() {
               </Button>
             </Tooltip>
           </div>
-          <div className="icon-place absolute bottom-[12%] left-4 z-50 focus:z-50">
-            <Button
-              color={"bg-secondry"}
-              className="uppercase bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent focus:z-50"
-              onClick={() => setmanualAddress(true)}
-            >
-              Enter Address
-            </Button>
-          </div>
+          {isDenied ? (
+            <div className="icon-place absolute bottom-[12%] left-4 z-50 focus:z-50">
+              <Button
+                color={"bg-secondry"}
+                className="uppercase bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent focus:z-50"
+                onClick={() => setmanualAddress(true)}
+              >
+                Enter Address
+              </Button>
+            </div>
+          ) : null}
         </Suspense>
       )}
       {!localPosition && (
@@ -434,7 +447,10 @@ function DeliveryLocation() {
           </Button>
         </div>
         <Modal.Body>
-          <TextInput className="font-ITC-BK" onChange={(e) => setmanualAddressValue(e.target.value) }/>
+          <input
+            className="font-ITC-BK border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full"
+            onChange={(e) => setmanualAddressValue(e.target.value)}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button
