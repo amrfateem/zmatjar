@@ -2,11 +2,7 @@
 import { Button, Modal, TextInput, Tooltip } from "flowbite-react";
 import { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import {
-  bypassGeoState,
-  manualAddressState,
-  userLocationState,
-} from "../../atoms";
+import { bypassGeoState, manualAddressState, userLocationState, } from "../../atoms";
 import * as turf from "@turf/turf";
 
 import dynamic from "next/dynamic";
