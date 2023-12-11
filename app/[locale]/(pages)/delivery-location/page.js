@@ -1,21 +1,20 @@
 "use client";
-import { Button, Modal, TextInput, Tooltip } from "flowbite-react";
+import { Button, Modal, Tooltip } from "flowbite-react";
 import { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { bypassGeoState, manualAddressState, userLocationState, } from "../../atoms";
 import * as turf from "@turf/turf";
-
 import dynamic from "next/dynamic";
-
 import { useRouter } from "next/navigation";
 import { faLocationArrow } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslations } from "next-intl";
 
 const Map = dynamic(() => import("../../map"), {
   ssr: false,
 });
 
-function DeliveryLocation() {
+function DeliveryLocation({params}) {
   const router = useRouter();
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
   const [localPosition, setLocalPosition] = useState(null);
@@ -186,7 +185,7 @@ function DeliveryLocation() {
 
   const handleConfirmLocation = () => {
     if (isWithinPolygon) {
-      router.push("/place-order");
+      router.push(`/${params.locale}/place-order`);
     } else {
       setShowModal(true);
     }
@@ -195,15 +194,18 @@ function DeliveryLocation() {
   const handleManualLocation = () => {
     if (manualAddressValue) {
       setBypassGeo(true);
-      router.push("/place-order");
+      router.push(`/${params.locale}/place-order`);
     }
   };
+
+  const t = useTranslations();
+
 
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-[100dvh] flex flex-col">
       <div className="header flex justify-between items-center h-11 text-center shadow-custom border-b-2">
         <h2 className="py-2  w-full text-base font-semibold text font-ITC-BK">
-          CHOOSE THE DELIVERY LOCATION
+         {t("delivery.head")}
         </h2>
         <Button
           color={"bg-secondry"}
@@ -211,7 +213,7 @@ function DeliveryLocation() {
             size: "text-sm p-3",
           }}
           className="btn btn-secondary rounded-none btn h-11 p-3 bg-[#F5F5F5]"
-          onClick={() => router.push("/")}
+          onClick={() => router.push(`/${params.locale}`)}
         >
           <svg
             width={21}
@@ -226,12 +228,12 @@ function DeliveryLocation() {
         </Button>
       </div>
       {localPosition && (
-        <Suspense fallback={<div>Loading...</div>}>
-          <Map grant={grantLocation} />
+        <Suspense fallback={ t("delivery.load")}>
+          <Map />
           <div className="icon-place absolute bottom-[12%] right-4 z-50 focus:z-50">
             <Tooltip
               id="toolrip"
-              content="Pin my location"
+              content={t("delivery.pin_my_location")}
               placement="left"
               trigger="hover"
               className="visible opacity-100 text-[10px] text-center tooltip-style"
@@ -257,7 +259,7 @@ function DeliveryLocation() {
                 className="uppercase bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent focus:z-50"
                 onClick={() => setmanualAddress(true)}
               >
-                Enter Address
+                {t("delivery.manual")}
               </Button>
             </div>
           ) : null}
@@ -275,7 +277,7 @@ function DeliveryLocation() {
           className="uppercase w-full  text-white font-ITC-BK bg-secondry "
           onClick={handleConfirmLocation}
         >
-          Confirm Location
+          {t("delivery.confirm")}
         </Button>
       </div>
 
@@ -301,7 +303,7 @@ function DeliveryLocation() {
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
           <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold ">
-            We're not there yet
+             {t("delivery.not_available_head")}
           </h2>
           <Button
             theme={{
@@ -325,7 +327,7 @@ function DeliveryLocation() {
         </div>
         <Modal.Body>
           <p className="text-start">
-            The delivery location is still outside of our delivery area.
+            T{t("delivery.not_available")}
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -334,7 +336,7 @@ function DeliveryLocation() {
             className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
             onClick={() => setShowModal(false)}
           >
-            Change Location
+           {t("delivery.not_available_confirm")}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -360,7 +362,7 @@ function DeliveryLocation() {
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
           <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold ">
-            Share delivery location
+          {t("delivery.share_location")}
           </h2>
           <Button
             theme={{
@@ -384,8 +386,7 @@ function DeliveryLocation() {
         </div>
         <Modal.Body>
           <p className="text-start font-ITC-BK">
-            To detect your location as a delivery location, kindly turn on your
-            location settings.
+          {t("delivery.share_message")}
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -394,7 +395,7 @@ function DeliveryLocation() {
             className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
             onClick={() => setconfirmLocation(false)}
           >
-            Ok
+             {t("delivery.ok")}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -420,7 +421,7 @@ function DeliveryLocation() {
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
           <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold ">
-            Enter Address Manually
+          {t("delivery.manual")}
           </h2>
           <Button
             theme={{
@@ -454,7 +455,7 @@ function DeliveryLocation() {
             className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
             onClick={handleManualLocation}
           >
-            Confirm
+           {t("delivery.manual_confirm")}
           </Button>
         </Modal.Footer>
       </Modal>

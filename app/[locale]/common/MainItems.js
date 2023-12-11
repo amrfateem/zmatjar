@@ -2,23 +2,16 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  cartState,
-  colStyleState,
-  countState,
-  sumState,
-  searchState,
-  modalDataState,
-} from "../atoms";
+import { cartState, colStyleState, countState, sumState, searchState, modalDataState, } from "../atoms";
 import { Button, Modal } from "flowbite-react";
-import { unstable_noStore as noStore } from "next/cache";
+import { useTranslations } from "next-intl";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
 function MainItems({ data }) {
-  noStore();
+  const t = useTranslations();
 
   const colStyle = useRecoilValue(colStyleState);
   const [cart, setCart] = useRecoilState(cartState);
@@ -181,7 +174,7 @@ function MainItems({ data }) {
                             className={`absolute rounded-full bg-white px-1 border  cursor-pointer ${
                               colStyle === "grid"
                                 ? " bottom-2 right-0 mx-2"
-                                : " -bottom-5 left-0 right-0 m-auto mb-2 w-fit"
+                                : " -bottom-5 start-0 right-0 m-auto mb-2 w-fit"
                             }`}
                           >
                             {item.outOfStock == false ? (
@@ -220,12 +213,12 @@ function MainItems({ data }) {
                                   className="btn btn-secondary btn-sm p-1 px-3 w-20"
                                   onClick={() => handleAddToCart(item)}
                                 >
-                                  Add +
+                                   {t("home.add")}
                                 </button>
                               )
                             ) : (
                               <button className="btn btn-secondary text-sm btn-sm p-1 px-2 w-full">
-                                Out of stock
+                                 {t("home.out_of_stock")}
                               </button>
                             )}
                           </div>
@@ -242,11 +235,11 @@ function MainItems({ data }) {
                               {item.name}
                             </h3>
                             <p className=" line-clamp-2 text-faded-0 text-start text-sm leading-5 font-ITC-BK pb-3">
-                              {item.description}
+                              {/* {item.description} */}
                             </p>
                           </div>
-                          <div className="price float-left text-left text-secondry leading-none">
-                            <span>AED </span>
+                          <div className="price float-left text-start text-secondry leading-none">
+                            <span>{t("currency")} </span>
                             <span>{item.price}</span>
                           </div>
                         </div>
@@ -308,7 +301,7 @@ function MainItems({ data }) {
               ></Image>
               {modalData?.name}
               <p className="text-base leading-relaxed text-secondry">
-                AED {modalData?.price}
+                {t("currency")} {modalData?.price}
               </p>
             </div>
           </div>
@@ -351,7 +344,7 @@ function MainItems({ data }) {
                   className="btn btn-secondary rounded shadow-sm text-white btn-sm p-1 px-3 w-30 bg-secondry"
                   onClick={() => handleAddToCart(modalData)}
                 >
-                  Add to cart +
+                   {t("home.add")}
                 </button>
               )
             ) : (
@@ -359,7 +352,7 @@ function MainItems({ data }) {
                 className="btn btn-secondary bg-faded-0 rounded shadow-sm text-white btn-sm p-1 px-3 w-30"
                 disabled
               >
-                Out of Stock
+                {t("home.out_of_stock")}
               </button>
             )}
           </Modal.Footer>

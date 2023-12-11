@@ -1,17 +1,5 @@
 "use client";
-import {
-  bypassGeoState,
-  cartState,
-  chargesState,
-  countState,
-  manualAddressState,
-  minimumOrderState,
-  specialInstructionsState,
-  storeLangState,
-  sumState,
-  telegramChatIdState,
-  userLocationState,
-} from "@/app/atoms";
+import { bypassGeoState, cartState, chargesState, countState, manualAddressState, minimumOrderState, specialInstructionsState, storeLangState, sumState, telegramChatIdState, userLocationState, } from "../../atoms";
 import { Button, Modal } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -24,18 +12,22 @@ import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 
 import isValidPhoneNumber from "libphonenumber-js";
+import { useTranslations } from "next-intl";
 
-function PlaceOrder() {
+function PlaceOrder({params}) {
   // Router
   const router = useRouter();
+
+  const t = useTranslations()
+
 
   // Handling User error
   const [errorModal, setErrorModal] = useState(false);
   const [modalErrormsg, setModalErrormsg] = useState("");
   const [warning, setWarning] = useState(false);
   const minimumOrder = useRecoilValue(minimumOrderState);
-  const cartError = "Your cart is empty";
-  const subTotalError = "Your order subtotal is lower than the minimum order";
+  const cartError = t("place_order.order_problem_body_cart")
+  const subTotalError = t("place_order.order_problem_body_subtotal")
 
   const [phoneError, setPhoneError] = useState(false);
   const [manualAddress, setManualAddress] = useRecoilState(manualAddressState);
@@ -209,7 +201,7 @@ function PlaceOrder() {
     } else if (!bypassGeo) {
       if (!isWithinPolygon) {
         setErrorModal(true);
-        setModalErrormsg("We are sorry, we don't deliver to your location");
+        setModalErrormsg(t("place_order.order_problem_body_location"));
         return;
       }
     } else if (!isValidPhoneNumber(phone).isValid()) {
@@ -232,7 +224,7 @@ function PlaceOrder() {
         setSum(0);
         setCount(0);
         setSending(false);
-        router.push("/thank-you");
+        router.push(`/${params.locale}/thank-you`);
       } catch (error) {
         setOrder([]);
         setSubtotal(0);
@@ -240,7 +232,7 @@ function PlaceOrder() {
         setCount(0);
         console.error("Error:", error);
         setSending(false);
-        router.push("/thank-you");
+        router.push(`/${params.locale}/thank-you`);
       }
     }
   };
@@ -250,7 +242,7 @@ function PlaceOrder() {
       <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-x-[1px] h-screen">
         <div className="header flex justify-between h-11 items-center text-center  shadow-custom border-b-2">
           <h2 className="px-3 py-2 w-full text-base font-semibold font-ITC-BK">
-            PLACE ORDER
+            {t("place_order.head")}
           </h2>
           <Button
             theme={{
@@ -258,7 +250,7 @@ function PlaceOrder() {
             }}
             color={"bg-secondry"}
             className="btn btn-secondary rounded-none btn bg-[#F5F5F5] h-11 p-3"
-            onClick={() => router.push("/")}
+            onClick={() => router.push(`/${params.locale}`)}
           >
             <svg
               width={21}
@@ -277,7 +269,7 @@ function PlaceOrder() {
           <div className="space-y-6 px-3 py-2 pb-20">
             <div className="flex flex-col space-y-1">
               <label className="text-sm font-ITC-BK">
-                Name <span className="text-red-600">*</span>
+              {t("place_order.name")} <span className="text-red-600">*</span>
               </label>
               <input
                 required
@@ -288,7 +280,7 @@ function PlaceOrder() {
             </div>
             <div className="flex flex-col space-y-1">
               <label className="text-sm font-ITC-BK">
-                Phone <span className="text-red-600">*</span>
+              {t("place_order.phone")} <span className="text-red-600">*</span>
               </label>
               <IntlTelInput
                 containerClassName="intl-tel-input"
@@ -316,14 +308,14 @@ function PlaceOrder() {
               />
               {phoneError && (
                 <p className="text-red-600 text-xs">
-                  Please enter a valid phone number
+                   {t("place_order.phone_error")}
                 </p>
               )}
             </div>
 
             <div className="flex flex-col space-y-1">
               <label className="text-sm font-ITC-BK">
-                Address <span className="text-red-600">*</span>
+              {t("place_order.address")} <span className="text-red-600">*</span>
               </label>
 
               <input
@@ -336,7 +328,7 @@ function PlaceOrder() {
               />
             </div>
             <div className="flex flex-col space-y-1">
-              <label className="text-sm font-ITC-BK">Email</label>
+              <label className="text-sm font-ITC-BK"> {t("place_order.email")}</label>
               <input
                 name="email"
                 type="text"
@@ -353,7 +345,7 @@ function PlaceOrder() {
                   disabled={closingTime}
                 />
                 <label className="text-sm font-ITC-BK pb-2">
-                  Schedule delivery ?
+                {t("place_order.schedule")}
                 </label>
               </div>
 
@@ -370,12 +362,12 @@ function PlaceOrder() {
                 />
               )}
               {warning && (
-                <p className="text-red-600 text-xs">Can't enter a past time</p>
+                <p className="text-red-600 text-xs">{t("place_order.schedule_warning")}</p>
               )}
             </div>
             <div className="flex flex-col space-y-1">
               <label className="text-sm font-ITC-BK">
-                Select Payment Method:
+              {t("place_order.payment_method")}
               </label>
 
               <div className="flex items-center">
@@ -388,7 +380,7 @@ function PlaceOrder() {
                   required
                 />
                 <label htmlFor="cash" className="ml-2 text-base font-ITC-BK">
-                  Cash on Delivery
+                {t("place_order.method_cash")}
                 </label>
               </div>
 
@@ -402,7 +394,7 @@ function PlaceOrder() {
                   required
                 />
                 <label htmlFor="card" className="ml-2 text-base font-ITC-BK">
-                  Card on Delivery
+                {t("place_order.method_card")}
                 </label>
               </div>
             </div>
@@ -417,12 +409,12 @@ function PlaceOrder() {
                 className="form-checkbox border border-gray-300 rounded-md px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
               />
               <label htmlFor="acknowledge" className="text-sm font-ITC-BK">
-                I acknowledge that I have read and agree to the{" "}
+              {t("place_order.terms_message")}{" "}
                 <a
                   className="text-secondry underline"
                   onClick={() => setOpenModalTerms(true)}
                 >
-                  Terms and conditions
+                   {t("place_order.terms")}
                 </a>
               </label>
             </div>
@@ -434,7 +426,7 @@ function PlaceOrder() {
               type="submit"
               className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent"
             >
-              {sending ? "Placing Your Order..." : "Place Order"}
+              {sending ? t("place_order.confirming_order") :  t("place_order.confirm_order")}
             </Button>
           </div>
         </form>
@@ -446,8 +438,8 @@ function PlaceOrder() {
         className="w-full p-0"
         style={{ height: "auto", margin: "0" }}
       >
-        <Modal.Header>Terms and conditions</Modal.Header>
-        <Modal.Body>Terms go here</Modal.Body>
+        <Modal.Header> {t("place_order.terms_modal_head")}</Modal.Header>
+        <Modal.Body>{t("place_order.terms_modal_body")}</Modal.Body>
       </Modal>
 
       <Modal
@@ -472,7 +464,7 @@ function PlaceOrder() {
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
           <h2 className="px-6 py-2 w-full text-base font-semibold font-ITC-BK">
-            There's a problem in your order
+          {t("place_order.order_problem_head")}
           </h2>
           <Button
             theme={{
@@ -503,7 +495,7 @@ function PlaceOrder() {
             className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
             onClick={() => setErrorModal(false)}
           >
-            Go back
+            {t("place_order.go_back")}
           </Button>
         </Modal.Footer>
       </Modal>

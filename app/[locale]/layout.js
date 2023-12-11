@@ -6,14 +6,13 @@ export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
 import RecoidContextProvider from "./recoilContextProvider";
-import { drupal } from "./lib/drupal";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
-import Script from "next/script";
+import { NextIntlClientProvider, useMessages, useLocale } from "next-intl";
+import { isRtlLang } from "rtl-detect";
 
 const inter = Inter({ subsets: ["latin"] });
 
 function saveOrUpdateUTMParameters() {
-  let host = "";
   if (typeof window !== "undefined") {
     const queryParams = new URLSearchParams(window.location.search);
 
@@ -106,47 +105,83 @@ try {
   console.error(error);
 }
 
-export const metadata = {
-  title: pageData[0].title,
-  description: pageData[0].body?.value,
-  icons: {
-    icon: [
-      {
+export async function generateMetadata({ params }) {
+  const param21 = new DrupalJsonApiParams()
+    .addInclude(["field_logo", "field_image", "field_branch"])
+    .addFields("node--page", [
+      "title",
+      "field_primary_color",
+      "field_logo",
+      "field_telegram_chat_id",
+      "field_communication_language",
+      "field_metatags",
+      "field_image",
+      "field_location",
+      "field_gtm_id",
+      "field_image",
+      "field_business",
+      "field_logo",
+      "field_branch",
+      "body",
+    ]);
+  let page;
+
+  const pageQuery = param21.getQueryString({ encode: false });
+
+  try {
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+        `/${params.locale}/` +
+        "/jsonapi/node/page?jsonapi_include=1&" +
+        pageQuery,
+      { next: { revalidate: 0 } },
+      { cache: "no-store" }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const data = await response.json();
+    page = data.data;
+  } catch (error) {
+    console.error(error);
+  }
+
+  return {
+    title: page[0].title,
+    description: page[0].body?.value,
+    icons: {
+      icon: [
+        {
+          url:
+            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+            page[0].field_logo.uri.url,
+        },
+        new URL(
+          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url
+        ),
+      ],
+      shortcut:
+        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+      apple:
+        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+      other: {
+        rel: "apple-touch-icon-precomposed",
         url:
-          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-          pageData[0].field_logo.uri.url,
+          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
       },
-      new URL(
-        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-          pageData[0].field_logo.uri.url,
-        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData[0].field_logo.uri.url
-      ),
-    ],
-    shortcut:
-      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData[0].field_logo.uri.url,
-    apple:
-      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData[0].field_logo.uri.url,
-    other: {
-      rel: "apple-touch-icon-precomposed",
-      url:
-        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-        pageData[0].field_logo.uri.url,
     },
-  },
-  url: process.env.NEXT_PUBLIC_MAIN_SITE,
-  image: {
-    url:
-      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData[0].field_image.uri.url,
-    alt: pageData[0].title,
-  },
+  };
+}
 
-  theme_color: `#${pageData[0].field_primary_color}`,
-};
+export default function RootLayout({ children, params }) {
+  const messages = useMessages();
 
+  const dir = isRtlLang(params.locale) ? "rtl" : "ltr";
 
-export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang={params.locale} dir={dir}>
       <head>
         <meta name="robots" content={pageData[0].field_metatags?.robots} />
         <link rel="canonical" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
@@ -202,7 +237,10 @@ export default function RootLayout({ children }) {
             __html: ` :root { --brand-color:  #${pageData[0]?.field_primary_color}; --brand-color-bg:  #${pageData[0]?.field_primary_color}45; }`,
           }}
         />
-        <RecoidContextProvider>{children}</RecoidContextProvider>
+
+        <NextIntlClientProvider locale={params.locale} messages={messages}>
+          <RecoidContextProvider>{children}</RecoidContextProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

@@ -2,25 +2,11 @@
 import { useEffect, useState } from "react";
 import Contacts from "./Contacts";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  chargesState,
-  countState,
-  minimumOrderState,
-  storeLangState,
-  sumState,
-  telegramChatIdState,
-} from "../atoms";
+import { chargesState, countState, minimumOrderState, storeLangState, sumState, telegramChatIdState, } from "../atoms";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
-function Footer({
-  charges,
-  location,
-  whatsapp,
-  phone,
-  minimum,
-  telegramId,
-  storeLang,
-}) {
+function Footer({ charges, location, whatsapp, phone, minimum, telegramId, storeLang, locale }) {
   const router = useRouter();
   const [offsetTop, setOffsetTop] = useState(0);
   const count = useRecoilValue(countState);
@@ -54,11 +40,14 @@ function Footer({
     };
   }, []);
 
+
+  const t = useTranslations();
+
   return (
     <>
       <div className="flex justify-center items-center ">
         <p className="text-start w-full p-4 text-sm line-normal font-ITC-BK">
-          All prices are inclusive of VAT
+          {t("home.prices_vat")}
         </p>
       </div>
 
@@ -70,7 +59,7 @@ function Footer({
         target="_blank"
         rel="noopener noreferrer"
       >
-        <p>Powered by ZMatjar</p>
+        <p> {t("home.powered_by")}</p>
       </a>
 
       <div
@@ -80,21 +69,21 @@ function Footer({
       >
         {count > 0 && minimum > sum && (
           <div className="items-start p-2 px-3 text-sm  text-start">
-            <p>Sorry, Minimum order can not be less than AED {minimum}</p>
+            <p>{t("minimum")}{minimum}</p>
           </div>
         )}
         {count > 0 && (
           <div
             className="cart flex justify-between items-center  mx-3 my-2 px-4 py-2 text-white rounded-md cursor-pointer bg-secondry"
             onClick={() => {
-              minimum > sum ? "" : router.push("/cart");
+              minimum > sum ? "" : router.push(`/${locale}/cart`);
             }}
           >
             <div className="basket-txt font-ITC-BK text-xs uppercase">
-              View basket
+            {t("home.view_basket")}
             </div>
             <div className="basket inline-block relative text-right">
-              <span className="mr-8 text-xs">AED {Number(sum.toFixed(2))}</span>
+              <span className="mr-8 text-xs">{t("currency")} {Number(sum.toFixed(2))}</span>
               <svg
                 viewBox="0 0 96 96"
                 xmlns="http://www.w3.org/2000/svg"

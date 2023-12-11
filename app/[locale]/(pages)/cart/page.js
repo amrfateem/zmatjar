@@ -1,20 +1,11 @@
 "use client";
 import { Button } from "flowbite-react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  cartState,
-  chargesState,
-  countState,
-  minimumOrderState,
-  specialInstructionsState,
-  sumState,
-  totalState,
-} from "../../atoms";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
+import { cartState, chargesState, countState, minimumOrderState, specialInstructionsState, sumState, totalState, } from "../../atoms";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
-function Cart() {
+function Cart({params}) {
   const router = useRouter();
   const [cart, setCart] = useRecoilState(cartState);
   const [count, setCount] = useRecoilState(countState);
@@ -71,11 +62,13 @@ function Cart() {
     setCount((prevCount) => prevCount - 1);
   };
 
+  const t = useTranslations();
+
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] border-solid border-[#dfe2e7] border-[1px] h-full min-h-screen relative">
       <div className="header flex justify-end p-0 items-center text-center  shadow-custom h-11 border-b-2 w-full bg-white">
         <h2 className="p-3  w-full text-base font-semibold font-ITC-BK h-full">
-          YOUR BASKET
+        {t("cart.head")}
         </h2>
         <Button
           color={"bg-secondry"}
@@ -83,7 +76,7 @@ function Cart() {
             size: "text-sm p-3",
           }}
           className="btn btn-secondary rounded-none btn h-11 p-3 bg-[#F5F5F5]"
-          onClick={() => router.push("/")}
+          onClick={() => router.push(`/${params.locale}`)}
         >
           <svg
             width={21}
@@ -100,7 +93,7 @@ function Cart() {
 
       <div className="space-y-6 px-3 py-2  pt-3">
         {count == 0 ? (
-          <p className=" font-ITC-BK">Your basket is empty</p>
+          <p className=" font-ITC-BK">{t("cart.empty")}</p>
         ) : (
           Object.keys(cart).map((key) => {
             return (
@@ -112,7 +105,7 @@ function Cart() {
                   <div className="flex flex-col">
                     <p className=" font-ITC-BK">{cart[key].title}</p>
                     <p className="text-gray-500 text-sm">
-                      AED {cart[key].quantity} x {cart[key].price}
+                      {t("currency")} {cart[key].quantity} x {cart[key].price}
                     </p>
                   </div>
                 </div>
@@ -136,7 +129,7 @@ function Cart() {
                   </button>
                 </div>
                 <p className=" font-ITC-BK w-36 text-end text-sm text-gray-500">
-                  AED {cart[key].quantity * cart[key].price}
+                  {t("currency")} {cart[key].quantity * cart[key].price}
                 </p>
               </div>
             );
@@ -148,7 +141,7 @@ function Cart() {
           <div>
             {/* Instructions textbox */}
             <div className="flex flex-col gap-2 pt-4 border-b pb-4">
-              <label className=" font-ITC-BK">Special Instructions</label>
+              <label className=" font-ITC-BK">{t("cart.special_info")}</label>
               <textarea
                 value={specialInstructions}
                 onChange={(e) => setSpecialInstructions(e.target.value)}
@@ -161,21 +154,21 @@ function Cart() {
             {/* Subtotal, delivery, total */}
             <div className="flex justify-between items-center  pt-4">
               <p className=" font-ITC-BK">
-                Subtotal <span className="text-xs">(Inclusive of VAT)</span>
+              {t("cart.subtotal")} <span className="text-xs">{t("cart.vat")}</span>
               </p>
-              <p className=" font-ITC-BK">AED {Number(sum.toFixed(2))}</p>
+              <p className=" font-ITC-BK">{t("currency")} {Number(sum.toFixed(2))}</p>
             </div>
             <div className="flex justify-between items-center pb-2">
-              <p className=" font-ITC-BK">Delivery charges</p>
+              <p className=" font-ITC-BK">{t("cart.delivery_charges")}</p>
               <p className=" font-ITC-BK">
-                {charges == 0 ? "Free" : "AED " + charges}
+                {charges == 0 ? "Free" : t("currency") +" "+ charges}
               </p>
             </div>
             <div className="flex justify-between items-center pt-3">
               <p className=" font-ITC-BK">
-                Total <span className="text-xs">(Inclusive of VAT)</span>
+              {t("cart.total")} <span className="text-xs">{t("cart.vat")}</span>
               </p>
-              <p className=" font-ITC-BK">AED {Number(total.toFixed(2))}</p>
+              <p className=" font-ITC-BK">{t("currency")} {Number(total.toFixed(2))}</p>
             </div>
           </div>
         </div>
@@ -183,7 +176,7 @@ function Cart() {
       {count > 0 && minimum > sum && (
         <div className="items-start p-2 px-3 text-sm  text-start">
           <p>
-            Sorry, Minimum order subtotal can not be less than AED {minimum}
+          {t("minimum")} {minimum}
           </p>
         </div>
       )}
@@ -193,10 +186,10 @@ function Cart() {
             color={"bg-secondry"}
             className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
             onClick={() => {
-              minimum > sum ? "" : router.push("/delivery-location");
+              minimum > sum ? "" : router.push(`/${params.locale}/delivery-location`);
             }}
           >
-            Checkout
+            {t("cart.checkout")}
           </Button>
         </div>
       )}

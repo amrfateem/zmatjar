@@ -9,13 +9,14 @@ import {
   searchState,
   sumState,
 } from "../atoms";
-import { useRouter } from "next/navigation";
 import { Button, Modal } from "flowbite-react";
+import { useTranslations } from "next-intl";
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 function MostSelling({ mostSelling }) {
+  const t = useTranslations();
   const [cart, setCart] = useRecoilState(cartState);
   const [count, setCount] = useRecoilState(countState);
   const [sum, setSum] = useRecoilState(sumState);
@@ -24,8 +25,6 @@ function MostSelling({ mostSelling }) {
   const [modalData, setModalData] = useRecoilState(modalDataState);
 
   const search = useRecoilValue(searchState);
-
-  const router = useRouter();
 
   const handleIncrement = (itemId) => {
     setCart((prevCart) => ({
@@ -93,6 +92,7 @@ function MostSelling({ mostSelling }) {
   };
 
   const handleQuickView = (item) => {
+    console.log(item);
     // Set modalData with the item data
     setModalData(item);
 
@@ -120,7 +120,7 @@ function MostSelling({ mostSelling }) {
     search.length == 0 && (
       <div className="Most Selling bg-[#F5F5F5] ">
         <h2 className="leading-6 text-xl font-extrabold mb-1 px-4 pb-2 pt-4 font-ITC-BK float-left">
-          Most Selling
+          {t("home.most_selling")}
         </h2>
         <div className="flex shrink-0 bg-black-100 overflow-auto w-full py-4 px-2 gap-2 scrollbar-hide">
           {mostSelling.map((item, index) => (
@@ -150,7 +150,7 @@ function MostSelling({ mostSelling }) {
                       className="btn btn-secondary btn-sm p-1 px-3 w-30"
                       onClick={() => handleQuickView(item)}
                     >
-                      Order Now
+                      {t("home.order_now")}
                     </button>
                   )}
                 </div>
@@ -162,8 +162,8 @@ function MostSelling({ mostSelling }) {
                 <p className=" px-2 line-clamp-2 text-faded-0 text-start mb-2 text-sm leading-6 font-ITC-BK ">
                   {item.description}
                 </p>
-                <div className="price px-2 float-left text-left pb-3 text-secondry">
-                  <span>AED </span>
+                <div className="price px-2 float-left text-start pb-3 text-secondry">
+                  <span>{t("currency")} </span>
                   <span>{item.price}</span>
                 </div>
               </div>
@@ -219,7 +219,7 @@ function MostSelling({ mostSelling }) {
               ></Image>
               {modalData?.name}
               <p className="text-base leading-relaxed text-secondry">
-                AED {modalData?.price}
+                {t("currency")} {modalData?.price}
               </p>
             </div>
             {modalData?.description && (
@@ -260,7 +260,7 @@ function MostSelling({ mostSelling }) {
                     className="btn btn-secondary bg-secondry rounded shadow-sm text-white btn-sm p-1 px-3 w-30"
                     onClick={() => handleAddToCart(modalData)}
                   >
-                    Add to cart +
+                    {t("home.add_to_cart")}
                   </button>
                 )
               ) : (
@@ -268,7 +268,7 @@ function MostSelling({ mostSelling }) {
                   className="btn btn-secondary bg-faded-0 rounded shadow-sm text-white btn-sm p-1 px-3 w-30"
                   disabled
                 >
-                  Out of Stock
+                  {t("home.out_of_stock")}
                 </button>
               )}
             </Modal.Footer>

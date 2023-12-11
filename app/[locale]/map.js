@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { userLocationState } from "./atoms";
 import L from "leaflet";
+import { useTranslations } from "next-intl";
 
 const Map = ({grant}) => {
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
@@ -29,6 +30,9 @@ const Map = ({grant}) => {
       setUserLocation(position);
     },
   };
+
+  const t = useTranslations();
+
 
   return (
     <MapContainer
@@ -74,7 +78,7 @@ const Map = ({grant}) => {
       >
         <Tooltip direction="top" offset={[0, -60]} opacity={1} permanent>
           <p className="text-[10px] text-center">
-            Kindly drag the pin <br /> to the delivery location
+          {t("delivery.pin")}
           </p>
         </Tooltip>
       </Marker>

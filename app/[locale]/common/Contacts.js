@@ -1,7 +1,10 @@
 import Image from "next/image";
 import React from "react";
+import { useTranslations } from "next-intl";
 
 function Contacts({ location, whatsapp, phone }) {
+  const t = useTranslations("home");
+
   return (
     <>
       <a
@@ -15,7 +18,7 @@ function Contacts({ location, whatsapp, phone }) {
           width={21}
           height={21}
         ></Image>
-        <span>Location</span>
+        <span>{t("location")}</span>
       </a>
       <a
         href={`https://wa.me/${whatsapp}`}
@@ -28,7 +31,7 @@ function Contacts({ location, whatsapp, phone }) {
           width={21}
           height={21}
         ></Image>
-        <span>WhatsApp</span>
+        <span>{t("whatsapp")}</span>
       </a>
       <a
         href={`tel:${phone}`}
@@ -36,7 +39,7 @@ function Contacts({ location, whatsapp, phone }) {
         target="_blank"
       >
         <Image src={"svg/call.svg"} alt="call" width={21} height={21}></Image>
-        <span>Call</span>
+        <span>{t("call")}</span>
       </a>
     </>
   );

@@ -14,7 +14,7 @@ function Intro({ title, logo, business, branches }) {
   return (
     <div className="container bg-white p-4 mb-4">
       <div className="intro flex items-center">
-        <div className="logo pr-4 ">
+        <div className="logo pe-4  ">
           <Image
             src={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + logo.uri.url}
             alt="logo"
@@ -28,7 +28,7 @@ function Intro({ title, logo, business, branches }) {
           <h1 className="name font-extrabold text-2xl mb-1 leading-3 font-ITC-bold">
             {title}
           </h1>
-          <small className="category leading-6  text-xs font-ITC-BK text-brand">
+          <small className="category leading-6 text-xs font-ITC-BK text-brand">
             {businessNames}
           </small>
         </div>
