@@ -12,6 +12,14 @@ import { isRtlLang } from "rtl-detect";
 
 const inter = Inter({ subsets: ["latin"] });
 
+import { locales } from "@/i18nconfig";
+import { unstable_setRequestLocale } from "next-intl/server";
+
+export function generateStaticParams() {
+
+  return locales.map((locale) => ({ locale }));
+}
+
 function saveOrUpdateUTMParameters() {
   if (typeof window !== "undefined") {
     const queryParams = new URLSearchParams(window.location.search);
@@ -175,13 +183,15 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function RootLayout({ children, params }) {
+export default function RootLayout({ children, params: { locale } }) {
   const messages = useMessages();
 
-  const dir = isRtlLang(params.locale) ? "rtl" : "ltr";
+  const dir = isRtlLang(locale) ? "rtl" : "ltr";
+
+  unstable_setRequestLocale(locale);
 
   return (
-    <html lang={params.locale} dir={dir}>
+    <html lang={locale} dir={dir}>
       <head>
         <meta name="robots" content={pageData[0].field_metatags?.robots} />
         <link rel="canonical" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
@@ -238,7 +248,7 @@ export default function RootLayout({ children, params }) {
           }}
         />
 
-        <NextIntlClientProvider locale={params.locale} messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <RecoidContextProvider>{children}</RecoidContextProvider>
         </NextIntlClientProvider>
       </body>
