@@ -1,5 +1,17 @@
 "use client";
-import { cartState, chargesState, countState, minimumOrderState, specialInstructionsState, storeLangState, sumState, telegramChatIdState, userLocationState, } from "@/app/atoms";
+import {
+  bypassGeoState,
+  cartState,
+  chargesState,
+  countState,
+  manualAddressState,
+  minimumOrderState,
+  specialInstructionsState,
+  storeLangState,
+  sumState,
+  telegramChatIdState,
+  userLocationState,
+} from "@/app/atoms";
 import { Button, Modal } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -26,12 +38,21 @@ function PlaceOrder() {
   const subTotalError = "Your order subtotal is lower than the minimum order";
 
   const [phoneError, setPhoneError] = useState(false);
+  const [manualAddress, setManualAddress] = useRecoilState(manualAddressState);
+  const bypassGeo = useRecoilValue(bypassGeoState);
 
   // States from this page
   const [selectedTime, setSelectedTime] = useState("");
-  const [deliveryTime, setDeliveryTime] = useState( `${new Date().toISOString().split("T")[0]}T${String( (new Date().getUTCHours() + 1) % 24 ).padStart(2, "0")}:${new Date() .getMinutes() .toString() .padStart(2, "0")}:00` );
+  const [deliveryTime, setDeliveryTime] = useState(
+    `${new Date().toISOString().split("T")[0]}T${String(
+      (new Date().getUTCHours() + 1) % 24
+    ).padStart(2, "0")}:${new Date()
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:00`
+  );
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [closingTime, setClosingTime] = useState(false)
+  const [closingTime, setClosingTime] = useState(false);
 
   useEffect(() => {
     const checkTime = () => {
@@ -42,13 +63,12 @@ function PlaceOrder() {
 
       if (currentTime >= "23:00" || currentTime < "11:00") {
         setShowTimePicker(true);
-        setClosingTime(true)
+        setClosingTime(true);
       }
     };
 
     checkTime(); // Call the function when the component mounts
   }, []);
-
 
   // Terms modal
   const [openModalTerms, setOpenModalTerms] = useState(false);
@@ -75,7 +95,7 @@ function PlaceOrder() {
   // Gets the correct time format and sends it back
   const handleTimeChange = (e) => {
     const currentDate = new Date().toISOString();
-    const currentLocal = new Date()
+    const currentLocal = new Date();
     const selectedTime = e.target.value;
 
     const combinedDateTime = `${currentDate.split("T")[0]}T${selectedTime}:00`;
@@ -88,11 +108,19 @@ function PlaceOrder() {
       setWarning(false);
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(
+        2,
+        "0"
+      );
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
-      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(
+        2,
+        "0"
+      );
+      const formattedDateTime = `${year}-${month}-${day}T${
+        hours + ":" + minutes
+      }:00`;
       setDeliveryTime(formattedDateTime);
     }
   };
@@ -104,7 +132,6 @@ function PlaceOrder() {
     const minutes = now.getMinutes().toString().padStart(2, "0");
     return `${hours}:${minutes}`;
   };
-
 
   // Shows the time picker
   const handleCheckboxChange = () => {
@@ -179,10 +206,12 @@ function PlaceOrder() {
       setErrorModal(true);
       setModalErrormsg(subTotalError);
       return;
-    } else if (!isWithinPolygon) {
-      setErrorModal(true);
-      setModalErrormsg("We are sorry, we don't deliver to your location");
-      return;
+    } else if (!bypassGeo) {
+      if (!isWithinPolygon) {
+        setErrorModal(true);
+        setModalErrormsg("We are sorry, we don't deliver to your location");
+        return;
+      }
     } else if (!isValidPhoneNumber(phone).isValid()) {
       setPhoneError(true);
     } else {
@@ -301,6 +330,8 @@ function PlaceOrder() {
                 required
                 name="address"
                 type="text"
+                value={manualAddress}
+                onChange={(e) => setManualAddress(e.target.value)}
                 className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry"
               />
             </div>

@@ -114,6 +114,16 @@ export const storeLangState = atom({
   effects: [localStorageEffect("storeLangState")],
 });
 
+export const manualAddressState = atom({
+  key: "manualAddressState",
+  default: "",
+});
+
+export const bypassGeoState = atom({
+  key: "bypassGeoState",
+  default: false,
+});
+
 export const filteredItemsState = selector({
   key: "filteredItemsState",
   get: ({ get }) => {
