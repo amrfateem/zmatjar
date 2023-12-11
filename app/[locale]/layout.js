@@ -7,7 +7,7 @@ export const fetchCache = "force-no-store";
 
 import RecoidContextProvider from "./recoilContextProvider";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
-import { NextIntlClientProvider, useMessages, useLocale } from "next-intl";
+import { NextIntlClientProvider, useMessages } from "next-intl";
 import { isRtlLang } from "rtl-detect";
 
 const inter = Inter({ subsets: ["latin"] });
