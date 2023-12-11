@@ -19,6 +19,7 @@ function PlaceOrder({params}) {
   const router = useRouter();
 
   const t = useTranslations()
+  
 
 
   // Handling User error

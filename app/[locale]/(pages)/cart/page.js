@@ -4,6 +4,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { cartState, chargesState, countState, minimumOrderState, specialInstructionsState, sumState, totalState, } from "../../atoms";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 function Cart({params}) {
   const router = useRouter();
@@ -63,7 +64,7 @@ function Cart({params}) {
   };
 
   const t = useTranslations();
-
+  unstable_setRequestLocale(params.locale)
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] border-solid border-[#dfe2e7] border-[1px] h-full min-h-screen relative">
       <div className="header flex justify-end p-0 items-center text-center  shadow-custom h-11 border-b-2 w-full bg-white">

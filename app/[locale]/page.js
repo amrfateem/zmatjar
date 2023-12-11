@@ -11,6 +11,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -187,7 +188,7 @@ export default async function Home({ params }) {
     console.error(error);
   }
 
-
+  unstable_setRequestLocale(params.locale)
   return (
     <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
       <Header headerSrc={page[0].field_image} />

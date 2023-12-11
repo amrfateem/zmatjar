@@ -6,6 +6,7 @@ import React from "react";
 
 function page({ params }) {
   const t = useTranslations();
+  
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-x-[1px] h-screen">
       <div className="header flex justify-between items-center h-11 text-center shadow-custom border-b-2">
