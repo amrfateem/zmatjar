@@ -1,5 +1,5 @@
 "use client";
-import { modalDataState, selectedItemState } from "@/app/atoms";
+import { modalDataState, selectedItemState } from "@/app/[locale]/atoms";
 import { Modal } from "flowbite-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
