@@ -2,7 +2,14 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { cartState, colStyleState, countState, sumState, searchState, modalDataState, } from "../atoms";
+import {
+  cartState,
+  colStyleState,
+  countState,
+  sumState,
+  searchState,
+  modalDataState,
+} from "../atoms";
 import { Button, Modal } from "flowbite-react";
 import { useTranslations } from "next-intl";
 
@@ -213,12 +220,12 @@ function MainItems({ data }) {
                                   className="btn btn-secondary btn-sm p-1 px-3 w-20"
                                   onClick={() => handleAddToCart(item)}
                                 >
-                                   {t("home.add")}
+                                  {t("home.add")}
                                 </button>
                               )
                             ) : (
                               <button className="btn btn-secondary text-sm btn-sm p-1 px-2 w-full">
-                                 {t("home.out_of_stock")}
+                                {t("home.out_of_stock")}
                               </button>
                             )}
                           </div>
@@ -344,7 +351,7 @@ function MainItems({ data }) {
                   className="btn btn-secondary rounded shadow-sm text-white btn-sm p-1 px-3 w-30 bg-secondry"
                   onClick={() => handleAddToCart(modalData)}
                 >
-                   {t("home.add")}
+                  {t("home.add")}
                 </button>
               )
             ) : (
