@@ -253,14 +253,14 @@ function DeliveryLocation({params}) {
             </Tooltip>
           </div>
           {isDenied ? (
-            <div className="icon-place absolute bottom-[12%] left-4 z-50 focus:z-50">
-              <Button
+            <div className="icon-place absolute bottom-[12%] left-4 z-50 focus:z-50 text-xs rounded-md">
+              <button
                 color={"bg-secondry"}
-                className="uppercase bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent focus:z-50"
+                className="p-3 rounded-md bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent focus:z-50 text-xs"
                 onClick={() => setmanualAddress(true)}
               >
                 {t("delivery.manual")}
-              </Button>
+              </button>
             </div>
           ) : null}
         </Suspense>

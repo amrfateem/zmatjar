@@ -367,7 +367,7 @@ function PlaceOrder({ params }) {
                 />
               )}
               {warning && (
-                <p className="text-red-600 text-xs">
+                <p className="text-red-600 text-xs font-ITC-BK rtl:font-DIN-Bold">
                   {t("place_order.schedule_warning")}
                 </p>
               )}
