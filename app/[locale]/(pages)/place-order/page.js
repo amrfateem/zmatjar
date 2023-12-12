@@ -185,7 +185,6 @@ function PlaceOrder({params}) {
     ];
 
     const currentLocation = [location.lng, location.lat];
-
     const isWithinPolygon = turf.booleanPointInPolygon(
       turf.point(currentLocation),
       turf.polygon([polygonCoords])
@@ -195,24 +194,17 @@ function PlaceOrder({params}) {
       setErrorModal(true);
       setModalErrormsg(cartError);
       setSending(false);
-      return;
     } else if (subtotal.toFixed(2) < minimumOrder) {
       setErrorModal(true);
       setModalErrormsg(subTotalError);
       setSending(false);
-
-      return;
-    } else if (!bypassGeo) {
-      if (!isWithinPolygon) {
-        setErrorModal(true);
-        setModalErrormsg(t("place_order.order_problem_body_location"));
-        setSending(false);
-        return;
-      }
+    } else if (!bypassGeo && !isWithinPolygon) {
+      setErrorModal(true);
+      setModalErrormsg("We are sorry, we don't deliver to your location");
+      setSending(false);
     } else if (!isValidPhoneNumber(phone).isValid()) {
       setPhoneError(true);
       setSending(false);
-      return;
     } else {
       try {
         const response = await fetch(
