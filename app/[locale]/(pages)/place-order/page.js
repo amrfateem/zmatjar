@@ -1,5 +1,17 @@
 "use client";
-import { bypassGeoState, cartState, chargesState, countState, manualAddressState, minimumOrderState, specialInstructionsState, storeLangState, sumState, telegramChatIdState, userLocationState, } from "../../atoms";
+import {
+  bypassGeoState,
+  cartState,
+  chargesState,
+  countState,
+  manualAddressState,
+  minimumOrderState,
+  specialInstructionsState,
+  storeLangState,
+  sumState,
+  telegramChatIdState,
+  userLocationState,
+} from "../../atoms";
 import { Button, Modal } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,21 +26,19 @@ import "react-intl-tel-input/dist/main.css";
 import isValidPhoneNumber from "libphonenumber-js";
 import { useTranslations } from "next-intl";
 
-function PlaceOrder({params}) {
+function PlaceOrder({ params }) {
   // Router
   const router = useRouter();
 
-  const t = useTranslations()
-  
-
+  const t = useTranslations();
 
   // Handling User error
   const [errorModal, setErrorModal] = useState(false);
   const [modalErrormsg, setModalErrormsg] = useState("");
   const [warning, setWarning] = useState(false);
   const minimumOrder = useRecoilValue(minimumOrderState);
-  const cartError = t("place_order.order_problem_body_cart")
-  const subTotalError = t("place_order.order_problem_body_subtotal")
+  const cartError = t("place_order.order_problem_body_cart");
+  const subTotalError = t("place_order.order_problem_body_subtotal");
 
   const [phoneError, setPhoneError] = useState(false);
   const [manualAddress, setManualAddress] = useRecoilState(manualAddressState);
@@ -101,19 +111,11 @@ function PlaceOrder({params}) {
       setWarning(false);
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(
-        2,
-        "0"
-      );
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(
-        2,
-        "0"
-      );
-      const formattedDateTime = `${year}-${month}-${day}T${
-        hours + ":" + minutes
-      }:00`;
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
       setDeliveryTime(formattedDateTime);
     }
   };
@@ -268,7 +270,7 @@ function PlaceOrder({params}) {
           <div className="space-y-6 px-3 py-2 pb-20">
             <div className="flex flex-col space-y-1">
               <label className="text-sm font-ITC-BK rtl:font-DIN-Bold">
-              {t("place_order.name")} <span className="text-red-600">*</span>
+                {t("place_order.name")} <span className="text-red-600">*</span>
               </label>
               <input
                 required
@@ -279,7 +281,7 @@ function PlaceOrder({params}) {
             </div>
             <div className="flex flex-col space-y-1">
               <label className="text-sm font-ITC-BK rtl:font-DIN-Bold">
-              {t("place_order.phone")} <span className="text-red-600">*</span>
+                {t("place_order.phone")} <span className="text-red-600">*</span>
               </label>
               <IntlTelInput
                 containerClassName="intl-tel-input"
@@ -291,7 +293,7 @@ function PlaceOrder({params}) {
                   required: true,
 
                   className:
-                    "border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry",
+                    "border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry direction-fix",
                 }}
                 onPhoneNumberChange={(
                   status,
@@ -307,14 +309,15 @@ function PlaceOrder({params}) {
               />
               {phoneError && (
                 <p className="text-red-600 text-xs">
-                   {t("place_order.phone_error")}
+                  {t("place_order.phone_error")}
                 </p>
               )}
             </div>
 
             <div className="flex flex-col space-y-1">
               <label className="text-sm font-ITC-BK rtl:font-DIN-Bold">
-              {t("place_order.address")} <span className="text-red-600">*</span>
+                {t("place_order.address")}{" "}
+                <span className="text-red-600">*</span>
               </label>
 
               <input
@@ -327,7 +330,10 @@ function PlaceOrder({params}) {
               />
             </div>
             <div className="flex flex-col space-y-1">
-              <label className="text-sm font-ITC-BK rtl:font-DIN-Bold"> {t("place_order.email")}</label>
+              <label className="text-sm font-ITC-BK rtl:font-DIN-Bold">
+                {" "}
+                {t("place_order.email")}
+              </label>
               <input
                 name="email"
                 type="text"
@@ -338,13 +344,13 @@ function PlaceOrder({params}) {
               <div className="flex ">
                 <input
                   type="checkbox"
-                  className="form-checkbox border border-gray-300 rounded-md mr-2 px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
+                  className="form-checkbox border border-gray-300 rounded-md me-2 px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
                   onChange={handleCheckboxChange}
                   checked={showTimePicker}
                   disabled={closingTime}
                 />
                 <label className="text-sm font-ITC-BK rtl:font-DIN-Bold pb-2">
-                {t("place_order.schedule")}
+                  {t("place_order.schedule")}
                 </label>
               </div>
 
@@ -361,12 +367,14 @@ function PlaceOrder({params}) {
                 />
               )}
               {warning && (
-                <p className="text-red-600 text-xs">{t("place_order.schedule_warning")}</p>
+                <p className="text-red-600 text-xs">
+                  {t("place_order.schedule_warning")}
+                </p>
               )}
             </div>
             <div className="flex flex-col space-y-1">
               <label className="text-sm font-ITC-BK rtl:font-DIN-Bold">
-              {t("place_order.payment_method")}
+                {t("place_order.payment_method")}
               </label>
 
               <div className="flex items-center">
@@ -378,8 +386,11 @@ function PlaceOrder({params}) {
                   className="checked:text-secondry border-gray-300"
                   required
                 />
-                <label htmlFor="cash" className="ml-2 text-base font-ITC-BK rtl:font-DIN-Bold">
-                {t("place_order.method_cash")}
+                <label
+                  htmlFor="cash"
+                  className="ms-2 text-base font-ITC-BK rtl:font-DIN-Bold"
+                >
+                  {t("place_order.method_cash")}
                 </label>
               </div>
 
@@ -392,28 +403,34 @@ function PlaceOrder({params}) {
                   name="payment"
                   required
                 />
-                <label htmlFor="card" className="ml-2 text-base font-ITC-BK rtl:font-DIN-Bold">
-                {t("place_order.method_card")}
+                <label
+                  htmlFor="card"
+                  className="ms-2 text-base font-ITC-BK rtl:font-DIN-Bold"
+                >
+                  {t("place_order.method_card")}
                 </label>
               </div>
             </div>
 
             {/* Acknowledge checkbox */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-y-1">
               <input
                 type="checkbox"
                 name="acknowledge"
                 id="acknowledge"
                 required
-                className="form-checkbox border border-gray-300 rounded-md px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
+                className="form-checkbox border border-gray-300 rounded-md me-2 px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
               />
-              <label htmlFor="acknowledge" className="text-sm font-ITC-BK rtl:font-DIN-Bold">
-              {t("place_order.terms_message")}{" "}
+              <label
+                htmlFor="acknowledge"
+                className="text-sm font-ITC-BK rtl:font-DIN-Bold m-0"
+              >
+                {t("place_order.terms_message")}{" "}
                 <a
                   className="text-secondry underline"
                   onClick={() => setOpenModalTerms(true)}
                 >
-                   {t("place_order.terms")}
+                  {t("place_order.terms")}
                 </a>
               </label>
             </div>
@@ -425,7 +442,9 @@ function PlaceOrder({params}) {
               type="submit"
               className="uppercase w-full bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent"
             >
-              {sending ? t("place_order.confirming_order") :  t("place_order.confirm_order")}
+              {sending
+                ? t("place_order.confirming_order")
+                : t("place_order.confirm_order")}
             </Button>
           </div>
         </form>
@@ -434,10 +453,44 @@ function PlaceOrder({params}) {
         show={openModalTerms}
         onClose={() => setOpenModalTerms(false)}
         closable={true}
-        className="w-full p-0"
-        style={{ height: "auto", margin: "0" }}
+        className="w-full p-0 font-ITC-BK rtl:font-DIN-Bold"
+        theme={{
+          content: {
+            base: "relative h-full w-full p-4 h-auto",
+            inner:
+              "relative rounded-none bg-white shadow dark:bg-gray-700 flex flex-col max-w-[460px] max-h-[90vh] m-auto",
+          },
+          header: {
+            close: {
+              base: "ml-auto inline-flex items-center rounded-none bg-transparent p-1.5 text-sm text-brand hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white active-svg",
+            },
+          },
+        }}
       >
-        <Modal.Header> {t("place_order.terms_modal_head")}</Modal.Header>
+        <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
+          <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold rtl:font-DIN-Bold ">
+            {t("place_order.terms_modal_head")}
+          </h2>
+          <Button
+            theme={{
+              size: "text-sm p-3",
+            }}
+            color={"bg-secondry"}
+            className="btn btn-secondary self-end rounded-none btn bg-[#F5F5F5] h-11 p-3 focus:ring-2 focus:ring-secondry focus:border-transparent"
+            onClick={() => setOpenModalTerms(false)}
+          >
+            <svg
+              width={21}
+              height={21}
+              version="1.1"
+              className="active-svg"
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4  L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1  c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1  c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z"></path>
+            </svg>
+          </Button>
+        </div>
         <Modal.Body>{t("place_order.terms_modal_body")}</Modal.Body>
       </Modal>
 
@@ -463,7 +516,7 @@ function PlaceOrder({params}) {
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
           <h2 className="px-6 py-2 w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold">
-          {t("place_order.order_problem_head")}
+            {t("place_order.order_problem_head")}
           </h2>
           <Button
             theme={{

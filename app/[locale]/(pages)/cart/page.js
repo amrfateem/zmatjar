@@ -170,13 +170,13 @@ function Cart({ params }) {
                 <span className="text-xs">{t("cart.vat")}</span>
               </p>
               <p className=" font-ITC-BK rtl:font-DIN-Bold">
-                {t("currency", { price: Number(total.toFixed(2)) })}
+                {t("currency", { price: Number(sum.toFixed(2)) })}
               </p>
             </div>
             <div className="flex justify-between items-center pb-2">
               <p className=" font-ITC-BK rtl:font-DIN-Bold">{t("cart.delivery_charges")}</p>
               <p className=" font-ITC-BK rtl:font-DIN-Bold">
-                {charges == 0 ? t("free") : t("currency") + " " + charges}
+                {charges == 0 ? t("free") : t("currency", { price: charges }) }
               </p>
             </div>
             <div className="flex justify-between items-center pt-3">

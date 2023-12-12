@@ -36,12 +36,23 @@
   stroke: var(--brand-color);
 }
 
+.leaflet-tooltip-pane > * {
+  direction: rtl;
+}
+.leaflet-tooltip-pane {
+  direction: ltr;
+}
+
+.intl-tel-input {
+  direction: ltr !important;
+}
+
 .text-gray-400 {
   color: var(--brand-color);
 }
 
 .images-fix {
-  height: revert-layer!important;
+  height: revert-layer !important;
 }
 
 .active-svg svg,
@@ -86,7 +97,7 @@
   outline: none;
   box-shadow: none !important;
 }
- 
+
 .selected-dial-code {
   padding-left: 5px !important;
 }

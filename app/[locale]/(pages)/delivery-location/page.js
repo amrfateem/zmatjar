@@ -236,7 +236,7 @@ function DeliveryLocation({params}) {
               content={t("delivery.pin_my_location")}
               placement="left"
               trigger="hover"
-              className="visible opacity-100 text-[10px] text-center tooltip-style"
+              className="visible opacity-100 text-[10px] text-center tooltip-style font-ITC-BK rtl:font-DIN-Bold  "
               style="light"
             >
               <Button
@@ -326,8 +326,8 @@ function DeliveryLocation({params}) {
           </Button>
         </div>
         <Modal.Body>
-          <p className="text-start">
-            T{t("delivery.not_available")}
+          <p className="text-start font-ITC-BK rtl:font-DIN-Bold">
+            {t("delivery.not_available")}
           </p>
         </Modal.Body>
         <Modal.Footer>

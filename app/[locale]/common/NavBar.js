@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { useRecoilState } from "recoil";
 import { categoriesState, colStyleState, searchState } from "../atoms";
+import { useTranslations } from "next-intl";
 
 function NavBar({ categories, locale }) {
   const [activeSection, setActiveSection] = useState(null);
@@ -13,6 +14,8 @@ function NavBar({ categories, locale }) {
   const [cats, setCats] = useRecoilState(categoriesState);
 
   setCats(categories);
+
+  const t = useTranslations();
 
   const [searchTerm, setSearchTerm] = useRecoilState(searchState);
 
@@ -125,7 +128,7 @@ function NavBar({ categories, locale }) {
                   spy={true}
                 >
                   <span
-                    className={`nav-category_label h-8  px-4 rounded-full text-xs leading-6 border-[1px] whitespace-nowrap flex items-center transition-all duration-300 ease-in-out ${
+                    className={`nav-category_label h-8  px-4 rounded-full text-xs leading-6 border-[1px] whitespace-nowrap flex items-center transition-all duration-300 ease-in-out font-ITC-BK rtl:font-DIN-Bold ${
                       activeSection === `cat${index}`
                         ? "bg-secondry text-white"
                         : ""
@@ -152,8 +155,8 @@ function NavBar({ categories, locale }) {
           <>
             <input
               type="text"
-              className="border-[1px] border-secondry rounded-full px-4 py-2 w-full h-8 focus:border-secondry hover:ring-0"
-              placeholder="Search"
+              className="border-[1px] border-secondry rounded-full px-4 py-2 w-full h-8 focus:border-secondry hover:ring-0 font-ITC-BK rtl:font-DIN-Bold "
+              placeholder={t("search")}
               value={searchTerm}
               onChange={handleSearch}
             />

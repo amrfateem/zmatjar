@@ -12,8 +12,9 @@
     "prices_vat": "جميع الأسعار شاملة لضريبة القيمة المضافة",
     "powered_by": "بدعم من ZMatjar"
   },
+  "search": "بحث",
   "currency": "{price} د.إ",
-  "minimum": "عذرًا، لا يمكن أن يكون إجمالي الطلب الأدنى أقل من درهم",
+  "minimum": "عذرًا، لا يمكن أن يكون إجمالي الطلب الأدنى أقل من ",
   "free": "مجاناً",
   "cart": {
     "head": "سلة التسوق",
@@ -61,8 +62,8 @@
     "order_problem_body_subtotal": "إجمالي طلبك أقل من الحد الأدنى للطلب",
     "order_problem_body_location": "نحن آسفون، لا نقوم بتوصيل إلى موقعك",
     "order_problem_button": "العودة",
-    "confirm_order": "وضع الطلب",
-    "confirming_order": "وضع الطلب",
+    "confirm_order": "أكمل عملية الشراء",
+    "confirming_order": "يتم الإرسال",
     "go_back": "العودة"
   },
   "thank_you": {

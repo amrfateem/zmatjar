@@ -22,6 +22,7 @@ export default async function Home({ params }) {
   const params1 = new DrupalJsonApiParams()
     .addFields("node--product", [ "path", "title", "body", "field_price", "field_category", "field_image", "drupal_internal__nid", "body", "field_out_of_stock", "field_path", ])
     .addInclude(["field_category", "field_image"])
+    .addFilter("langcode",params.locale)
     .addPageLimit(200);
 
   const queryString = params1.getQueryString({ encode: false });

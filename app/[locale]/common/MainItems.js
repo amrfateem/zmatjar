@@ -166,22 +166,13 @@ function MainItems({ data }) {
                             onClick={() =>
                               item.outOfStock == false && handleQuickView(item)
                             }
-                            className={` w-full pb-0 images-fix ${
-                              item.outOfStock
-                                ? "cursor-not-allowed"
-                                : "cursor-pointer"
-                            } 
-                            ${
-                              colStyle === "grid"
-                                ? "rounded-t-lg"
-                                : "rounded-r-lg"
-                            }`}
+                            className={` pb-0 ${ item.outOfStock ? " cursor-not-allowed" : " cursor-pointer" } ${ colStyle === "grid" ? " rounded-t-lg  w-full" : " rounded-e-lg" }`}
                           ></Image>
                           <div
                             className={`absolute rounded-full bg-white px-1 border  cursor-pointer ${
                               colStyle === "grid"
                                 ? " bottom-2 right-0 mx-2"
-                                : " -bottom-5 start-0 right-0 m-auto mb-2 w-fit"
+                                : " -bottom-5 start-0 left-0 right-0 m-auto mb-2 w-fit"
                             }`}
                           >
                             {item.outOfStock == false ? (
@@ -217,14 +208,14 @@ function MainItems({ data }) {
                                 </div>
                               ) : (
                                 <button
-                                  className="btn btn-secondary btn-sm p-1 px-3 w-20"
+                                  className="btn btn-secondary btn-sm p-1 px-3 w-20 font-ITC-BK rtl:font-DIN-Bold"
                                   onClick={() => handleAddToCart(item)}
                                 >
                                   {t("home.add")}
                                 </button>
                               )
                             ) : (
-                              <button className="btn btn-secondary text-sm btn-sm p-1 px-2 w-full">
+                              <button className="btn btn-secondary text-sm btn-sm p-1 px-2 w-full font-ITC-BK rtl:font-DIN-Bold">
                                 {t("home.out_of_stock")}
                               </button>
                             )}
@@ -245,7 +236,7 @@ function MainItems({ data }) {
                               {/* {item.description} */}
                             </p>
                           </div>
-                          <div className="price float-left rtl:float-right text-start text-secondry leading-none">
+                          <div className="price float-left rtl:float-right text-start text-secondry leading-none font-ITC-BK rtl:font-DIN-Bold">
                             {t("currency", { price: item.price })}
                           </div>
                         </div>
@@ -278,7 +269,7 @@ function MainItems({ data }) {
           }}
         >
           <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b ">
-            <div className="flex flex-col text-start items-center w-full h-full">
+            <div className="flex flex-col text-start items-center w-full h-full font-ITC-BK rtl:font-DIN-Bold">
               <Button
                 theme={{
                   size: "text-sm p-3",
@@ -306,7 +297,7 @@ function MainItems({ data }) {
                 className={`rounded-lg mb-3 m-5`}
               ></Image>
               {modalData?.name}
-              <p className="text-base leading-relaxed text-secondry">
+              <p className="text-base leading-relaxed text-secondry font-ITC-BK rtl:font-DIN-Bold">
                 {t("currency", { price: modalData?.price })}
               </p>
             </div>
@@ -314,7 +305,7 @@ function MainItems({ data }) {
           {modalData?.description && (
             <Modal.Body>
               <div className="">
-                <p className="text-base leading-relaxe">
+                <p className="text-base leading-relaxe font-ITC-BK rtl:font-DIN-Bold">
                   {modalData?.description}
                 </p>
               </div>
@@ -333,7 +324,7 @@ function MainItems({ data }) {
                       <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
                     </svg>
                   </button>
-                  <span className=" font-ITC-BK rtl:font-DIN-Bold text-sm text-secondry">
+                  <span className=" font-ITC-BK rtl:font-DIN-Bold text-sm text-secondry font-ITC-BK rtl:font-DIN-Bold">
                     {cart[modalData?.id].quantity}
                   </span>
                   <button
@@ -347,7 +338,7 @@ function MainItems({ data }) {
                 </div>
               ) : (
                 <button
-                  className="btn btn-secondary rounded shadow-sm text-white btn-sm p-1 px-3 w-30 bg-secondry"
+                  className="btn btn-secondary rounded shadow-sm text-white btn-sm p-1 px-3 w-30 bg-secondry font-ITC-BK rtl:font-DIN-Bold"
                   onClick={() => handleAddToCart(modalData)}
                 >
                   {t("home.add")}
@@ -355,7 +346,7 @@ function MainItems({ data }) {
               )
             ) : (
               <button
-                className="btn btn-secondary bg-faded-0 rounded shadow-sm text-white btn-sm p-1 px-3 w-30"
+                className="btn btn-secondary bg-faded-0 rounded shadow-sm text-white btn-sm p-1 px-3 w-30 font-ITC-BK rtl:font-DIN-Bold"
                 disabled
               >
                 {t("home.out_of_stock")}

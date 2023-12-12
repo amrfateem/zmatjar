@@ -38,7 +38,7 @@ function Intro({ title, logo, business, branches }) {
           {branchesNames.map((item, index) => (
             <p key={index} className="text-faded-0 font-ITC-BK rtl:font-DIN-Bold pb-3">
               <a href={item.map.uri}>
-                <FontAwesomeIcon icon={faLocationDot} size="xl" />
+                <FontAwesomeIcon icon={faLocationDot} size="lg" />
               </a>{" "}
               {item.address}
             </p>

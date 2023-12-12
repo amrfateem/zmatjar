@@ -147,7 +147,7 @@ function MostSelling({ mostSelling }) {
                 >
                   {item.outOfStock == false && (
                     <button
-                      className="btn btn-secondary btn-sm p-1 px-3 w-30"
+                      className="btn btn-secondary btn-sm p-1 px-3 w-30 font-ITC-BK rtl:font-DIN-Bold"
                       onClick={() => handleQuickView(item)}
                     >
                       {t("home.order_now")}
@@ -189,7 +189,7 @@ function MostSelling({ mostSelling }) {
               borderRadius: "0",
             }}
           >
-            <div className="flex flex-col text-start items-center w-full h-full">
+            <div className="flex flex-col text-start items-center w-full h-full font-ITC-BK rtl:font-DIN-Bold">
               <Button
                 theme={{
                   size: "text-sm p-3",
@@ -217,14 +217,14 @@ function MostSelling({ mostSelling }) {
                 className={`rounded-lg mb-3 m-5`}
               ></Image>
               {modalData?.name}
-              <p className="text-base leading-relaxed text-secondry">
+              <p className="text-base leading-relaxed text-secondry font-ITC-BK rtl:font-DIN-Bold">
                 {t("currency", { price: modalData?.price })}
               </p>
             </div>
             {modalData?.description && (
               <Modal.Body>
                 <div className="">
-                  <p className="text-base leading-relaxe">
+                  <p className="text-base leading-relaxe font-ITC-BK rtl:font-DIN-Bold">
                     {modalData?.description}
                   </p>
                 </div>
@@ -256,7 +256,7 @@ function MostSelling({ mostSelling }) {
                   </div>
                 ) : (
                   <button
-                    className="btn btn-secondary bg-secondry rounded shadow-sm text-white btn-sm p-1 px-3 w-30"
+                    className="btn btn-secondary bg-secondry rounded shadow-sm text-white btn-sm p-1 px-3 w-30 font-ITC-BK rtl:font-DIN-Bold"
                     onClick={() => handleAddToCart(modalData)}
                   >
                     {t("home.add_to_cart")}
@@ -264,7 +264,7 @@ function MostSelling({ mostSelling }) {
                 )
               ) : (
                 <button
-                  className="btn btn-secondary bg-faded-0 rounded shadow-sm text-white btn-sm p-1 px-3 w-30"
+                  className="btn btn-secondary bg-faded-0 rounded shadow-sm text-white btn-sm p-1 px-3 w-30 font-ITC-BK rtl:font-DIN-Bold"
                   disabled
                 >
                   {t("home.out_of_stock")}

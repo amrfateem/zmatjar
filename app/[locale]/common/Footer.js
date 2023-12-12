@@ -2,11 +2,27 @@
 import { useEffect, useState } from "react";
 import Contacts from "./Contacts";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { chargesState, countState, minimumOrderState, storeLangState, sumState, telegramChatIdState, } from "../atoms";
+import {
+  chargesState,
+  countState,
+  minimumOrderState,
+  storeLangState,
+  sumState,
+  telegramChatIdState,
+} from "../atoms";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-function Footer({ charges, location, whatsapp, phone, minimum, telegramId, storeLang, locale }) {
+function Footer({
+  charges,
+  location,
+  whatsapp,
+  phone,
+  minimum,
+  telegramId,
+  storeLang,
+  locale,
+}) {
   const router = useRouter();
   const [offsetTop, setOffsetTop] = useState(0);
   const count = useRecoilValue(countState);
@@ -40,7 +56,6 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
     };
   }, []);
 
-
   const t = useTranslations();
 
   return (
@@ -68,8 +83,10 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
         }`}
       >
         {count > 0 && minimum > sum && (
-          <div className="items-start p-2 px-3 text-sm  text-start">
-            <p>{t("minimum")}{minimum}</p>
+          <div className="items-start p-2 px-3 text-sm  text-start font-ITC-BK rtl:font-DIN-Bold">
+            <p>
+              {t("minimum")} {t("currency", { price: minimum })}
+            </p>
           </div>
         )}
         {count > 0 && (
@@ -80,14 +97,16 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
             }}
           >
             <div className="basket-txt font-ITC-BK rtl:font-DIN-Bold text-xs uppercase">
-            {t("home.view_basket")}
+              {t("home.view_basket")}
             </div>
-            <div className="basket inline-block relative text-right">
-              <span className="mr-8 text-xs">{t("currency", { price: Number(sum.toFixed(2)) })}</span>
+            <div className="basket inline-block relative ltr:text-right rtl:text-left font-ITC-BK rtl:font-DIN-Bold">
+              <span className="me-8 text-xs">
+                {t("currency", { price: Number(sum.toFixed(2)) })}
+              </span>
               <svg
                 viewBox="0 0 96 96"
                 xmlns="http://www.w3.org/2000/svg"
-                className="fill-current text-white w-6 h-6 absolute right-0 top-1"
+                className="fill-current text-white w-6 h-6 absolute ltr:right-0 rtl:left-0 top-1"
               >
                 <defs>
                   <clipPath id="clip-cart">
@@ -137,7 +156,7 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
                   </g>
                 </g>
               </svg>
-              <span className=" transition-all duration-300 ease-in justify-center w-4 h-4 rounded-full text-on-primary bg-primary text-xs leading-4 absolute top-0 right-3 bg-white text-black text-center">
+              <span className=" transition-all duration-300 ease-in justify-center w-4 h-4 rounded-full text-on-primary bg-primary text-xs leading-4 absolute top-0 ltr:right-3 rtl:left-3 bg-white text-black text-center">
                 {count}
               </span>
             </div>

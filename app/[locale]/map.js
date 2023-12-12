@@ -76,8 +76,8 @@ const Map = ({grant}) => {
         }}
         eventHandlers={eventHandlers}
       >
-        <Tooltip direction="top" offset={[0, -60]} opacity={1} permanent>
-          <p className="text-[10px] text-center">
+        <Tooltip  direction="top" offset={[0, -60]} opacity={1} permanent>
+          <p className="text-[10px] text-center font-ITC-BK rtl:font-DIN-Bold">
           {t("delivery.pin")}
           </p>
         </Tooltip>
