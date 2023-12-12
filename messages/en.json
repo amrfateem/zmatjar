@@ -12,8 +12,9 @@
     "prices_vat": "All prices are inclusive of VAT",
     "powered_by": "Powered by ZMatjar"
   },
-  "currency": "AED",
+  "currency": "AED {price}",
   "minimum": "Sorry, Minimum order subtotal can not be less than AED",
+  "free": "Free",
   "cart": {
     "head": "Your Basket",
     "empty": "Your basket is empty",

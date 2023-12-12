@@ -28,7 +28,7 @@ function Intro({ title, logo, business, branches }) {
           <h1 className="name font-extrabold text-2xl mb-1 leading-3 font-ITC-bold">
             {title}
           </h1>
-          <small className="category leading-6 text-xs font-ITC-BK text-brand">
+          <small className="category leading-6 text-xs font-ITC-BK rtl:font-DIN-Bold text-brand">
             {businessNames}
           </small>
         </div>
@@ -36,7 +36,7 @@ function Intro({ title, logo, business, branches }) {
       {branchesNames.length > 0 && (
         <div className="location text-start pt-4 text-sm">
           {branchesNames.map((item, index) => (
-            <p key={index} className="text-faded-0 font-ITC-BK pb-3">
+            <p key={index} className="text-faded-0 font-ITC-BK rtl:font-DIN-Bold pb-3">
               <a href={item.map.uri}>
                 <FontAwesomeIcon icon={faLocationDot} size="xl" />
               </a>{" "}

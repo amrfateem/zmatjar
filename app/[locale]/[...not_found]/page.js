@@ -7,7 +7,7 @@ function page() {
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-x-[1px] h-screen">
       <div className="header flex justify-between h-11 items-center text-center  shadow-custom border-b-2">
-        <h2 className="px-3 py-2  w-full text-base font-semibold font-ITC-BK">
+        <h2 className="px-3 py-2  w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold">
           404 Page Not found
         </h2>
         <Link href="/">
@@ -40,7 +40,7 @@ function page() {
         <Link href="/">
           <Button
             type="submit"
-            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent"
+            className="uppercase w-full bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent"
           >
             Go Home
           </Button>

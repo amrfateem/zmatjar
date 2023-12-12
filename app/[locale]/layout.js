@@ -15,10 +15,10 @@ const inter = Inter({ subsets: ["latin"] });
 import { locales } from "@/i18nconfig";
 import { unstable_setRequestLocale } from "next-intl/server";
 
-export function generateStaticParams() {
-
-  return locales.map((locale) => ({ locale }));
-}
+// export function generateStaticParams() {
+//   console.log(locales);
+//   return locales.map((locale) => ({ locale }));
+// }
 
 function saveOrUpdateUTMParameters() {
   if (typeof window !== "undefined") {
@@ -183,15 +183,15 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function RootLayout({ children, params: { locale } }) {
+export default function RootLayout({ children, params }) {
   const messages = useMessages();
 
-  const dir = isRtlLang(locale) ? "rtl" : "ltr";
+  const dir = isRtlLang(params.locale) ? "rtl" : "ltr";
 
-  unstable_setRequestLocale(locale);
+  unstable_setRequestLocale(params.locale);
 
   return (
-    <html lang={locale} dir={dir}>
+    <html lang={params.locale} dir={dir}>
       <head>
         <meta name="robots" content={pageData[0].field_metatags?.robots} />
         <link rel="canonical" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
@@ -248,7 +248,7 @@ export default function RootLayout({ children, params: { locale } }) {
           }}
         />
 
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <NextIntlClientProvider locale={params.locale} messages={messages}>
           <RecoidContextProvider>{children}</RecoidContextProvider>
         </NextIntlClientProvider>
       </body>

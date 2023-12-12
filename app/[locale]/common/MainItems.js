@@ -126,7 +126,7 @@ function MainItems({ data }) {
           )
           .map(([category, itemsToRender], index) => (
             <div key={index} id={`cat${index}`}>
-              <h2 className="leading-6 text-xl font-extrabold mb-1 px-4 pb-2 pt-4 font-ITC-BK float-left border-b-2 border-b-secondry">
+              <h2 className="leading-6 text-xl font-extrabold mb-1 px-4 pb-2 pt-4 font-ITC-BK rtl:font-DIN-Bold float-left rtl:float-right border-b-2 border-b-secondry">
                 {category}
               </h2>
               <div
@@ -188,7 +188,7 @@ function MainItems({ data }) {
                               isItemInCart(item.id) ? (
                                 <div className="flex justify-between items-center gap-1 w-20">
                                   <button
-                                    className="text-secondry font-ITC-BK text-sm  py-1 active-svg"
+                                    className="text-secondry font-ITC-BK rtl:font-DIN-Bold text-sm  py-1 active-svg"
                                     onClick={() => handleDecrement(item.id)}
                                   >
                                     <svg
@@ -199,11 +199,11 @@ function MainItems({ data }) {
                                       <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
                                     </svg>
                                   </button>
-                                  <span className="font-ITC-BK text-sm text-secondry">
+                                  <span className="font-ITC-BK rtl:font-DIN-Bold text-sm text-secondry">
                                     {cart[item.id].quantity}
                                   </span>
                                   <button
-                                    className=" font-ITC-BK text-sm  py-1 text-secondry  active-svg"
+                                    className=" font-ITC-BK rtl:font-DIN-Bold text-sm  py-1 text-secondry  active-svg"
                                     onClick={() => handleIncrement(item.id)}
                                   >
                                     <svg
@@ -238,16 +238,15 @@ function MainItems({ data }) {
                           }`}
                         >
                           <div className="flex flex-col gap-2">
-                            <h3 className="title mt-0 line-clamp-2 text-start text-base leading-5 font-ITC-BK float-left font-bold">
+                            <h3 className="title mt-0 line-clamp-2 text-start text-base leading-5 font-ITC-BK rtl:font-DIN-Bold float-left rtl:float-right font-bold">
                               {item.name}
                             </h3>
-                            <p className=" line-clamp-2 text-faded-0 text-start text-sm leading-5 font-ITC-BK pb-3">
+                            <p className=" line-clamp-2 text-faded-0 text-start text-sm leading-5 font-ITC-BK rtl:font-DIN-Bold pb-3">
                               {/* {item.description} */}
                             </p>
                           </div>
-                          <div className="price float-left text-start text-secondry leading-none">
-                            <span>{t("currency")} </span>
-                            <span>{item.price}</span>
+                          <div className="price float-left rtl:float-right text-start text-secondry leading-none">
+                            {t("currency", { price: item.price })}
                           </div>
                         </div>
                       </div>
@@ -308,7 +307,7 @@ function MainItems({ data }) {
               ></Image>
               {modalData?.name}
               <p className="text-base leading-relaxed text-secondry">
-                {t("currency")} {modalData?.price}
+                {t("currency", { price: modalData?.price })}
               </p>
             </div>
           </div>
@@ -327,18 +326,18 @@ function MainItems({ data }) {
               isItemInCart(modalData?.id) ? (
                 <div className="flex justify-between items-center gap-1 w-32">
                   <button
-                    className=" font-ITC-BK text-sm px-1 py-2 text-secondry active-svg"
+                    className=" font-ITC-BK rtl:font-DIN-Bold text-sm px-1 py-2 text-secondry active-svg"
                     onClick={() => handleDecrement(modalData?.id)}
                   >
                     <svg height="24" width="24" viewBox="0 0 24 24">
                       <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
                     </svg>
                   </button>
-                  <span className=" font-ITC-BK text-sm text-secondry">
+                  <span className=" font-ITC-BK rtl:font-DIN-Bold text-sm text-secondry">
                     {cart[modalData?.id].quantity}
                   </span>
                   <button
-                    className=" font-ITC-BK text-sm px-1 py-2 text-secondry active-svg"
+                    className=" font-ITC-BK rtl:font-DIN-Bold text-sm px-1 py-2 text-secondry active-svg"
                     onClick={() => handleIncrement(modalData?.id)}
                   >
                     <svg height="24" width="24" viewBox="0 0 24 24">

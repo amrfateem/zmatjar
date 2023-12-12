@@ -17,6 +17,11 @@
   src: url("/fonts/ITCAvantGardeStd-Bk.otf");
 }
 
+@font-face {
+  font-family: "DIN-Next";
+  src: url("/fonts/DINNext.ttf");
+}
+
 /* Hide scroll */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

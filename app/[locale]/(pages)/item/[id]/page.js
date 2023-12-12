@@ -1,6 +1,7 @@
 "use client";
 import { modalDataState, selectedItemState } from "@/app/[locale]/atoms";
 import { Modal } from "flowbite-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -10,6 +11,7 @@ function Item({ params }) {
   const router  = useRouter();
   const [modalData, setModalData] = useRecoilState(modalDataState);
 
+  const t = useTranslations()
 
   return (
     <div>
@@ -49,7 +51,7 @@ function Item({ params }) {
             ></Image>
             {modalData?.name}
             <p className="text-base leading-relaxed text-secondry">
-              AED {modalData?.price}
+            {t("currency", { price: modalData?.price })}
             </p>
           </div>
         </Modal.Header>
@@ -65,18 +67,18 @@ function Item({ params }) {
             isItemInCart(modalData?.id) ? (
               <div className="flex justify-between items-center gap-1 w-20">
                 <button
-                  className="text-secondry font-ITC-BK text-sm px-1 py-2 active-svg"
+                  className="text-secondry font-ITC-BK rtl:font-DIN-Bold text-sm px-1 py-2 active-svg"
                   onClick={() => handleDecrement(modalData?.id)}
                 >
                   <svg height="18" width="18" viewBox="0 0 24 24">
                     <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
                   </svg>
                 </button>
-                <span className="text-secondry font-ITC-BK text-sm">
+                <span className="text-secondry font-ITC-BK rtl:font-DIN-Bold text-sm">
                   {cart[modalData?.id].quantity}
                 </span>
                 <button
-                  className="text-secondry font-ITC-BK text-sm px-1 py-2 active-svg"
+                  className="text-secondry font-ITC-BK rtl:font-DIN-Bold text-sm px-1 py-2 active-svg"
                   onClick={() => handleIncrement(modalData?.id)}
                 >
                   <svg height="18" width="18" viewBox="0 0 24 24">

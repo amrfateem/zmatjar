@@ -9,7 +9,7 @@ function Contacts({ location, whatsapp, phone }) {
     <>
       <a
         href={location}
-        className="font-ITC-BK text-sm flex flex-col text-center items-center  gap-1 w-full text-faded-0"
+        className="font-ITC-BK rtl:font-DIN-Bold text-sm flex flex-col text-center items-center  gap-1 w-full text-faded-0"
         target="_blank"
       >
         <Image
@@ -22,7 +22,7 @@ function Contacts({ location, whatsapp, phone }) {
       </a>
       <a
         href={`https://wa.me/${whatsapp}`}
-        className=" font-ITC-BK text-sm flex flex-col text-center items-center gap-1 w-full text-faded-0"
+        className=" font-ITC-BK rtl:font-DIN-Bold text-sm flex flex-col text-center items-center gap-1 w-full text-faded-0"
         target="_blank"
       >
         <Image
@@ -35,7 +35,7 @@ function Contacts({ location, whatsapp, phone }) {
       </a>
       <a
         href={`tel:${phone}`}
-        className="font-ITC-BK text-sm flex flex-col text-center items-center gap-1 w-full text-faded-0 "
+        className="font-ITC-BK rtl:font-DIN-Bold text-sm flex flex-col text-center items-center gap-1 w-full text-faded-0 "
         target="_blank"
       >
         <Image src={"svg/call.svg"} alt="call" width={21} height={21}></Image>

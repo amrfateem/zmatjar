@@ -204,7 +204,7 @@ function DeliveryLocation({params}) {
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px] h-[100dvh] flex flex-col">
       <div className="header flex justify-between items-center h-11 text-center shadow-custom border-b-2">
-        <h2 className="py-2  w-full text-base font-semibold text font-ITC-BK">
+        <h2 className="py-2  w-full text-base font-semibold rtl:font-extrabold text font-ITC-BK rtl:font-DIN-Bold">
          {t("delivery.head")}
         </h2>
         <Button
@@ -241,7 +241,7 @@ function DeliveryLocation({params}) {
             >
               <Button
                 color={"bg-secondry"}
-                className="uppercase bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent focus:z-50"
+                className="uppercase bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent focus:z-50"
                 onClick={() => grantLocation()}
               >
                 <FontAwesomeIcon
@@ -256,7 +256,7 @@ function DeliveryLocation({params}) {
             <div className="icon-place absolute bottom-[12%] left-4 z-50 focus:z-50">
               <Button
                 color={"bg-secondry"}
-                className="uppercase bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent focus:z-50"
+                className="uppercase bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent focus:z-50"
                 onClick={() => setmanualAddress(true)}
               >
                 {t("delivery.manual")}
@@ -274,7 +274,7 @@ function DeliveryLocation({params}) {
       <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0  shadow-custom-up z-500">
         <Button
           color={"bg-secondry"}
-          className="uppercase w-full  text-white font-ITC-BK bg-secondry "
+          className="uppercase w-full  text-white font-ITC-BK rtl:font-DIN-Bold bg-secondry "
           onClick={handleConfirmLocation}
         >
           {t("delivery.confirm")}
@@ -333,7 +333,7 @@ function DeliveryLocation({params}) {
         <Modal.Footer>
           <Button
             color={"bg-secondry"}
-            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+            className="uppercase w-full bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent "
             onClick={() => setShowModal(false)}
           >
            {t("delivery.not_available_confirm")}
@@ -385,14 +385,14 @@ function DeliveryLocation({params}) {
           </Button>
         </div>
         <Modal.Body>
-          <p className="text-start font-ITC-BK">
+          <p className="text-start font-ITC-BK rtl:font-DIN-Bold">
           {t("delivery.share_message")}
           </p>
         </Modal.Body>
         <Modal.Footer>
           <Button
             color={"bg-secondry"}
-            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+            className="uppercase w-full bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent "
             onClick={() => setconfirmLocation(false)}
           >
              {t("delivery.ok")}
@@ -445,14 +445,14 @@ function DeliveryLocation({params}) {
         </div>
         <Modal.Body>
           <input
-            className="font-ITC-BK border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full"
+            className="font-ITC-BK rtl:font-DIN-Bold border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full"
             onChange={(e) => setmanualAddressValue(e.target.value)}
           />
         </Modal.Body>
         <Modal.Footer>
           <Button
             color={"bg-secondry"}
-            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+            className="uppercase w-full bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent "
             onClick={handleManualLocation}
           >
            {t("delivery.manual_confirm")}

@@ -211,7 +211,7 @@ export default async function Home({ params }) {
       {/* 
       <Offers /> */}
 
-      <NavBar categories={uniqueCategories} />
+      <NavBar categories={uniqueCategories} locale={params.locale}/>
 
       {mostSellingProducts.length > 0 && (
         <MostSelling mostSelling={mostSellingProducts} />

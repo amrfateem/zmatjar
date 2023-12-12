@@ -119,7 +119,7 @@ function MostSelling({ mostSelling }) {
   return (
     search.length == 0 && (
       <div className="Most Selling bg-[#F5F5F5] ">
-        <h2 className="leading-6 text-xl font-extrabold mb-1 px-4 pb-2 pt-4 font-ITC-BK float-left">
+        <h2 className="leading-6 text-xl font-extrabold mb-1 px-4 pb-2 pt-4 font-ITC-BK rtl:font-DIN-Bold float-left rtl:float-right">
           {t("home.most_selling")}
         </h2>
         <div className="flex shrink-0 bg-black-100 overflow-auto w-full py-4 px-2 gap-2 scrollbar-hide">
@@ -156,15 +156,14 @@ function MostSelling({ mostSelling }) {
                 </div>
               </div>
               <div className=" flex flex-col justify-between w-full h-full">
-                <h3 className="title mt-0 mb-2 pt-1 px-2  text-start text-base leading-6 font-ITC-BK float-left font-bold">
+                <h3 className="title mt-0 mb-2 pt-1 px-2  text-start text-base leading-6 font-ITC-BK rtl:font-DIN-Bold float-left rtl:float-right font-bold">
                   {item.name}
                 </h3>
-                <p className=" px-2 line-clamp-2 text-faded-0 text-start mb-2 text-sm leading-6 font-ITC-BK ">
+                <p className=" px-2 line-clamp-2 text-faded-0 text-start mb-2 text-sm leading-6 font-ITC-BK rtl:font-DIN-Bold ">
                   {item.description}
                 </p>
-                <div className="price px-2 float-left text-start pb-3 text-secondry">
-                  <span>{t("currency")} </span>
-                  <span>{item.price}</span>
+                <div className="price px-2 ltr:float-left rtl:float-right text-start pb-3 text-secondry">
+                  <span>{t("currency", { price: item.price })} </span>
                 </div>
               </div>
             </div>
@@ -219,7 +218,7 @@ function MostSelling({ mostSelling }) {
               ></Image>
               {modalData?.name}
               <p className="text-base leading-relaxed text-secondry">
-                {t("currency")} {modalData?.price}
+                {t("currency", { price: modalData?.price })}
               </p>
             </div>
             {modalData?.description && (
@@ -236,18 +235,18 @@ function MostSelling({ mostSelling }) {
                 isItemInCart(modalData?.id) ? (
                   <div className="flex justify-between items-center gap-1 w-20">
                     <button
-                      className="text-secondry font-ITC-BK text-sm px-1 py-2 active-svg"
+                      className="text-secondry font-ITC-BK rtl:font-DIN-Bold text-sm px-1 py-2 active-svg"
                       onClick={() => handleDecrement(modalData?.id)}
                     >
                       <svg height="18" width="18" viewBox="0 0 24 24">
                         <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
                       </svg>
                     </button>
-                    <span className="text-secondry font-ITC-BK text-sm">
+                    <span className="text-secondry font-ITC-BK rtl:font-DIN-Bold text-sm">
                       {cart[modalData?.id].quantity}
                     </span>
                     <button
-                      className="text-secondry font-ITC-BK text-sm px-1 py-2 active-svg"
+                      className="text-secondry font-ITC-BK rtl:font-DIN-Bold text-sm px-1 py-2 active-svg"
                       onClick={() => handleIncrement(modalData?.id)}
                     >
                       <svg height="18" width="18" viewBox="0 0 24 24">

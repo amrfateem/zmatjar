@@ -46,7 +46,7 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
   return (
     <>
       <div className="flex justify-center items-center ">
-        <p className="text-start w-full p-4 text-sm line-normal font-ITC-BK">
+        <p className="text-start w-full p-4 text-sm line-normal font-ITC-BK rtl:font-DIN-Bold">
           {t("home.prices_vat")}
         </p>
       </div>
@@ -79,11 +79,11 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
               minimum > sum ? "" : router.push(`/${locale}/cart`);
             }}
           >
-            <div className="basket-txt font-ITC-BK text-xs uppercase">
+            <div className="basket-txt font-ITC-BK rtl:font-DIN-Bold text-xs uppercase">
             {t("home.view_basket")}
             </div>
             <div className="basket inline-block relative text-right">
-              <span className="mr-8 text-xs">{t("currency")} {Number(sum.toFixed(2))}</span>
+              <span className="mr-8 text-xs">{t("currency", { price: Number(sum.toFixed(2)) })}</span>
               <svg
                 viewBox="0 0 96 96"
                 xmlns="http://www.w3.org/2000/svg"

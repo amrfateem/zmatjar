@@ -248,7 +248,7 @@ function PlaceOrder({params}) {
     <>
       <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-x-[1px] h-screen">
         <div className="header flex justify-between h-11 items-center text-center  shadow-custom border-b-2">
-          <h2 className="px-3 py-2 w-full text-base font-semibold font-ITC-BK">
+          <h2 className="px-3 py-2 w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold">
             {t("place_order.head")}
           </h2>
           <Button
@@ -275,7 +275,7 @@ function PlaceOrder({params}) {
         <form onSubmit={(e) => handlePlaceOrder(e)}>
           <div className="space-y-6 px-3 py-2 pb-20">
             <div className="flex flex-col space-y-1">
-              <label className="text-sm font-ITC-BK">
+              <label className="text-sm font-ITC-BK rtl:font-DIN-Bold">
               {t("place_order.name")} <span className="text-red-600">*</span>
               </label>
               <input
@@ -286,7 +286,7 @@ function PlaceOrder({params}) {
               />
             </div>
             <div className="flex flex-col space-y-1">
-              <label className="text-sm font-ITC-BK">
+              <label className="text-sm font-ITC-BK rtl:font-DIN-Bold">
               {t("place_order.phone")} <span className="text-red-600">*</span>
               </label>
               <IntlTelInput
@@ -321,7 +321,7 @@ function PlaceOrder({params}) {
             </div>
 
             <div className="flex flex-col space-y-1">
-              <label className="text-sm font-ITC-BK">
+              <label className="text-sm font-ITC-BK rtl:font-DIN-Bold">
               {t("place_order.address")} <span className="text-red-600">*</span>
               </label>
 
@@ -335,7 +335,7 @@ function PlaceOrder({params}) {
               />
             </div>
             <div className="flex flex-col space-y-1">
-              <label className="text-sm font-ITC-BK"> {t("place_order.email")}</label>
+              <label className="text-sm font-ITC-BK rtl:font-DIN-Bold"> {t("place_order.email")}</label>
               <input
                 name="email"
                 type="text"
@@ -351,7 +351,7 @@ function PlaceOrder({params}) {
                   checked={showTimePicker}
                   disabled={closingTime}
                 />
-                <label className="text-sm font-ITC-BK pb-2">
+                <label className="text-sm font-ITC-BK rtl:font-DIN-Bold pb-2">
                 {t("place_order.schedule")}
                 </label>
               </div>
@@ -373,7 +373,7 @@ function PlaceOrder({params}) {
               )}
             </div>
             <div className="flex flex-col space-y-1">
-              <label className="text-sm font-ITC-BK">
+              <label className="text-sm font-ITC-BK rtl:font-DIN-Bold">
               {t("place_order.payment_method")}
               </label>
 
@@ -386,7 +386,7 @@ function PlaceOrder({params}) {
                   className="checked:text-secondry border-gray-300"
                   required
                 />
-                <label htmlFor="cash" className="ml-2 text-base font-ITC-BK">
+                <label htmlFor="cash" className="ml-2 text-base font-ITC-BK rtl:font-DIN-Bold">
                 {t("place_order.method_cash")}
                 </label>
               </div>
@@ -400,7 +400,7 @@ function PlaceOrder({params}) {
                   name="payment"
                   required
                 />
-                <label htmlFor="card" className="ml-2 text-base font-ITC-BK">
+                <label htmlFor="card" className="ml-2 text-base font-ITC-BK rtl:font-DIN-Bold">
                 {t("place_order.method_card")}
                 </label>
               </div>
@@ -415,7 +415,7 @@ function PlaceOrder({params}) {
                 required
                 className="form-checkbox border border-gray-300 rounded-md px-2 py-2 text-secondry focus:ring-secondry outline-none focus:border-secondry"
               />
-              <label htmlFor="acknowledge" className="text-sm font-ITC-BK">
+              <label htmlFor="acknowledge" className="text-sm font-ITC-BK rtl:font-DIN-Bold">
               {t("place_order.terms_message")}{" "}
                 <a
                   className="text-secondry underline"
@@ -431,7 +431,7 @@ function PlaceOrder({params}) {
             <Button
               disabled={sending}
               type="submit"
-              className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent"
+              className="uppercase w-full bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent"
             >
               {sending ? t("place_order.confirming_order") :  t("place_order.confirm_order")}
             </Button>
@@ -470,7 +470,7 @@ function PlaceOrder({params}) {
         }}
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
-          <h2 className="px-6 py-2 w-full text-base font-semibold font-ITC-BK">
+          <h2 className="px-6 py-2 w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold">
           {t("place_order.order_problem_head")}
           </h2>
           <Button
@@ -499,7 +499,7 @@ function PlaceOrder({params}) {
         <Modal.Footer>
           <Button
             color={"bg-secondry"}
-            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+            className="uppercase w-full bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent "
             onClick={() => setErrorModal(false)}
           >
             {t("place_order.go_back")}

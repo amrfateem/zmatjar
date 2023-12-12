@@ -1,12 +1,20 @@
 "use client";
 import { Button } from "flowbite-react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { cartState, chargesState, countState, minimumOrderState, specialInstructionsState, sumState, totalState, } from "../../atoms";
+import {
+  cartState,
+  chargesState,
+  countState,
+  minimumOrderState,
+  specialInstructionsState,
+  sumState,
+  totalState,
+} from "../../atoms";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { unstable_setRequestLocale } from "next-intl/server";
 
-function Cart({params}) {
+function Cart({ params }) {
   const router = useRouter();
   const [cart, setCart] = useRecoilState(cartState);
   const [count, setCount] = useRecoilState(countState);
@@ -64,12 +72,11 @@ function Cart({params}) {
   };
 
   const t = useTranslations();
-  unstable_setRequestLocale(params.locale)
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] border-solid border-[#dfe2e7] border-[1px] h-full min-h-screen relative">
       <div className="header flex justify-end p-0 items-center text-center  shadow-custom h-11 border-b-2 w-full bg-white">
-        <h2 className="p-3  w-full text-base font-semibold font-ITC-BK h-full">
-        {t("cart.head")}
+        <h2 className="p-3  w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold h-full">
+          {t("cart.head")}
         </h2>
         <Button
           color={"bg-secondry"}
@@ -94,7 +101,7 @@ function Cart({params}) {
 
       <div className="space-y-6 px-3 py-2  pt-3">
         {count == 0 ? (
-          <p className=" font-ITC-BK">{t("cart.empty")}</p>
+          <p className="font-ITC-BK rtl:font-DIN-Bold">{t("cart.empty")}</p>
         ) : (
           Object.keys(cart).map((key) => {
             return (
@@ -104,9 +111,11 @@ function Cart({params}) {
               >
                 <div className="flex items-center w-full">
                   <div className="flex flex-col">
-                    <p className=" font-ITC-BK">{cart[key].title}</p>
+                    <p className=" font-ITC-BK rtl:font-DIN-Bold">{cart[key].title}</p>
                     <p className="text-gray-500 text-sm">
-                      {t("currency")} {cart[key].quantity} x {cart[key].price}
+                      {t("currency", {
+                        price: cart[key].price + "x" + cart[key].quantity,
+                      })}
                     </p>
                   </div>
                 </div>
@@ -129,8 +138,10 @@ function Cart({params}) {
                     </svg>
                   </button>
                 </div>
-                <p className=" font-ITC-BK w-36 text-end text-sm text-gray-500">
-                  {t("currency")} {cart[key].quantity * cart[key].price}
+                <p className=" font-ITC-BK rtl:font-DIN-Bold w-36 text-end text-sm text-gray-500">
+                  {t("currency", {
+                    price: cart[key].quantity * cart[key].price,
+                  })}
                 </p>
               </div>
             );
@@ -142,7 +153,7 @@ function Cart({params}) {
           <div>
             {/* Instructions textbox */}
             <div className="flex flex-col gap-2 pt-4 border-b pb-4">
-              <label className=" font-ITC-BK">{t("cart.special_info")}</label>
+              <label className=" font-ITC-BK rtl:font-DIN-Bold">{t("cart.special_info")}</label>
               <textarea
                 value={specialInstructions}
                 onChange={(e) => setSpecialInstructions(e.target.value)}
@@ -154,22 +165,28 @@ function Cart({params}) {
           <div>
             {/* Subtotal, delivery, total */}
             <div className="flex justify-between items-center  pt-4">
-              <p className=" font-ITC-BK">
-              {t("cart.subtotal")} <span className="text-xs">{t("cart.vat")}</span>
+              <p className=" font-ITC-BK rtl:font-DIN-Bold">
+                {t("cart.subtotal")}{" "}
+                <span className="text-xs">{t("cart.vat")}</span>
               </p>
-              <p className=" font-ITC-BK">{t("currency")} {Number(sum.toFixed(2))}</p>
+              <p className=" font-ITC-BK rtl:font-DIN-Bold">
+                {t("currency", { price: Number(total.toFixed(2)) })}
+              </p>
             </div>
             <div className="flex justify-between items-center pb-2">
-              <p className=" font-ITC-BK">{t("cart.delivery_charges")}</p>
-              <p className=" font-ITC-BK">
-                {charges == 0 ? "Free" : t("currency") +" "+ charges}
+              <p className=" font-ITC-BK rtl:font-DIN-Bold">{t("cart.delivery_charges")}</p>
+              <p className=" font-ITC-BK rtl:font-DIN-Bold">
+                {charges == 0 ? t("free") : t("currency") + " " + charges}
               </p>
             </div>
             <div className="flex justify-between items-center pt-3">
-              <p className=" font-ITC-BK">
-              {t("cart.total")} <span className="text-xs">{t("cart.vat")}</span>
+              <p className=" font-ITC-BK rtl:font-DIN-Bold">
+                {t("cart.total")}{" "}
+                <span className="text-xs">{t("cart.vat")}</span>
               </p>
-              <p className=" font-ITC-BK">{t("currency")} {Number(total.toFixed(2))}</p>
+              <p className=" font-ITC-BK rtl:font-DIN-Bold">
+                {t("currency", { price: Number(total.toFixed(2)) })}{" "}
+              </p>
             </div>
           </div>
         </div>
@@ -177,7 +194,7 @@ function Cart({params}) {
       {count > 0 && minimum > sum && (
         <div className="items-start p-2 px-3 text-sm  text-start">
           <p>
-          {t("minimum")} {minimum}
+            {t("minimum")} {minimum}
           </p>
         </div>
       )}
@@ -185,9 +202,11 @@ function Cart({params}) {
         <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0  shadow-custom-up">
           <Button
             color={"bg-secondry"}
-            className="uppercase w-full bg-secondry text-white font-ITC-BK focus: focus:ring-secondry focus:border-transparent "
+            className="uppercase w-full bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent "
             onClick={() => {
-              minimum > sum ? "" : router.push(`/${params.locale}/delivery-location`);
+              minimum > sum
+                ? ""
+                : router.push(`/${params.locale}/delivery-location`);
             }}
           >
             {t("cart.checkout")}

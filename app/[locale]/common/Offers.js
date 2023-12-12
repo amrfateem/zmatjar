@@ -20,8 +20,8 @@ function Offers() {
                   </svg>
                 </div>
               </div>
-              <div className="px-2 flex flex-col text-start font-ITC-BK ">
-                <h3 className="offer-item_title text-sm font-semibold uppercase mb-1">
+              <div className="px-2 flex flex-col text-start font-ITC-BK rtl:font-DIN-Bold ">
+                <h3 className="offer-item_title text-sm font-semibold rtl:font-extrabold uppercase mb-1">
                   Welcome 10%
                 </h3>
                 <p className="offer-item_message text-xs text-faded-0">

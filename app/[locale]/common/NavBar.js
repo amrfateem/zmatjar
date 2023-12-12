@@ -4,7 +4,7 @@ import { Link } from "react-scroll";
 import { useRecoilState } from "recoil";
 import { categoriesState, colStyleState, searchState } from "../atoms";
 
-function NavBar({ categories }) {
+function NavBar({ categories, locale }) {
   const [activeSection, setActiveSection] = useState(null);
   const [show, setShow] = useState(false);
   const [colStyle, setColStyle] = useRecoilState(colStyleState);
@@ -41,8 +41,8 @@ function NavBar({ categories }) {
         setIsSticky(false);
       }
       const sections = categories.map((category, i) => ({
-        id: `cat${i}`,
-        link: `link${i}`,
+        id: `${locale}/cat${i}`,
+        link: `${locale}/link${i}`,
       }));
       const newActiveSection = sections.find(({ id }) => {
         const sectionElement = document.getElementById(id);
