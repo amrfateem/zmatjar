@@ -8,18 +8,17 @@ import { locales } from "../../../i18nconfig";
 function Header({ headerSrc }) {
   const locale = useLocale();
   const router = useRouter();
-  const pathName = usePathname();
 
   const switchLocale = () => {
-    const locale = router.locale === "en" ? "ar" : "en";
-    router.push(pathName, pathName, { locale });
+    const newLocale = locale === 'en' ? 'ar' : 'en';
+    router.push(`/${newLocale}`)
   };
   let img = encodeURI(
     process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + headerSrc.uri.url
   );
   return (
     <div
-      className={`w-full h-64 bg-cover`}
+      className={`w-full h-64 bg-cover bg-center bg-no-repeat`}
       style={{
         backgroundImage: `url(${img})`,
       }}

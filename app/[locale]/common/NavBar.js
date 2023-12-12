@@ -44,8 +44,8 @@ function NavBar({ categories, locale }) {
         setIsSticky(false);
       }
       const sections = categories.map((category, i) => ({
-        id: `${locale}/cat${i}`,
-        link: `${locale}/link${i}`,
+        id: `cat${i}`,
+        link: `link${i}`,
       }));
       const newActiveSection = sections.find(({ id }) => {
         const sectionElement = document.getElementById(id);
