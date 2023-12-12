@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "ITCAvantGardeStd-Bold";
+  src: url("/fonts/ITCAvantGardeStd-Bold.otf");
+}
+
+@font-face {
+  font-family: "TCAvantGardeStd-XLt";
+  src: url("/fonts/ITCAvantGardeStd-XLt.otf");
+}
+
+@font-face {
+  font-family: "ITCAvantGardeStd-Bk";
+  src: url("/fonts/ITCAvantGardeStd-Bk.otf");
+}
+
+@font-face {
+  font-family: "DIN-Next";
+  src: url("/fonts/DINNext.ttf");
+}
+
+/* Hide scroll */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.text-brand {
+  color: var(--brand-color);
+}
+
+.leaflet-interactive {
+  fill: var(--brand-color);
+  stroke: var(--brand-color);
+}
+
+.text-gray-400 {
+  color: var(--brand-color);
+}
+
+.images-fix {
+  height: revert-layer!important;
+}
+
+.active-svg svg,
+.active-svg,
+.svg-inline--fa {
+  fill: var(--brand-color); /* Use the CSS variable in your SVG styles */
+}
+
+.bg-brand {
+  background-color: var(--brand-color);
+}
+
+.bg-brand-faded {
+  background-color: var(--brand-color-bg);
+}
+
+.st0 {
+  fill: var(--brand-color);
+}
+
+.faded-svg {
+  opacity: 0.5;
+}
+
+.bg-brand-faded svg {
+  opacity: 1;
+}
+
+.z-500 {
+  z-index: 500;
+}
+
+.intl-tel-input input {
+  width: 100%;
+  border-radius: 0.375rem;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
+.intl-tel-input input:focus {
+  border-color: var(--brand-color);
+  border-width: 2px;
+  outline: none;
+  box-shadow: none !important;
+}
+ 
+.selected-dial-code {
+  padding-left: 5px !important;
+}
+
+.selected-flag {
+  display: flex !important;
+}
+
+*,
+::before,
+::after,
+::backdrop {
+  --tw-ring-color: none;
+  --tw-ring-shadow: none;
+}
+
+.focus\:ring-secondry:focus {
+  --tw-ring-color: none !important;
+}
+
+.tooltip-style {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border-radius: 3px;
+  color: #222;
+  pointer-events: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.enabled\:hover\:bg-cyan-800:hover:enabled {
+  background-color: var(--brand-color) !important;
+}
+
+.leaflet-pane,
+.leaflet-control,
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 40 !important;
+}
+
+.shadow-custom {
+  box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
+}
+
+.shadow-custom-up {
+  box-shadow: rgb(0 0 0 / 15%) 0px 4px 18px;
+}
+
+.react-tel-input input:focus {
+  box-shadow: none !important;
+}

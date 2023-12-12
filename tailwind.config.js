@@ -12,6 +12,7 @@ module.exports = {
       "ITC-bold": ["ITCAvantGardeStd-Bold", "sans-serif"],
       "ITC-lite": ["TCAvantGardeStd-XLt", "sans-serif"],
       "ITC-BK": ["ITCAvantGardeStd-Bk", "sans-serif"],
+      "DIN-Bold": ["DIN-Next", "sans-serif"],
     },
     extend: {
       colors: {
