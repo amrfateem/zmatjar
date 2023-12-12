@@ -6,6 +6,7 @@ console.log("defaultLocale", defaultLocale);
 export default createMiddleware({
   locales,
   defaultLocale,
+  localeDetection: false
 });
 
 export const config = {
