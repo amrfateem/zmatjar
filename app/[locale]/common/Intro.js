@@ -25,7 +25,7 @@ function Intro({ title, logo, business, branches }) {
           ></Image>
         </div>
         <div className="details text-start pt-2">
-          <h1 className="name font-extrabold text-2xl mb-1 leading-3 font-ITC-bold">
+          <h1 className="name font-extrabold text-2xl mb-1 leading-3 font-ITC-bold rtl:font-DIN-Bold">
             {title}
           </h1>
           <small className="category leading-6 text-xs font-ITC-BK rtl:font-DIN-Bold text-brand">

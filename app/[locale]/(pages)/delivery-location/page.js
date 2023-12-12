@@ -302,7 +302,7 @@ function DeliveryLocation({params}) {
         }}
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
-          <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold ">
+          <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold rtl:font-DIN-Bold ">
              {t("delivery.not_available_head")}
           </h2>
           <Button
@@ -361,7 +361,7 @@ function DeliveryLocation({params}) {
         }}
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
-          <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold ">
+          <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold rtl:font-DIN-Bold ">
           {t("delivery.share_location")}
           </h2>
           <Button
@@ -420,7 +420,7 @@ function DeliveryLocation({params}) {
         }}
       >
         <div className="flex flex-col-reverse text-start items-center w-full h-full  flex-1 overflow-auto pt-0">
-          <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold ">
+          <h2 className="px-6 py-2 w-full text-base font-bold font-ITC-bold rtl:font-DIN-Bold ">
           {t("delivery.manual")}
           </h2>
           <Button

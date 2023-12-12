@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 import dotenv from "dotenv";
 
 dotenv.config();
+dotenv.config({ path: `.env.local`, override: true });
 
 export const fetchLocales = async () => {
   const res = await fetch(
@@ -21,7 +22,6 @@ export const fetchLocales = async () => {
   const locales = data.data[0].field_slanguages;
 
   // Determine the current directory dynamically
-  // const currentDir = path.dirname(new URL(import.meta.url).pathname);
   const filePath = path.join("./", "locales.js");
 
   const content = `
