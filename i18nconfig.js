@@ -1,20 +1,9 @@
-import { fetchLocales } from "./locales";
+const localesData = require('./locales.js');
 
-// Define initial values
-export let defaultLocale = "en";
-export let locales = ["en", "ar"];
+export const defaultLocale = localesData.defaultLocale;
+export const locales = localesData.locales;
 
 export const localeNames = {
   en: "English",
   ar: "العربية (Arabic)",
 };
-
-// Use an async IIFE to fetch the locales and update the variables
-(async () => {
-  const { defaultLocale: fetchedDefaultLocale, locales: fetchedLocales } = await fetchLocales();
-
-  // Update the variables with the fetched values
-  defaultLocale = fetchedDefaultLocale;
-  locales = fetchedLocales;
-
-})();
