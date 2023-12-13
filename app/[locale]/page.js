@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import Contacts from "./common/Contacts";
 import Footer from "./common/Footer";
 import Header from "./common/Header";
@@ -12,13 +11,29 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { unstable_setRequestLocale } from "next-intl/server";
+import { locales } from "@/i18nconfig";
 
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
-export default async function Home({ params }) {
+export default async function Home({ params: { locale } }) {
+  unstable_setRequestLocale(locale);
   const params1 = new DrupalJsonApiParams()
-    .addFields("node--product", [ "path", "title", "body", "field_price", "field_category", "field_image", "drupal_internal__nid", "body", "field_out_of_stock", "field_path", ])
+    .addFields("node--product", [
+      "path",
+      "title",
+      "body",
+      "field_price",
+      "field_category",
+      "field_image",
+      "drupal_internal__nid",
+      "body",
+      "field_out_of_stock",
+      "field_path",
+    ])
     .addInclude(["field_category", "field_image"])
-    .addFilter("langcode",params.locale)
+    .addFilter("langcode", locale)
     .addPageLimit(200);
 
   const queryString = params1.getQueryString({ encode: false });
@@ -26,7 +41,12 @@ export default async function Home({ params }) {
   let products;
 
   try {
-    const response = await fetch( process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + `/${params.locale}/` + "/jsonapi/node/product?jsonapi_include=1&" + queryString);
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+        `/${locale}/` +
+        "/jsonapi/node/product?jsonapi_include=1&" +
+        queryString
+    );
     if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
@@ -160,7 +180,12 @@ export default async function Home({ params }) {
   const pageQuery = param21.getQueryString({ encode: false });
 
   try {
-    const response = await fetch( process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + `/${params.locale}/` + "/jsonapi/node/page?jsonapi_include=1&" + pageQuery );
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+        `/${locale}/` +
+        "/jsonapi/node/page?jsonapi_include=1&" +
+        pageQuery
+    );
 
     if (!response.ok) {
       throw new Error("Failed to fetch data");
@@ -171,7 +196,6 @@ export default async function Home({ params }) {
     console.error(error);
   }
 
-  unstable_setRequestLocale(params.locale)
   return (
     <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
       <Header headerSrc={page[0].field_image} />
@@ -194,7 +218,7 @@ export default async function Home({ params }) {
       {/* 
       <Offers /> */}
 
-      <NavBar categories={uniqueCategories}/>
+      <NavBar categories={uniqueCategories} />
 
       {mostSellingProducts.length > 0 && (
         <MostSelling mostSelling={mostSellingProducts} />

@@ -1,9 +1,16 @@
+import { locales } from "@/i18nconfig";
 import { useTranslations } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 import Link from "next/link";
 import React from "react";
 
-function Page({ params }) {
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+function Page({ params: { locale } }) {
   const t = useTranslations();
+  unstable_setRequestLocale(locale)
 
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-x-[1px] h-screen">
@@ -11,7 +18,7 @@ function Page({ params }) {
         <h2 className="px-3 py-2  w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold">
           {t("thank_you.head")}
         </h2>
-        <Link href={`/${params.locale}`}>
+        <Link href={`/${locale}`}>
           <button
             theme={{
               size: "text-sm p-3",
@@ -33,7 +40,7 @@ function Page({ params }) {
         </Link>
       </div>
 
-      <div className="text-center m-auto py-40 ">
+      <div className="text-center m-auto py-40  font-ITC-BK rtl:font-DIN-Bold">
         <p>{t("thank_you.body")}</p>
 
         {/* <p suppressHydrationWarning className="pt-4">
@@ -48,7 +55,7 @@ function Page({ params }) {
       </div>
 
       <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0 shadow-custom-up ">
-        <Link href={`/${params.locale}`}>
+        <Link href={`/${locale}`}>
           <button
             type="submit"
             className="uppercase w-full p-3 rounded-md bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent"

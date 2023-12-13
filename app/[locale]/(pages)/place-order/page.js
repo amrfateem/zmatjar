@@ -1,11 +1,17 @@
-"use client";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import PlaceOrderBody from "./components/PlaceOrderBody";
+import { locales } from "@/i18nconfig";
+import { unstable_setRequestLocale } from "next-intl/server";
 
-function PlaceOrder({ params }) {
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+function PlaceOrder({ params: { locale } }) {
   // Router
   const t = useTranslations();
+  unstable_setRequestLocale(locale);
 
   return (
     <>
@@ -15,7 +21,7 @@ function PlaceOrder({ params }) {
           <h2 className="px-3 py-2 w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold">
             {t("place_order.head")}
           </h2>
-          <Link href={`/${params.locale}`}>
+          <Link href={`/${locale}`}>
             <button
               theme={{
                 size: "text-sm p-3",

@@ -9,9 +9,9 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-function Cart({ params }) {
+function Cart({ params: { locale } }) {
   const t = useTranslations();
-  unstable_setRequestLocale(params.locale);
+  unstable_setRequestLocale(locale);
 
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] border-solid border-[#dfe2e7] border-[1px] h-full min-h-screen relative">
@@ -20,7 +20,7 @@ function Cart({ params }) {
         <h2 className="p-3  w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold h-full">
           {t("cart.head")}
         </h2>
-        <Link href={`/${params.locale}`}>
+        <Link href={`/${locale}`}>
           <button
             color={"bg-secondry"}
             theme={{
