@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { categoriesState, colStyleState, searchState } from "../atoms";
 import { useTranslations } from "next-intl";
 
-function NavBar({ categories, locale }) {
+function NavBar({ categories }) {
   const [activeSection, setActiveSection] = useState(null);
   const [show, setShow] = useState(false);
   const [colStyle, setColStyle] = useRecoilState(colStyleState);

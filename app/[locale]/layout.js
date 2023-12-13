@@ -1,10 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-export const fetchCache = "force-no-store";
-
 import RecoidContextProvider from "./recoilContextProvider";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { NextIntlClientProvider, useMessages } from "next-intl";
@@ -79,31 +75,14 @@ function setCookie(name, value, days) {
 
 const param21 = new DrupalJsonApiParams()
   .addInclude(["field_logo", "field_image"])
-  .addFields("node--page", [
-    "title",
-    "field_primary_color",
-    "field_primary_color",
-    "field_logo",
-    "field_telegram_chat_id",
-    "field_communication_language",
-    "field_metatags",
-    "field_image",
-    "field_gtm_id",
-    "body",
-  ]);
+  .addFields("node--page", [ "title", "field_primary_color", "field_primary_color", "field_logo", "field_telegram_chat_id", "field_communication_language", "field_metatags", "field_image", "field_gtm_id", "body", ]);
 
 let pageData;
 
 const queryString = param21.getQueryString({ encode: false });
 
 try {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-      "/jsonapi/node/page?jsonapi_include=1&" +
-      queryString,
-    { next: { revalidate: 0 } },
-    { cache: "no-store" }
-  );
+  const response = await fetch( process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + "/jsonapi/node/page?jsonapi_include=1&" + queryString );
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }
@@ -185,9 +164,7 @@ export async function generateMetadata({ params }) {
 
 export default function RootLayout({ children, params }) {
   const messages = useMessages();
-
   const dir = isRtlLang(params.locale) ? "rtl" : "ltr";
-
   unstable_setRequestLocale(params.locale);
 
   return (

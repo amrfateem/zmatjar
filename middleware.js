@@ -1,8 +1,6 @@
 import createMiddleware from "next-intl/middleware";
 import { defaultLocale, locales } from "./i18nconfig";
 
-console.log("defaultLocale", defaultLocale);
-
 export default createMiddleware({
   locales,
   defaultLocale,

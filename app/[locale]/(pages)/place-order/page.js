@@ -1,21 +1,8 @@
 "use client";
-import {
-  bypassGeoState,
-  cartState,
-  chargesState,
-  countState,
-  manualAddressState,
-  minimumOrderState,
-  specialInstructionsState,
-  storeLangState,
-  sumState,
-  telegramChatIdState,
-  userLocationState,
-} from "../../atoms";
+import { bypassGeoState, cartState, chargesState, countState, manualAddressState, minimumOrderState, specialInstructionsState, storeLangState, sumState, telegramChatIdState, userLocationState, } from "../../atoms";
 import { Button, Modal } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useRecoilState, useRecoilValue } from "recoil";
 import * as turf from "@turf/turf";

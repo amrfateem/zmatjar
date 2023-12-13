@@ -13,10 +13,6 @@ config.autoAddCss = false;
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { unstable_setRequestLocale } from "next-intl/server";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
-
 
 export default async function Home({ params }) {
   const params1 = new DrupalJsonApiParams()
@@ -30,14 +26,7 @@ export default async function Home({ params }) {
   let products;
 
   try {
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-        `/${params.locale}/` +
-        "/jsonapi/node/product?jsonapi_include=1&" +
-        queryString,
-      { next: { revalidate: 0 } },
-      { cache: "no-store" }
-    );
+    const response = await fetch( process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + `/${params.locale}/` + "/jsonapi/node/product?jsonapi_include=1&" + queryString);
     if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
@@ -171,14 +160,7 @@ export default async function Home({ params }) {
   const pageQuery = param21.getQueryString({ encode: false });
 
   try {
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-        `/${params.locale}/` +
-        "/jsonapi/node/page?jsonapi_include=1&" +
-        pageQuery,
-      { next: { revalidate: 0 } },
-      { cache: "no-store" }
-    );
+    const response = await fetch( process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + `/${params.locale}/` + "/jsonapi/node/page?jsonapi_include=1&" + pageQuery );
 
     if (!response.ok) {
       throw new Error("Failed to fetch data");
@@ -212,7 +194,7 @@ export default async function Home({ params }) {
       {/* 
       <Offers /> */}
 
-      <NavBar categories={uniqueCategories} locale={params.locale}/>
+      <NavBar categories={uniqueCategories}/>
 
       {mostSellingProducts.length > 0 && (
         <MostSelling mostSelling={mostSellingProducts} />
@@ -221,7 +203,6 @@ export default async function Home({ params }) {
       <MainItems data={sortedCategorizedMenu} />
 
       <Footer
-        locale={params.locale}
         charges={page[0].field_delivery_charges}
         location={page[0].field_location.uri}
         whatsapp={page[0].field_whatsapp}

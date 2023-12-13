@@ -11,22 +11,15 @@ import {
   telegramChatIdState,
 } from "../atoms";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
-function Footer({
-  charges,
-  location,
-  whatsapp,
-  phone,
-  minimum,
-  telegramId,
-  storeLang,
-  locale,
-}) {
+function Footer({ charges, location, whatsapp, phone, minimum, telegramId, storeLang, }) {
   const router = useRouter();
+  const locale = useLocale();
   const [offsetTop, setOffsetTop] = useState(0);
   const count = useRecoilValue(countState);
   const sum = useRecoilValue(sumState);
+  const [isOverMinimum, setIsOverMinimum] = useState(false);
 
   const [deliveryCharges, setDeliveryCharges] = useRecoilState(chargesState);
   const [minimumOrder, setMinimumOrder] = useRecoilState(minimumOrderState);
@@ -58,6 +51,23 @@ function Footer({
 
   const t = useTranslations();
 
+ 
+  useEffect(() => {
+    if (sum >= minimum) {
+      setIsOverMinimum(false);
+    }  
+
+  }, [sum])
+
+  const handleCart = () => {
+    if (sum <= minimumOrder) {
+      setIsOverMinimum(true);
+    } else {
+      setIsOverMinimum(false);
+      router.push(`/${locale}/cart`);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-center items-center ">
@@ -67,7 +77,7 @@ function Footer({
       </div>
 
       <a
-        className={`flex justify-center items-center py-2 text-faded-0 text-sm bg-[#F5F5F5] text-center ${
+        className={`flex justify-center items-center py-2 text-faded-0 text-sm bg-[#F5F5F5] font-ITC-BK rtl:font-DIN-Bold text-center ${
           count > 0 ? " pb-[140px]" : "pb-[85px]"
         }`}
         href={`https://www.zmatjar.com/?utm_content=powered-by&utm_source=${subdomain}&utm_medium=business-storefront&utm_campaign=business-partner`}
@@ -82,8 +92,8 @@ function Footer({
           offsetTop > 500 ? "" : "translate-y-full invisible"
         }`}
       >
-        {count > 0 && minimum > sum && (
-          <div className="items-start p-2 px-3 text-sm  text-start font-ITC-BK rtl:font-DIN-Bold">
+        {isOverMinimum && (
+          <div className="items-start p-2 px-3 text-xs  text-start font-ITC-BK rtl:font-DIN-Bold">
             <p>
               {t("minimum")} {t("currency", { price: minimum })}
             </p>
@@ -92,9 +102,7 @@ function Footer({
         {count > 0 && (
           <div
             className="cart flex justify-between items-center  mx-3 my-2 px-4 py-2 text-white rounded-md cursor-pointer bg-secondry"
-            onClick={() => {
-              minimum > sum ? "" : router.push(`/${locale}/cart`);
-            }}
+            onClick={handleCart}
           >
             <div className="basket-txt font-ITC-BK rtl:font-DIN-Bold text-xs uppercase">
               {t("home.view_basket")}
