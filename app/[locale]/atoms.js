@@ -30,7 +30,7 @@ const localStorageEffect =
 
 export const cartState = atom({
   key: "cartState",
-  default: [""],
+  default: [],
   effects: [localStorageEffect("cartState")], // Add the local storage effect
 });
 

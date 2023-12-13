@@ -1,7 +1,15 @@
 "use client";
-import React from "react";
+import  { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { cartState, chargesState, countState, minimumOrderState, specialInstructionsState, sumState, totalState, } from "../../../atoms";
+import {
+  cartState,
+  chargesState,
+  countState,
+  minimumOrderState,
+  specialInstructionsState,
+  sumState,
+  totalState,
+} from "../../../atoms";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "flowbite-react";
 import { useRouter } from "next/navigation";
@@ -11,6 +19,7 @@ function CartBody() {
   const [cart, setCart] = useRecoilState(cartState || []);
   const [count, setCount] = useRecoilState(countState || 0);
   const [sum, setSum] = useRecoilState(sumState || 0);
+  const [isOverMinimum, setIsOverMinimum] = useState(false);
   const router = useRouter();
   const locale = useLocale();
 
@@ -63,6 +72,21 @@ function CartBody() {
         Number(prevSum.toFixed(2)) - Number(cart[itemId].price.toFixed(2))
     );
     setCount((prevCount) => prevCount - 1);
+  };
+
+  useEffect(() => {
+    if (sum >= minimum) {
+      setIsOverMinimum(false);
+    }
+  }, [sum, minimum]);
+
+  const handleCart = () => {
+    if (sum < Number(minimum)) {
+      setIsOverMinimum(true);
+    } else {
+      setIsOverMinimum(false);
+      router.push(`/${locale}/delivery-location`);
+    }
   };
 
   return (
@@ -168,13 +192,10 @@ function CartBody() {
           </div>
         </div>
       )}
-      {count > 0 && minimum > sum && (
-        <div
-          className="items-start p-2 px-3 text-sm  text-start"
-          suppressHydrationWarning={true}
-        >
+      {isOverMinimum && (
+        <div className="items-start p-2 px-3 text-xs  text-start font-ITC-BK rtl:font-DIN-Bold">
           <p>
-            {t("minimum")} {minimum}
+            {t("minimum")} {t("currency", { price: minimum })}
           </p>
         </div>
       )}
@@ -186,9 +207,7 @@ function CartBody() {
           <Button
             color={"bg-secondry"}
             className="uppercase w-full bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent "
-            onClick={() => {
-              minimum > sum ? "" : router.push(`/${locale}/delivery-location`);
-            }}
+            onClick={handleCart}
           >
             {t("cart.checkout")}
           </Button>
