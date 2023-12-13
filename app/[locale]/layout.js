@@ -5,6 +5,7 @@ import RecoidContextProvider from "./recoilContextProvider";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { isRtlLang } from "rtl-detect";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -228,7 +229,9 @@ export default function RootLayout({ children, params: { locale } }) {
         />
 
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <RecoidContextProvider>{children}</RecoidContextProvider>
+          <RecoidContextProvider>{children}
+          <SpeedInsights/>
+          </RecoidContextProvider>
         </NextIntlClientProvider>
       </body>
     </html>
