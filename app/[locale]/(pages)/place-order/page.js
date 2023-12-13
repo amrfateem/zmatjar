@@ -10,8 +10,9 @@ export function generateStaticParams() {
 
 function PlaceOrder({ params: { locale } }) {
   // Router
-  const t = useTranslations();
   unstable_setRequestLocale(locale);
+
+  const t = useTranslations();
 
   return (
     <>

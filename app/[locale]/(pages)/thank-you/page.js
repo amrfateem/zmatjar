@@ -9,8 +9,9 @@ export function generateStaticParams() {
 }
 
 function Page({ params: { locale } }) {
-  const t = useTranslations();
   unstable_setRequestLocale(locale)
+
+  const t = useTranslations();
 
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-x-[1px] h-screen">

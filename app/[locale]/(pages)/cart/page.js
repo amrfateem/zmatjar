@@ -10,8 +10,8 @@ export function generateStaticParams() {
 }
 
 function Cart({ params: { locale } }) {
-  const t = useTranslations();
   unstable_setRequestLocale(locale);
+  const t = useTranslations();
 
   return (
     <div className="text-start m-0 mx-auto max-w-[460px] border-solid border-[#dfe2e7] border-[1px] h-full min-h-screen relative">
