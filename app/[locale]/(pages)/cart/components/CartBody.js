@@ -1,5 +1,5 @@
 "use client";
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   cartState,
@@ -192,18 +192,19 @@ function CartBody() {
           </div>
         </div>
       )}
-      {isOverMinimum && (
-        <div className="items-start p-2 px-3 text-xs  text-start font-ITC-BK rtl:font-DIN-Bold">
-          <p>
-            {t("minimum")} {t("currency", { price: minimum })}
-          </p>
-        </div>
-      )}
+
       {count == 0 ? null : (
         <div
           className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0  shadow-custom-up"
           suppressHydrationWarning={true}
         >
+          {isOverMinimum && (
+            <div className="items-start pb-4 text-xs  text-start font-ITC-BK rtl:font-DIN-Bold">
+              <p>
+                {t("minimum")} {t("currency", { price: minimum })}
+              </p>
+            </div>
+          )}
           <Button
             color={"bg-secondry"}
             className="uppercase w-full bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent "

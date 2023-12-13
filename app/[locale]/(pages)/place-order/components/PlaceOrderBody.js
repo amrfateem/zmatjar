@@ -389,6 +389,7 @@ function PlaceOrderBody() {
               >
                 {t("place_order.terms")}
               </a>
+              {" "}{t("place_order.terms_tail")}{" "}
             </label>
           </div>
         </div>

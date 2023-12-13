@@ -155,7 +155,7 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
                   </g>
                 </g>
               </svg>
-              <span className=" transition-all duration-300 ease-in justify-center w-4 h-4 rounded-full text-on-primary bg-primary text-xs leading-4 absolute top-0 ltr:right-3 rtl:left-3 bg-white text-black text-center">
+              <span className=" transition-all duration-300 ease-in justify-center w-4 h-4 rounded-full text-on-primary bg-primary text-xs leading-4 absolute top-0 ltr:right-3 rtl:left-3 bg-white text-secondry text-center">
                 {count}
               </span>
             </div>
