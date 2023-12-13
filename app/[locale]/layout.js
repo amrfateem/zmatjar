@@ -10,11 +10,11 @@ const inter = Inter({ subsets: ["latin"] });
 
 import { locales } from "@/i18nconfig";
 import { unstable_setRequestLocale } from "next-intl/server";
+import Script from "next/script";
 
-// export function generateStaticParams() {
-//   console.log(locales);
-//   return locales.map((locale) => ({ locale }));
-// }
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 function saveOrUpdateUTMParameters() {
   if (typeof window !== "undefined") {
@@ -75,14 +75,29 @@ function setCookie(name, value, days) {
 
 const param21 = new DrupalJsonApiParams()
   .addInclude(["field_logo", "field_image"])
-  .addFields("node--page", [ "title", "field_primary_color", "field_primary_color", "field_logo", "field_telegram_chat_id", "field_communication_language", "field_metatags", "field_image", "field_gtm_id", "body", ]);
+  .addFields("node--page", [
+    "title",
+    "field_primary_color",
+    "field_primary_color",
+    "field_logo",
+    "field_telegram_chat_id",
+    "field_communication_language",
+    "field_metatags",
+    "field_image",
+    "field_gtm_id",
+    "body",
+  ]);
 
 let pageData;
 
 const queryString = param21.getQueryString({ encode: false });
 
 try {
-  const response = await fetch( process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + "/jsonapi/node/page?jsonapi_include=1&" + queryString );
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
+      "/jsonapi/node/page?jsonapi_include=1&" +
+      queryString
+  );
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }
@@ -92,23 +107,12 @@ try {
   console.error(error);
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params: { locale } }) {
   const param21 = new DrupalJsonApiParams()
-    .addInclude(["field_logo", "field_image", "field_branch"])
+    .addInclude(["field_logo"])
     .addFields("node--page", [
       "title",
-      "field_primary_color",
       "field_logo",
-      "field_telegram_chat_id",
-      "field_communication_language",
-      "field_metatags",
-      "field_image",
-      "field_location",
-      "field_gtm_id",
-      "field_image",
-      "field_business",
-      "field_logo",
-      "field_branch",
       "body",
     ]);
   let page;
@@ -118,7 +122,7 @@ export async function generateMetadata({ params }) {
   try {
     const response = await fetch(
       process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-        `/${params.locale}/` +
+        `/${locale}/` +
         "/jsonapi/node/page?jsonapi_include=1&" +
         pageQuery,
       { next: { revalidate: 0 } },
@@ -129,46 +133,43 @@ export async function generateMetadata({ params }) {
       throw new Error("Failed to fetch data");
     }
     const data = await response.json();
-    page = data.data;
+    page = data.data[0];
   } catch (error) {
     console.error(error);
   }
 
   return {
-    title: page[0].title,
-    description: page[0].body?.value,
+    title: page.title,
+    description: page.body?.value,
     icons: {
       icon: [
         {
           url:
-            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-            page[0].field_logo.uri.url,
+            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url,
         },
         new URL(
-          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
-          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url
+          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url,
+          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url
         ),
       ],
       shortcut:
-        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
-      apple:
-        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url,
+      apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url,
       other: {
         rel: "apple-touch-icon-precomposed",
-        url:
-          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page[0].field_logo.uri.url,
+        url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url,
       },
     },
   };
 }
 
-export default function RootLayout({ children, params }) {
+export default function RootLayout({ children, params: { locale } }) {
   const messages = useMessages();
-  const dir = isRtlLang(params.locale) ? "rtl" : "ltr";
-  unstable_setRequestLocale(params.locale);
+  const dir = isRtlLang(locale) ? "rtl" : "ltr";
+  unstable_setRequestLocale(locale);
 
   return (
-    <html lang={params.locale} dir={dir}>
+    <html lang={locale} dir={dir}>
       <head>
         <meta name="robots" content={pageData[0].field_metatags?.robots} />
         <link rel="canonical" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
@@ -198,7 +199,8 @@ export default function RootLayout({ children, params }) {
           }
         />
 
-        <script
+        <Script
+          id="google-analytics"
           dangerouslySetInnerHTML={{
             __html: `
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -225,7 +227,7 @@ export default function RootLayout({ children, params }) {
           }}
         />
 
-        <NextIntlClientProvider locale={params.locale} messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <RecoidContextProvider>{children}</RecoidContextProvider>
         </NextIntlClientProvider>
       </body>

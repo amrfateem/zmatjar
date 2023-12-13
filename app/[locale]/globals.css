@@ -55,6 +55,10 @@
   height: revert-layer !important;
 }
 
+.first-div-fix > div:first-child {
+height: 100%;
+}
+
 .active-svg svg,
 .active-svg,
 .svg-inline--fa {

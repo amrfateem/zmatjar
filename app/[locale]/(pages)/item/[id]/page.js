@@ -1,17 +1,15 @@
 "use client";
-import { modalDataState, selectedItemState } from "@/app/[locale]/atoms";
 import { Modal } from "flowbite-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
-import { useRecoilState } from "recoil";
+import { useState } from "react";
 
 function Item({ params }) {
-  const router  = useRouter();
-  const [modalData, setModalData] = useRecoilState(modalDataState);
+  const router = useRouter();
+  const [modalData, setModalData] = useState(null);
 
-  const t = useTranslations()
+  const t = useTranslations();
 
   return (
     <div>
@@ -23,8 +21,7 @@ function Item({ params }) {
           },
         }}
         onClose={() => router.back()}
-        closable={true}
-        
+        dismissible
         position={"bottom-center"}
         className="w-full p-0"
         style={{
@@ -51,7 +48,7 @@ function Item({ params }) {
             ></Image>
             {modalData?.name}
             <p className="text-base leading-relaxed text-secondry">
-            {t("currency", { price: modalData?.price })}
+              {t("currency", { price: modalData?.price })}
             </p>
           </div>
         </Modal.Header>

@@ -33,7 +33,7 @@ function page() {
       </div>
 
       <div className="text-center m-auto py-40 ">
-        <p>Sorry, This page doesn't exist. Return to home page</p>
+        <p>Sorry, This page doesn&apos;t exist. Return to home page</p>
       </div>
 
       <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0 shadow-custom-up ">

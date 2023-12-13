@@ -1,15 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import Contacts from "./Contacts";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  chargesState,
-  countState,
-  minimumOrderState,
-  storeLangState,
-  sumState,
-  telegramChatIdState,
-} from "../atoms";
+import { chargesState, countState, minimumOrderState, storeLangState, sumState, telegramChatIdState, } from "../atoms";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -51,13 +44,11 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
 
   const t = useTranslations();
 
- 
   useEffect(() => {
     if (sum >= minimum) {
       setIsOverMinimum(false);
-    }  
-
-  }, [sum])
+    }
+  }, [sum, minimum]);
 
   const handleCart = () => {
     if (sum <= minimumOrder) {

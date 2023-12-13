@@ -1,40 +1,36 @@
 "use client";
-import { atom, selector } from "recoil";
+import { atom } from "recoil";
 
 const localStorageEffect =
   (key) =>
   ({ setSelf, onSet }) => {
     if (typeof window === "undefined") {
+      // Running on the server side
       return;
     }
+
     const savedValue = localStorage.getItem(key);
+
     if (savedValue != null) {
       setSelf(JSON.parse(savedValue));
     }
 
     onSet((newValue, _, isReset) => {
       if (typeof window === "undefined") {
+        // Running on the server side
         return;
       }
+
       isReset
         ? localStorage.removeItem(key)
         : localStorage.setItem(key, JSON.stringify(newValue));
     });
   };
-
-export const itemsState = atom({
-  key: "itemsState",
-  default: [],
-});
-
-export const categoriesState = atom({
-  key: "categoriesState",
-  default: [],
-});
+  
 
 export const cartState = atom({
   key: "cartState",
-  default: [],
+  default: [""],
   effects: [localStorageEffect("cartState")], // Add the local storage effect
 });
 
@@ -56,18 +52,6 @@ export const totalState = atom({
   effects: [localStorageEffect("totalState")],
 });
 
-export const modalState = atom({
-  key: "modalState",
-  default: {
-    isOpen: false,
-  },
-});
-
-export const modalDataState = atom({
-  key: "modalDataState",
-  default: null,
-});
-
 export const colStyleState = atom({
   key: "colStyleState",
   default: "grid",
@@ -76,7 +60,7 @@ export const colStyleState = atom({
 
 export const userLocationState = atom({
   key: "userLocationState",
-  default: { lat: 0 ,lng: 0 },
+  default: { lat: 0, lng: 0 },
   effects: [localStorageEffect("userLocationState")],
 });
 
@@ -122,15 +106,4 @@ export const manualAddressState = atom({
 export const bypassGeoState = atom({
   key: "bypassGeoState",
   default: false,
-});
-
-export const filteredItemsState = selector({
-  key: "filteredItemsState",
-  get: ({ get }) => {
-    const search = get(searchState);
-    const allItems = get(itemsState); // Assume you have itemsState atom defined somewhere
-    return allItems.filter((item) =>
-      item.name.toLowerCase().includes(search.toLowerCase())
-    );
-  },
 });

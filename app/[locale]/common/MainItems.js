@@ -8,7 +8,6 @@ import {
   countState,
   sumState,
   searchState,
-  modalDataState,
 } from "../atoms";
 import { Button, Modal } from "flowbite-react";
 import { useTranslations } from "next-intl";
@@ -26,7 +25,7 @@ function MainItems({ data }) {
   const [sum, setSum] = useRecoilState(sumState);
 
   const [openModal, setOpenModal] = useState(false);
-  const [modalData, setModalData] = useRecoilState(modalDataState);
+  const [modalData, setModalData] = useState(null);
 
   const [searchTerm, setSearchTerm] = useRecoilState(searchState);
 
@@ -257,7 +256,7 @@ function MainItems({ data }) {
           }}
           show={openModal}
           onClose={handleCloseModal}
-          closable={true}
+          dismissible
           position={"bottom-center"}
           className=" p-0 rounded-none "
           style={{
@@ -324,7 +323,7 @@ function MainItems({ data }) {
                       <path d="M12 2C17.5228 2 22 6.47725 22 12C22 17.5228 17.5228 22 12 22C6.47717 22 2 17.5228 2 12C2 6.47725 6.47717 2 12 2ZM12 20C16.4113 20 20 16.4113 20 12C20 7.58875 16.4113 4 12 4C7.58875 4 4 7.58875 4 12C4 16.4113 7.58875 20 12 20ZM7 13.5V10.5H17V13.5H7Z"></path>
                     </svg>
                   </button>
-                  <span className=" font-ITC-BK rtl:font-DIN-Bold text-sm text-secondry font-ITC-BK rtl:font-DIN-Bold">
+                  <span className=" text-sm text-secondry font-ITC-BK rtl:font-DIN-Bold">
                     {cart[modalData?.id].quantity}
                   </span>
                   <button

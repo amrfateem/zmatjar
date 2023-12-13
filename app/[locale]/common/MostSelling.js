@@ -5,7 +5,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   cartState,
   countState,
-  modalDataState,
   searchState,
   sumState,
 } from "../atoms";
@@ -22,7 +21,7 @@ function MostSelling({ mostSelling }) {
   const [sum, setSum] = useRecoilState(sumState);
 
   const [openModal, setOpenModal] = useState(false);
-  const [modalData, setModalData] = useRecoilState(modalDataState);
+  const [modalData, setModalData] = useState(null);
 
   const search = useRecoilValue(searchState);
 
@@ -179,7 +178,7 @@ function MostSelling({ mostSelling }) {
             }}
             show={openModal}
             onClose={handleCloseModal}
-            closable={true}
+            dismissible
             position={"bottom-center"}
             className="w-full p-0"
             style={{

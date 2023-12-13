@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-scroll";
 import { useRecoilState } from "recoil";
-import { categoriesState, colStyleState, searchState } from "../atoms";
+import { colStyleState, searchState } from "../atoms";
 import { useTranslations } from "next-intl";
 
 function NavBar({ categories }) {
@@ -10,10 +10,6 @@ function NavBar({ categories }) {
   const [show, setShow] = useState(false);
   const [colStyle, setColStyle] = useRecoilState(colStyleState);
   const [isSticky, setIsSticky] = useState(false);
-
-  const [cats, setCats] = useRecoilState(categoriesState);
-
-  setCats(categories);
 
   const t = useTranslations();
 
@@ -72,7 +68,7 @@ function NavBar({ categories }) {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isSticky, activeSection]);
+  }, [isSticky, activeSection, categories]);
 
   return (
     <div id="nav" className="h-12 relative shadow-custom">
@@ -140,7 +136,10 @@ function NavBar({ categories }) {
               ))}
             </div>
 
-            <a className="self-center cursor-pointer" onClick={() => setShow(true)}>
+            <a
+              className="self-center cursor-pointer"
+              onClick={() => setShow(true)}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 122.879 119.799"
