@@ -51,7 +51,7 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
   }, [sum, minimum]);
 
   const handleCart = () => {
-    if (sum <= minimumOrder) {
+    if (sum < Number(minimum)) {
       setIsOverMinimum(true);
     } else {
       setIsOverMinimum(false);

@@ -30,15 +30,6 @@ function NavBar({ categories }) {
   };
   useEffect(() => {
     const handleScroll = () => {
-      const offset = window.scrollY;
-      const navElement = document.getElementById("nav");
-      const threshold = navElement.offsetTop;
-
-      if (offset >= threshold && !isSticky) {
-        setIsSticky(true);
-      } else if (offset < threshold && isSticky) {
-        setIsSticky(false);
-      }
       const sections = categories.map((category, i) => ({
         id: `cat${i}`,
         link: `link${i}`,
@@ -71,11 +62,9 @@ function NavBar({ categories }) {
   }, [isSticky, activeSection, categories]);
 
   return (
-    <div id="nav" className="h-12 relative shadow-custom">
+    <div id="nav" className="h-12 shadow-custom sticky top-0 z-50">
       <div
-        className={`bg-white flex py-2 px-2 gap-2 z-20 overflow-hidden w-full max-w-[460px] ${
-          isSticky ? "fixed top-0" : ""
-        }`}
+        className={`bg-white flex py-2 px-2 gap-2 z-50 overflow-hidden w-full max-w-[460px] sticky top-0`}
       >
         {!show ? (
           <>
