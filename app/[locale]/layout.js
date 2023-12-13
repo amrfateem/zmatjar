@@ -5,7 +5,7 @@ import RecoidContextProvider from "./recoilContextProvider";
 import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { isRtlLang } from "rtl-detect";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -109,56 +109,41 @@ try {
 }
 
 export async function generateMetadata({ params: { locale } }) {
-  const param21 = new DrupalJsonApiParams()
-    .addInclude(["field_logo"])
-    .addFields("node--page", [
-      "title",
-      "field_logo",
-      "body",
-    ]);
   let page;
-
-  const pageQuery = param21.getQueryString({ encode: false });
-
   try {
     const response = await fetch(
-      process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-        `/${locale}/` +
-        "/jsonapi/node/page?jsonapi_include=1&" +
-        pageQuery,
-      { next: { revalidate: 0 } },
-      { cache: "no-store" }
+      `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/store-metadata.json?lang=${locale}`
     );
 
     if (!response.ok) {
       throw new Error("Failed to fetch data");
     }
     const data = await response.json();
-    page = data.data[0];
+    page = data[0];
   } catch (error) {
     console.error(error);
   }
 
   return {
     title: page.title,
-    description: page.body?.value,
+    description: page.body,
     icons: {
       icon: [
         {
           url:
-            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url,
+            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
         },
         new URL(
-          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url,
-          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url
+          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo
         ),
       ],
       shortcut:
-        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url,
-      apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url,
+        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+      apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
       other: {
         rel: "apple-touch-icon-precomposed",
-        url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.field_logo.uri.url,
+        url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
       },
     },
   };
@@ -229,8 +214,9 @@ export default function RootLayout({ children, params: { locale } }) {
         />
 
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <RecoidContextProvider>{children}
-          <SpeedInsights/>
+          <RecoidContextProvider>
+            {children}
+            <SpeedInsights />
           </RecoidContextProvider>
         </NextIntlClientProvider>
       </body>
