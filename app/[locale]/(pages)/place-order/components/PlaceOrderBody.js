@@ -68,9 +68,9 @@ function PlaceOrderBody() {
     minTime = currentDubaiTime;
   }
 
-  console.log("Current UTC Time:", currentUTCTime);
-  console.log("Current Dubai Time:", currentDubaiTime);
-  console.log("Updated Min Time:", minTime);
+  // console.log("Current UTC Time:", currentUTCTime);
+  // console.log("Current Dubai Time:", currentDubaiTime);
+  // console.log("Updated Min Time:", minTime);
 
   useEffect(() => {
     const checkTime = () => {
@@ -82,7 +82,7 @@ function PlaceOrderBody() {
       if (currentTime >= maxTime && currentTime < minTime) {
         setShowTimePicker(true);
         setClosingTime(true);
-        setWarning(true);
+        // setWarning(true);
       }
     };
 
@@ -114,8 +114,10 @@ function PlaceOrderBody() {
   // Gets the correct time format and sends it back
   const handleTimeChange = (e) => {
 console.log(e.target.checkValidity());
-    if (!e.target.checkValidity() ) {
+    if (e.target.checkValidity() ) {
       setWarning(true);
+    } else {
+      setWarning(false);
     }
     const currentDate = new Date().toISOString();
     const currentLocal = new Date();
@@ -128,42 +130,28 @@ console.log(e.target.checkValidity());
     const scheduledDateTime = new Date(combinedDateTime);
     if (selectedTime > maxTime) {
       // alert the user and trigger validation error
-
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(
-        2,
-        "0"
-      );
-      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+      const day = String(scheduledDateTime.getUTCDate()+1).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(
-        2,
-        "0"
-      );
-      const formattedDateTime = `${year}-${month}-${day}T${
-        hours + ":" + minutes
-      }:00`;
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
       setDeliveryTime(formattedDateTime);
     } else {
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(
-        2,
-        "0"
-      );
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(
-        2,
-        "0"
-      );
-      const formattedDateTime = `${year}-${month}-${day}T${
-        hours + ":" + minutes
-      }:00`;
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+
       setDeliveryTime(formattedDateTime);
     }
-  };
+
+
+  }
 
   // Gets the current time and sends it back
   const getCurrentTime = () => {
@@ -378,14 +366,18 @@ console.log(e.target.checkValidity());
                   className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full time-fix-input"
                 />
 
-              <p className="text-red-600 text-xs font-ITC-BK rtl:font-DIN-Bold">
+              <p className= {`text-xs font-ITC-BK rtl:font-DIN-Bold ${!warning ? "text-red-600" : "text-black"}`}>
                     {t("place_order.schedule_warning", {
                       date:
+                      selectedTime > maxTime ? 
+                        new Date().getDate() + 1 +
+                        "/" +
+                        (new Date().getMonth() + 1) :
                         new Date().getDate() +
                         "/" +
                         (new Date().getMonth() + 1),
                       time:
-                        selectedTime && selectedTime > minTime
+                        selectedTime < maxTime && selectedTime > minTime
                           ? new Date(`2000-01-01T${selectedTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                           :new Date(`2000-01-01T${minTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                     })}
