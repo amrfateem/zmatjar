@@ -36,6 +36,9 @@ function PlaceOrderBody({ time }) {
   const serverTime = Date(time);
   // console.log(serverTime);
   const currentDubaiTime = addHours(new Date(serverTime), 4);
+
+  console.log(serverTime);
+  console.log(currentDubaiTime);
   const [deliveryTime, setDeliveryTime] = useState(
     addHours(new Date(currentDubaiTime), 1)
   );
