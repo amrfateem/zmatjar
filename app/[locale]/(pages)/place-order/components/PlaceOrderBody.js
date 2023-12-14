@@ -63,6 +63,7 @@ function PlaceOrderBody({ time, locale }) {
     } 
     const checkTime = () => {
       const currentTime = dubaiTime;
+      console.log(currentTime < minTime);
       if (currentTime >= maxTime || currentTime < minTime) {
         setShowTimePicker(true);
         setClosingTime(true);

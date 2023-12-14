@@ -50,7 +50,7 @@
     "schedule_warning_1": "لا يمكنك القيام بتحديد معاد توصيل ماضي",
     "schedule_warning_2": "نحن نعتذر, لا يمكننا توصيل طلبك في وقت الإغلاق",
     "schedule_warning_3": "سوف يتم توصيل طلبك {day} {date} في {time}",
-    "schedule_warning_4": "it's past closing Tim",
+    "schedule_warning_4": "يرجي اختيار وقت لاحق",
     "today": "اليوم",
     "tomorrow": "غداً",
     "email": "البريد الإلكتروني",
