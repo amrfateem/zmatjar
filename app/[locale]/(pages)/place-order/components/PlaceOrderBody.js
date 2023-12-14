@@ -67,9 +67,10 @@ function PlaceOrderBody() {
       const minutes = now.getMinutes().toString().padStart(2, "0");
       const currentTime = `${hours}:${minutes}`;
 
-      if (currentTime >= maxTime || currentTime < minTime) {
+      if (currentTime >= maxTime && currentTime < minTime) {
         setShowTimePicker(true);
         setClosingTime(true);
+        setWarning(true);
       }
     };
 
@@ -110,7 +111,7 @@ function PlaceOrderBody() {
     console.log(selectedTime < maxTime);
     if (selectedTime > maxTime) {
       // alert the user and trigger validation error
-      setWarning(true);
+
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
       const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
