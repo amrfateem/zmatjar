@@ -45,7 +45,10 @@ export default async function Home({ params: { locale } }) {
       process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
         `/${locale}/` +
         "/jsonapi/node/product?jsonapi_include=1&" +
-        queryString
+        queryString,
+      {
+        cache: "no-cache",
+      }
     );
     if (!response.ok) {
       throw new Error("Failed to fetch data");
@@ -185,6 +188,9 @@ export default async function Home({ params: { locale } }) {
         `/${locale}/` +
         "/jsonapi/node/page?jsonapi_include=1&" +
         pageQuery
+        ,{
+          cache: "no-cache",
+        }
     );
 
     if (!response.ok) {

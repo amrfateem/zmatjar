@@ -12,9 +12,10 @@ import "react-intl-tel-input/dist/main.css";
 import isValidPhoneNumber from "libphonenumber-js";
 import { useTranslations } from "next-intl";
 
-function PlaceOrderBody() {
+function PlaceOrderBody({time}) {
   const t = useTranslations();
 
+  console.log(time);
   // Handling User error
   const [errorModal, setErrorModal] = useState(false);
   const [modalErrormsg, setModalErrormsg] = useState("");
@@ -29,14 +30,7 @@ function PlaceOrderBody() {
 
   // States from this page
   const [selectedTime, setSelectedTime] = useState("");
-  const [deliveryTime, setDeliveryTime] = useState(
-    `${new Date().toISOString().split("T")[0]}T${String(
-      (new Date().getUTCHours() + 1) % 24
-    ).padStart(2, "0")}:${new Date()
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}:00`
-  );
+  const [deliveryTime, setDeliveryTime] = useState(`${new Date().toISOString().split("T")[0]}T${String( (new Date().getUTCHours() + 1) % 24 ).padStart(2, "0")}:${new Date() .getMinutes() .toString() .padStart(2, "0")}:00`);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [closingTime, setClosingTime] = useState(false);
 
@@ -46,8 +40,17 @@ function PlaceOrderBody() {
 
 
   const now = new Date();
-  now.setHours(now.getHours() + 1);
-  const currentDubaiTime = now .toLocaleString("en-US", { timeZone: "Asia/Dubai", hour12: false }) .split(", ")[1] .substring(0, 5);
+const utcTime = new Date(
+  now.getUTCFullYear(),
+  now.getUTCMonth(),
+  now.getUTCDate(),
+  now.getUTCHours(),
+  now.getUTCMinutes(),
+  now.getUTCSeconds(),
+  now.getUTCMilliseconds()
+);
+  utcTime.setHours(utcTime.getHours() + 1);
+  const currentDubaiTime = utcTime.toLocaleString("en-US", { timeZone: "Asia/Dubai", hour12: false }) .split(", ")[1] .substring(0, 5);
 
   useEffect(() => {
     if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
@@ -106,7 +109,7 @@ function PlaceOrderBody() {
     // Display the result
 
 
-    if ((minutesDifference > -65)) { setWarning(true); } else { setWarning(false); }
+    if ((minutesDifference > -70)) { setWarning(true); } else { setWarning(false); }
 
     const currentDate = new Date().toISOString();
     const currentLocal = new Date();

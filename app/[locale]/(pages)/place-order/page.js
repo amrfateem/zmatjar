@@ -11,8 +11,12 @@ export function generateStaticParams() {
 function PlaceOrder({ params: { locale } }) {
   // Router
   unstable_setRequestLocale(locale);
-
   const t = useTranslations();
+
+  let time = new Date().toLocaleTimeString()
+
+  console.log(time);
+
 
   return (
     <>
@@ -46,7 +50,7 @@ function PlaceOrder({ params: { locale } }) {
 
         {/* Header end */}
         {/* Inputs name, phone, email, address, check box to aknowlege */}
-        <PlaceOrderBody />
+        <PlaceOrderBody time={time} />
       </div>
     </>
   );
