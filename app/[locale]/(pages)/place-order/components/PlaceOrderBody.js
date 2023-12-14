@@ -19,6 +19,7 @@ function PlaceOrderBody({ time, locale }) {
   const [warning1, setWarning1] = useState(false);
   const [warning2, setWarning2] = useState(false);
   const [warning3, setWarning3] = useState(false);
+  const [warning4, setWarning4] = useState(false);
   const minimumOrder = useRecoilValue(minimumOrderState);
   const cartError = t("place_order.order_problem_body_cart");
   const subTotalError = t("place_order.order_problem_body_subtotal");
@@ -65,7 +66,9 @@ function PlaceOrderBody({ time, locale }) {
       if (currentTime >= maxTime || currentTime < minTime) {
         setShowTimePicker(true);
         setClosingTime(true);
-        setWarning3(true)
+        setWarning2(true)
+
+        
       }
     };
 
@@ -76,40 +79,57 @@ function PlaceOrderBody({ time, locale }) {
   const handleTimeChange = (e) => {
 
 
-    const OrderTime = new Date(`2023-01-01T${e.target.value}`);
-    const minTimeNow = new Date(`2023-01-01T${getHours(minTime)}:${getMinutes(minTime)}`);
+    const [minhours, minminutes] = minTime.split(":").map(String);
+    const currentDate = new Date();
+    const OrderTime = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate()}T${e.target.value}`);
+    const minTimeNow = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate()}T${minhours}:${minminutes}`);
 
     const selectedTime = e.target.value;
     const scheduledDateTime = OrderTime
     
-    console.log(selectedTime > minTime);
 
 
-    if (differenceInMinutes( OrderTime, minTimeNow ) < -1 && selectedTime < maxTime) {
+
+    if (differenceInMinutes( OrderTime, minTimeNow ) > 1 && selectedTime < maxTime) {
       // If order is in late time during hours
       setWarning1(true);
       setWarning2(false);
       setWarning3(false);
+      console.log("here");
+
     }
     else if  (selectedTime < minTime && selectedTime < maxTime) {
       setSelectedTime(selectedTime);
       setWarning2(true);
       setWarning3(true);
+      console.log("here");
+
+      const year = scheduledDateTime.getUTCFullYear();
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
+      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+      setDeliveryTime(formattedDateTime);
     }
     else if (selectedTime > maxTime && selectedTime < Date("00:00")) {
       setWarning1(false);
       setWarning2(true);
       setWarning3(true);
-      setSelectedTime(selectedTime);
-      const year = time.getUTCFullYear();
-      const month = String(time.getUTCMonth() + 1).padStart( 2, "0" );
-      const day = String(time.getUTCDate() + 1).padStart(2, "0");
-      const hours = String( new Date(`2023-01-01T${minTime}`).getUTCHours() ).padStart(2, "0");
-      const minutes = String( new Date(`2023-01-01T${minTime}`).getUTCMinutes() ).padStart(2, "0");
+      setWarning4(true);
 
+      setSelectedTime(selectedTime);
+      console.log("here");
+
+      const year = scheduledDateTime.getUTCFullYear();
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+      const day = String(scheduledDateTime.getUTCDate()+1).padStart(2, "0");
+      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
       const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
       setDeliveryTime(formattedDateTime);
     } else {
+      console.log("here");
       setWarning1(false);
       setWarning2(false);
       // setWarning3(true);
@@ -161,107 +181,109 @@ function PlaceOrderBody({ time, locale }) {
 
   // Sends the order through
   const handlePlaceOrder = async (e) => {
-    setSending(true);
+    // setSending(true);
     e.preventDefault();
 
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
+    console.log(deliveryTime);
 
-    let data = JSON.stringify({
-      name: e.target.name.value,
-      phone: phone,
-      countryCode: countryCode.toLocaleUpperCase(),
-      address: e.target.address.value,
-      email: e.target.email.value,
-      paymentMethod: e.target.payment.value,
-      language: "en",
-      communcationLanguage: storeLanguage,
-      scheduledDelivery: deliveryTime,
-      order: order,
-      subtotal: subtotal.toFixed(2),
-      charges: charges,
-      total: total,
-      coordinates: bypassGeo ? "" : `${location.lat}, ${location.lng}`,
-      specialInfo: specialInfo,
-      host: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL,
-      telegramChatId: telegramChatId,
-    });
+    // let headers = new Headers();
+    // headers.append("Content-Type", "application/json");
 
-    let requestOptions = {
-      method: "POST",
-      headers: headers,
-      body: data,
-      redirect: "follow",
-    };
+    // let data = JSON.stringify({
+    //   name: e.target.name.value,
+    //   phone: phone,
+    //   countryCode: countryCode.toLocaleUpperCase(),
+    //   address: e.target.address.value,
+    //   email: e.target.email.value,
+    //   paymentMethod: e.target.payment.value,
+    //   language: "en",
+    //   communcationLanguage: storeLanguage,
+    //   scheduledDelivery: deliveryTime,
+    //   order: order,
+    //   subtotal: subtotal.toFixed(2),
+    //   charges: charges,
+    //   total: total,
+    //   coordinates: bypassGeo ? "" : `${location.lat}, ${location.lng}`,
+    //   specialInfo: specialInfo,
+    //   host: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL,
+    //   telegramChatId: telegramChatId,
+    // });
 
-    const polygonCoords = [
-      [55.14743, 25.1245014],
-      [55.0018611, 25.0025914],
-      [55.0046077, 24.8955094],
-      [55.1309505, 24.7833473],
-      [55.3589168, 24.8132671],
-      [55.6473079, 24.8780687],
-      [55.8999934, 25.1443936],
-      [55.9247127, 25.3232768],
-      [55.836822, 25.5935836],
-      [55.6198421, 25.6282578],
-      [55.4715266, 25.5242049],
-      [55.3232112, 25.4225424],
-      [55.2133479, 25.2711297],
-      [55.1501765, 25.196595],
-      [55.14743, 25.1245014],
-    ];
+    // let requestOptions = {
+    //   method: "POST",
+    //   headers: headers,
+    //   body: data,
+    //   redirect: "follow",
+    // };
 
-    const currentLocation = [location.lng, location.lat];
-    const isWithinPolygon = turf.booleanPointInPolygon(
-      turf.point(currentLocation),
-      turf.polygon([polygonCoords])
-    );
+    // const polygonCoords = [
+    //   [55.14743, 25.1245014],
+    //   [55.0018611, 25.0025914],
+    //   [55.0046077, 24.8955094],
+    //   [55.1309505, 24.7833473],
+    //   [55.3589168, 24.8132671],
+    //   [55.6473079, 24.8780687],
+    //   [55.8999934, 25.1443936],
+    //   [55.9247127, 25.3232768],
+    //   [55.836822, 25.5935836],
+    //   [55.6198421, 25.6282578],
+    //   [55.4715266, 25.5242049],
+    //   [55.3232112, 25.4225424],
+    //   [55.2133479, 25.2711297],
+    //   [55.1501765, 25.196595],
+    //   [55.14743, 25.1245014],
+    // ];
 
-    if (Object.keys(order).length == 0) {
-      setErrorModal(true);
-      setModalErrormsg(cartError);
-      setSending(false);
-    } else if (subtotal.toFixed(2) < minimumOrder) {
-      setErrorModal(true);
-      setModalErrormsg(subTotalError);
-      setSending(false);
-    } else if (!bypassGeo && !isWithinPolygon) {
-      setErrorModal(true);
-      setModalErrormsg("We are sorry, we don't deliver to your location");
-      setSending(false);
-    } else if (!isValidPhoneNumber(phone).isValid()) {
-      setPhoneError(true);
-      setSending(false);
-    } else {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/place-order`,
-          requestOptions
-        );
+    // const currentLocation = [location.lng, location.lat];
+    // const isWithinPolygon = turf.booleanPointInPolygon(
+    //   turf.point(currentLocation),
+    //   turf.polygon([polygonCoords])
+    // );
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+    // if (Object.keys(order).length == 0) {
+    //   setErrorModal(true);
+    //   setModalErrormsg(cartError);
+    //   setSending(false);
+    // } else if (subtotal.toFixed(2) < minimumOrder) {
+    //   setErrorModal(true);
+    //   setModalErrormsg(subTotalError);
+    //   setSending(false);
+    // } else if (!bypassGeo && !isWithinPolygon) {
+    //   setErrorModal(true);
+    //   setModalErrormsg("We are sorry, we don't deliver to your location");
+    //   setSending(false);
+    // } else if (!isValidPhoneNumber(phone).isValid()) {
+    //   setPhoneError(true);
+    //   setSending(false);
+    // } else {
+    //   try {
+    //     const response = await fetch(
+    //       `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/place-order`,
+    //       requestOptions
+    //     );
 
-        const responseData = await response.json();
-        console.log("Success:", responseData);
-        setOrder([]);
-        setSubtotal(0);
-        setSum(0);
-        setCount(0);
-        setSending(false);
-        router.push(`/${locale}/thank-you`, undefined, { shallow: true });
-      } catch (error) {
-        setOrder([]);
-        setSubtotal(0);
-        setSum(0);
-        setCount(0);
-        console.error("Error:", error);
-        setSending(false);
-        router.push(`/${locale}/thank-you`, undefined, { shallow: true });
-      }
-    }
+    //     if (!response.ok) {
+    //       throw new Error(`HTTP error! Status: ${response.status}`);
+    //     }
+
+    //     const responseData = await response.json();
+    //     console.log("Success:", responseData);
+    //     setOrder([]);
+    //     setSubtotal(0);
+    //     setSum(0);
+    //     setCount(0);
+    //     setSending(false);
+    //     router.push(`/${locale}/thank-you`, undefined, { shallow: true });
+    //   } catch (error) {
+    //     setOrder([]);
+    //     setSubtotal(0);
+    //     setSum(0);
+    //     setCount(0);
+    //     console.error("Error:", error);
+    //     setSending(false);
+    //     router.push(`/${locale}/thank-you`, undefined, { shallow: true });
+    //   }
+    // }
   };
   return (
     <div>
