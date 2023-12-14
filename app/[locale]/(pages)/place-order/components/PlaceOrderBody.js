@@ -75,8 +75,6 @@ function PlaceOrderBody({ time, locale }) {
 
   // Gets the correct time format and sends it back
   const handleTimeChange = (e) => {
-
-
     const [minhours, minminutes] = minTime.split(":").map(String);
     const currentDate = new Date();
     const OrderTime = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate()}T${e.target.value}`);
@@ -86,9 +84,7 @@ function PlaceOrderBody({ time, locale }) {
     const scheduledDateTime = OrderTime
     
 
-
-
-    if (differenceInMinutes( OrderTime, minTimeNow ) > 1 && selectedTime < maxTime) {
+    if (differenceInMinutes( OrderTime, minTimeNow ) > 1 && selectedTime < minTime && selectedTime < maxTime ) {
       // If order is in late time during hours
       setWarning1(true);
       setWarning2(false);
@@ -126,20 +122,21 @@ function PlaceOrderBody({ time, locale }) {
       const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
       const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
       setDeliveryTime(formattedDateTime);
-    } else {
-      console.log("here");
-      setWarning1(false);
-      setWarning2(false);
-      // setWarning3(true);
-      setSelectedTime(selectedTime);
-      const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
-      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
-      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
-      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
-      setDeliveryTime(formattedDateTime);
-    }
+    } 
+    // else {
+    //   console.log("here");
+    //   setWarning1(false);
+    //   setWarning2(false);
+    //   // setWarning3(true);
+    //   setSelectedTime(selectedTime);
+    //   const year = scheduledDateTime.getUTCFullYear();
+    //   const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+    //   const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
+    //   const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+    //   const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+    //   const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+    //   setDeliveryTime(formattedDateTime);
+    // }
   };
 
   // Gets the current time and sends it back
