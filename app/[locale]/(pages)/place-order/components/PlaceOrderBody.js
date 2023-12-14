@@ -1,5 +1,17 @@
 "use client";
-import { bypassGeoState, cartState, chargesState, countState, manualAddressState, minimumOrderState, specialInstructionsState, storeLangState, sumState, telegramChatIdState, userLocationState, } from "../../../atoms";
+import {
+  bypassGeoState,
+  cartState,
+  chargesState,
+  countState,
+  manualAddressState,
+  minimumOrderState,
+  specialInstructionsState,
+  storeLangState,
+  sumState,
+  telegramChatIdState,
+  userLocationState,
+} from "../../../atoms";
 import { Button, Modal } from "flowbite-react";
 import { useEffect, useState } from "react";
 import "react-phone-input-2/lib/style.css";
@@ -13,7 +25,7 @@ import isValidPhoneNumber from "libphonenumber-js";
 import { useTranslations } from "next-intl";
 
 function PlaceOrderBody() {
-    const t = useTranslations();
+  const t = useTranslations();
 
   // Handling User error
   const [errorModal, setErrorModal] = useState(false);
@@ -29,16 +41,24 @@ function PlaceOrderBody() {
 
   // States from this page
   const [selectedTime, setSelectedTime] = useState("");
-  const [deliveryTime, setDeliveryTime] = useState(
-    `${new Date().toISOString().split("T")[0]}T${String(
-      (new Date().getUTCHours() + 1) % 24
-    ).padStart(2, "0")}:${new Date()
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}:00`
-  );
+  const [deliveryTime, setDeliveryTime] = useState(`${new Date().toISOString().split("T")[0]}T${String((new Date().getUTCHours() + 1) % 24).padStart(2, "0")}:${new Date().getMinutes().toString().padStart(2, "0")}:00`);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [closingTime, setClosingTime] = useState(false);
+
+  let minTime = "11:00";
+  let maxTime = "23:00";
+
+  const now = new Date();
+  const currentUTCTime = now.toISOString().split("T")[1].substring(0, 5);
+  const currentDubaiTime = now.toLocaleString('en-US', { timeZone: 'Asia/Dubai', hour12: false }).split(", ")[1].substring(0, 5);
+
+  if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
+    minTime = currentDubaiTime;
+  }
+
+  console.log("Current UTC Time:", currentUTCTime);
+  console.log("Current Dubai Time:", currentDubaiTime);
+  console.log("Updated Min Time:", minTime);
 
   useEffect(() => {
     const checkTime = () => {
@@ -47,7 +67,7 @@ function PlaceOrderBody() {
       const minutes = now.getMinutes().toString().padStart(2, "0");
       const currentTime = `${hours}:${minutes}`;
 
-      if (currentTime >= "23:00" || currentTime < "11:00") {
+      if (currentTime >= maxTime || currentTime < minTime) {
         setShowTimePicker(true);
         setClosingTime(true);
       }
@@ -83,30 +103,31 @@ function PlaceOrderBody() {
     const currentDate = new Date().toISOString();
     const currentLocal = new Date();
     const selectedTime = e.target.value;
-
+    const currentLocalTime = `${String(currentLocal.getHours()).padStart(2, "0")}:${String(currentLocal.getMinutes()).padStart(2, "0")}`; // 24 hour format
     const combinedDateTime = `${currentDate.split("T")[0]}T${selectedTime}:00`;
     const scheduledDateTime = new Date(combinedDateTime);
 
-    if (scheduledDateTime < currentLocal) {
+    console.log(selectedTime < maxTime);
+    if (selectedTime > maxTime) {
       // alert the user and trigger validation error
       setWarning(true);
+      setSelectedTime(selectedTime);
+      const year = scheduledDateTime.getUTCFullYear();
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
+      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
+      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(2, "0");
+      const formattedDateTime = `${year}-${month}-${day}T${hours + ":" + minutes}:00`;
+      setDeliveryTime(formattedDateTime);
     } else {
       setWarning(false);
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(
-        2,
-        "0"
-      );
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(
-        2,
-        "0"
-      );
-      const formattedDateTime = `${year}-${month}-${day}T${
-        hours + ":" + minutes
-      }:00`;
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(2, "0");
+      const formattedDateTime = `${year}-${month}-${day}T${hours + ":" + minutes}:00`;
       setDeliveryTime(formattedDateTime);
     }
   };
@@ -314,8 +335,8 @@ function PlaceOrderBody() {
             {showTimePicker && (
               <input
                 type="time"
-                min="11:00"
-                max="23:00"
+                min={minTime}
+                max={maxTime}
                 defaultValue={getCurrentTime()}
                 value={selectedTime === "" ? getCurrentTime() : selectedTime}
                 onInput={handleTimeChange}
@@ -325,7 +346,7 @@ function PlaceOrderBody() {
             )}
             {warning && (
               <p className="text-red-600 text-xs font-ITC-BK rtl:font-DIN-Bold">
-                {t("place_order.schedule_warning")}
+                {t("place_order.schedule_warning", { date: new Date().getDate() + "/" + (new Date().getMonth() + 1), time: selectedTime && selectedTime < minTime ? selectedTime : minTime })}
               </p>
             )}
           </div>
@@ -388,8 +409,8 @@ function PlaceOrderBody() {
                 onClick={() => setOpenModalTerms(true)}
               >
                 {t("place_order.terms")}
-              </a>
-              {" "}{t("place_order.terms_tail")}{" "}
+              </a>{" "}
+              {t("place_order.terms_tail")}{" "}
             </label>
           </div>
         </div>

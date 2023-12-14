@@ -47,7 +47,7 @@
     "phone": "Phone",
     "phone_error": "Please enter a valid phone number",
     "schedule": "Schedule delivery ?",
-    "schedule_warning": "Can't enter a past time",
+    "schedule_warning": "Your order will be delivered tomorrow {date} at {time}",
     "email": "Email",
     "address": "Address",
     "payment_method": "Select Payment Method:",

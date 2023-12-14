@@ -47,7 +47,7 @@
     "phone": "رقم الموبايل",
     "phone_error": "الرجاء إدخال رقم هاتف صالح",
     "schedule": "جدولة التسليم؟",
-    "schedule_warning": "لا يمكن إدخال وقت سابق",
+    "schedule_warning": "سوف يتم توصيل طلبك يوم غد {date} في {time}",
     "email": "البريد الإلكتروني",
     "address": "العنوان",
     "payment_method": "اختر وسيلة الدفع:",
