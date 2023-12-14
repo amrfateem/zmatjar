@@ -169,7 +169,7 @@ function Body() {
 
   const handleConfirmLocation = () => {
     if (isWithinPolygon) {
-      router.push(`/${locale}/place-order`);
+      router.push(`/${locale}/place-order`, undefined, { shallow: true });
     } else {
       setShowModal(true);
     }
@@ -178,7 +178,7 @@ function Body() {
   const handleManualLocation = () => {
     if (manualAddressValue) {
       setBypassGeo(true);
-      router.push(`/${locale}/place-order`);
+      router.push(`/${locale}/place-order`, undefined, { shallow: true });
     }
   };
 

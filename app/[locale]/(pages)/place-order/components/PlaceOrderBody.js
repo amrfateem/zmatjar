@@ -11,7 +11,7 @@ import { addHours, differenceInMinutes, getHours, getMinutes } from "date-fns";
 import isValidPhoneNumber from "libphonenumber-js";
 import { useTranslations } from "next-intl";
 
-function PlaceOrderBody({ time }) {
+function PlaceOrderBody({ time, locale }) {
   const t = useTranslations();
   // Handling User error
   const [errorModal, setErrorModal] = useState(false);
@@ -249,7 +249,7 @@ function PlaceOrderBody({ time }) {
         setSum(0);
         setCount(0);
         setSending(false);
-        router.push(`/${params.locale}/thank-you`);
+        router.push(`/${locale}/thank-you`, undefined, { shallow: true });
       } catch (error) {
         setOrder([]);
         setSubtotal(0);
@@ -257,7 +257,7 @@ function PlaceOrderBody({ time }) {
         setCount(0);
         console.error("Error:", error);
         setSending(false);
-        router.push(`/${params.locale}/thank-you`);
+        router.push(`/${locale}/thank-you`, undefined, { shallow: true });
       }
     }
   };

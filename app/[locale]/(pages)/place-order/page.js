@@ -48,7 +48,7 @@ function PlaceOrder({ params: { locale } }) {
 
         {/* Header end */}
         {/* Inputs name, phone, email, address, check box to aknowlege */}
-        <PlaceOrderBody time={time} />
+        <PlaceOrderBody time={time} locale={locale} />
       </div>
     </>
   );

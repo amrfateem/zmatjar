@@ -11,7 +11,7 @@ function Header({ headerSrc }) {
 
   const switchLocale = () => {
     const newLocale = locale === "en" ? "ar" : "en";
-    router.push(`/${newLocale}`);
+    router.push(`/${newLocale}`, undefined, { shallow: true });
   };
   let img = encodeURI(
     process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + headerSrc.uri.url

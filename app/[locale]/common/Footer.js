@@ -55,7 +55,7 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
       setIsOverMinimum(true);
     } else {
       setIsOverMinimum(false);
-      router.push(`/${locale}/cart`);
+      router.push(`/${locale}/cart`, undefined, { shallow: true });
     }
   };
 

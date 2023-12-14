@@ -85,7 +85,7 @@ function CartBody() {
       setIsOverMinimum(true);
     } else {
       setIsOverMinimum(false);
-      router.push(`/${locale}/delivery-location`);
+      router.push(`/${locale}/delivery-location`, undefined, { shallow: true });
     }
   };
 
