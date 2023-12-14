@@ -34,8 +34,10 @@ function PlaceOrderBody({ time }) {
   const [maxTime, setMaxTime] = useState("23:00");
 
   const serverTime = Date(time);
-  // console.log(serverTime);
-  const currentDubaiTime = addHours(new Date(serverTime), 4);
+  let offset = new Date(time).getTimezoneOffset()/60
+  console.log(offset/60);
+  console.log(serverTime);
+  const currentDubaiTime = addHours(new Date(serverTime), offset);
 
   console.log(serverTime);
   console.log(currentDubaiTime);

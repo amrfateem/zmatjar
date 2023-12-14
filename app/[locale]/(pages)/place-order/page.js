@@ -15,8 +15,6 @@ function PlaceOrder({ params: { locale } }) {
 
   let time = new Date()
 
-  console.log(time);
-
 
   return (
     <>
