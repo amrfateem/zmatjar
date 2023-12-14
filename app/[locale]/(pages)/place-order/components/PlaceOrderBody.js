@@ -72,15 +72,14 @@ function PlaceOrderBody() {
   // console.log("Current UTC Time:", currentUTCTime);
   // console.log("Current Dubai Time:", currentDubaiTime);
   // console.log("Updated Min Time:", minTime);
-
   useEffect(() => {
     if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
       setMinTime(currentDubaiTime)
-    } else {
+    } else if (currentDubaiTime > "23:00" && currentDubaiTime < "00:00") {
       setMinTime("23:00")
       setMaxTime("11:00")
     }
-    
+
     const checkTime = () => {
       const now = new Date();
       const hours = now.getHours().toString().padStart(2, "0");
