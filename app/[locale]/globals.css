@@ -43,7 +43,7 @@
   direction: ltr;
 }
 
-.intl-tel-input {
+.intl-tel-input, .time-fix-input {
   direction: ltr !important;
 }
 

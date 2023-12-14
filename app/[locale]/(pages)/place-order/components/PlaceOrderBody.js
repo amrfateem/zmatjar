@@ -49,11 +49,13 @@ function PlaceOrderBody() {
   let maxTime = "23:00";
 
   const now = new Date();
+  now.setHours(now.getHours() + 1);
+
   const currentUTCTime = now.toISOString().split("T")[1].substring(0, 5);
   const currentDubaiTime = now.toLocaleString('en-US', { timeZone: 'Asia/Dubai', hour12: false }).split(", ")[1].substring(0, 5);
 
   if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
-    minTime = currentDubaiTime;
+    minTime = (currentDubaiTime);
   }
 
   console.log("Current UTC Time:", currentUTCTime);
@@ -107,8 +109,6 @@ function PlaceOrderBody() {
     const currentLocalTime = `${String(currentLocal.getHours()).padStart(2, "0")}:${String(currentLocal.getMinutes()).padStart(2, "0")}`; // 24 hour format
     const combinedDateTime = `${currentDate.split("T")[0]}T${selectedTime}:00`;
     const scheduledDateTime = new Date(combinedDateTime);
-
-    console.log(selectedTime < maxTime);
     if (selectedTime > maxTime) {
       // alert the user and trigger validation error
 
@@ -341,8 +341,10 @@ function PlaceOrderBody() {
                 defaultValue={getCurrentTime()}
                 value={selectedTime === "" ? getCurrentTime() : selectedTime}
                 onInput={handleTimeChange}
+
+                
                 {...(showTimePicker && { required: true })}
-                className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full"
+                className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full time-fix-input"
               />
             )}
             {warning && (
