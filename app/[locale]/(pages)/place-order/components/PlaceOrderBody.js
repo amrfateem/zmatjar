@@ -52,27 +52,35 @@ function PlaceOrderBody() {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [closingTime, setClosingTime] = useState(false);
 
-  let minTime = "11:00";
-  let maxTime = "23:00";
+
+  const [minTime, setMinTime] = useState("11:00")
+  const [maxTime, setMaxTime] = useState("23:00")
+
 
   const now = new Date();
   now.setHours(now.getHours() + 1);
 
   const currentUTCTime = now.toISOString().split("T")[1].substring(0, 5);
+
   const currentDubaiTime = now
     .toLocaleString("en-US", { timeZone: "Asia/Dubai", hour12: false })
     .split(", ")[1]
     .substring(0, 5);
 
-  if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
-    minTime = currentDubaiTime;
-  }
+ 
 
   // console.log("Current UTC Time:", currentUTCTime);
   // console.log("Current Dubai Time:", currentDubaiTime);
   // console.log("Updated Min Time:", minTime);
 
   useEffect(() => {
+    if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
+      setMinTime(currentDubaiTime)
+    } else {
+      setMinTime("23:00")
+      setMaxTime("11:00")
+    }
+    
     const checkTime = () => {
       const now = new Date();
       const hours = now.getHours().toString().padStart(2, "0");
@@ -113,42 +121,37 @@ function PlaceOrderBody() {
 
   // Gets the correct time format and sends it back
   const handleTimeChange = (e) => {
-    // Convert time strings to Date objects
     const selectedTime1 = new Date(`2023-01-01T${e.target.value}`);
     const minTime1 = new Date(`2023-01-01T${minTime}`);
     // Calculate the time difference in milliseconds
     const timeDifference = selectedTime1 - minTime1;
     // Convert the difference to minutes or hours as needed
     const minutesDifference = timeDifference / (1000 * 60);
-    const hoursDifference = timeDifference / (1000 * 60 * 60);
-
     // Display the result
-    console.log(e.target.checkValidity() && (minutesDifference > -65));
-    if ( (minutesDifference > -65)) {
-      setWarning(true);
-    } else {
-      setWarning(false);
-    }
+
+
+    if ((minutesDifference > -65)) { setWarning(true); } else { setWarning(false); }
+
     const currentDate = new Date().toISOString();
     const currentLocal = new Date();
     const selectedTime = e.target.value;
-    const currentLocalTime = `${String(currentLocal.getHours()).padStart(
-      2,
-      "0"
-    )}:${String(currentLocal.getMinutes()).padStart(2, "0")}`; // 24 hour format
+
     const combinedDateTime = `${currentDate.split("T")[0]}T${selectedTime}:00`;
     const scheduledDateTime = new Date(combinedDateTime);
-    if (selectedTime > maxTime) {
+    if (selectedTime < minTime) {
       // alert the user and trigger validation error
+      console.log(selectedTime > maxTime && selectedTime < "00:00");
+    } else if (selectedTime > maxTime && selectedTime < Date("00:00")) {
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
       const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
       const day = String(scheduledDateTime.getUTCDate() + 1).padStart(2, "0");
-      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(2, "0");
+      const hours = String(new Date(`2023-01-01T${minTime}`).getUTCHours()).padStart(2, "0");
+      const minutes = String(new Date(`2023-01-01T${minTime}`).getUTCHours()).padStart(2, "0");
       const formattedDateTime = `${year}-${month}-${day}T${hours + ":" + minutes}:00`;
       setDeliveryTime(formattedDateTime);
-    } else {
+    }
+    else {
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
       const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
@@ -158,6 +161,13 @@ function PlaceOrderBody() {
       const formattedDateTime = `${year}-${month}-${day}T${hours + ":" + minutes}:00`;
       setDeliveryTime(formattedDateTime);
     }
+
+
+
+    setTimeout(() => {
+      console.log(deliveryTime);
+    }, 2000);
+
   }
 
   // Gets the current time and sends it back
@@ -386,7 +396,7 @@ function PlaceOrderBody() {
                     time:
                       selectedTime < maxTime && selectedTime > minTime
                         ? new Date(`2000-01-01T${selectedTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                        : new Date(`2000-01-01T${minTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        : selectedTime > maxTime ? new Date(`2000-01-01T11:00:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) :new Date(`2000-01-01T${minTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                   })}
                 </p>
 
