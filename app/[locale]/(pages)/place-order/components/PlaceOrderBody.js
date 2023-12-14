@@ -36,14 +36,14 @@ function PlaceOrderBody({ time, locale }) {
   const serverTime = Date(time);
   let offset = new Date(time).getTimezoneOffset()
   
-  console.log(offset);
-  console.log(offset/60);
-  console.log(serverTime);
+  // console.log(offset);
+  // console.log(offset/60);
+  // console.log(serverTime);
   const currentDubaiTime = addHours(new Date(serverTime), offset);
 
-  console.log(currentDubaiTime);
-  console.log(serverTime);
-  console.log(currentDubaiTime);
+  // console.log(currentDubaiTime);
+  // console.log(serverTime);
+  // console.log(currentDubaiTime);
   const [deliveryTime, setDeliveryTime] = useState(
     addHours(new Date(currentDubaiTime), 1)
   );
@@ -83,6 +83,7 @@ function PlaceOrderBody({ time, locale }) {
     const scheduledDateTime = OrderTime
     
     console.log(selectedTime > minTime);
+
 
     if (differenceInMinutes( OrderTime, minTimeNow ) < -1 && selectedTime < maxTime) {
       // If order is in late time during hours
@@ -368,8 +369,11 @@ function PlaceOrderBody({ time, locale }) {
                  </p>
                 )}
                 { warning3 && (
-                   <p className={`text-xs font-ITC-BK rtl:font-DIN-Bold text-red-600`} >
+                   <p className={`text-xs font-ITC-BK rtl:font-DIN-Bold  ${warning1 || warning2 ? "text-red-600" : "text-black"} `} >
                    {t("place_order.schedule_warning_3", {
+                    day:  selectedTime > maxTime
+                    ? t("place_order.tomorrow")
+                    : t("place_order.today"),
                     date:
                       selectedTime > maxTime
                         ? new Date().getDate() +

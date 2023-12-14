@@ -1,15 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  cartState,
-  chargesState,
-  countState,
-  minimumOrderState,
-  specialInstructionsState,
-  sumState,
-  totalState,
-} from "../../../atoms";
+import { cartState, chargesState, countState, minimumOrderState, specialInstructionsState, sumState, totalState, } from "../../../atoms";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "flowbite-react";
 import { useRouter } from "next/navigation";
@@ -137,7 +129,7 @@ function CartBody() {
                 </div>
                 <p className=" font-ITC-BK rtl:font-DIN-Bold w-36 text-end text-sm text-gray-500">
                   {t("currency", {
-                    price: cart[key].quantity * cart[key].price,
+                    price:  Number(cart[key].quantity *cart[key].price).toFixed(2),
                   })}
                 </p>
               </div>

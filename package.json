@@ -40,7 +40,9 @@
     "react-select": "^5.8.0",
     "react-time-picker": "^6.6.0",
     "recoil": "^0.7.7",
-    "rtl-detect": "^1.1.2"
+    "recoil-persist": "^5.1.0",
+    "rtl-detect": "^1.1.2",
+    "swr": "^2.2.4"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

@@ -1,67 +1,43 @@
 "use client";
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
 
-const localStorageEffect =
-  (key) =>
-  ({ setSelf, onSet }) => {
-    if (typeof window === "undefined") {
-      // Running on the server side
-      return;
-    }
-
-    const savedValue = localStorage.getItem(key);
-
-    if (savedValue != null) {
-      setSelf(JSON.parse(savedValue));
-    }
-
-    onSet((newValue, _, isReset) => {
-      if (typeof window === "undefined") {
-        // Running on the server side
-        return;
-      }
-
-      isReset
-        ? localStorage.removeItem(key)
-        : localStorage.setItem(key, JSON.stringify(newValue));
-    });
-  };
-  
+const { persistAtom } = recoilPersist();
 
 export const cartState = atom({
   key: "cartState",
   default: [],
-  effects: [localStorageEffect("cartState")], // Add the local storage effect
+  effects_UNSTABLE: [persistAtom], // Add the local storage effect
 });
 
 export const countState = atom({
   key: "countState",
   default: 0,
-  effects: [localStorageEffect("countState")],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const sumState = atom({
   key: "sumState",
   default: 0,
-  effects: [localStorageEffect("sumState")],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const totalState = atom({
   key: "totalState",
   default: 0,
-  effects: [localStorageEffect("totalState")],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const colStyleState = atom({
   key: "colStyleState",
   default: "grid",
-  effects: [localStorageEffect("colStyleState")],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const userLocationState = atom({
   key: "userLocationState",
   default: { lat: 0, lng: 0 },
-  effects: [localStorageEffect("userLocationState")],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const searchState = atom({
@@ -72,13 +48,13 @@ export const searchState = atom({
 export const chargesState = atom({
   key: "chargesState",
   default: 0,
-  effects: [localStorageEffect("chargesState")],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const minimumOrderState = atom({
   key: "minimumOrderState",
   default: 0,
-  effects: [localStorageEffect("minimumOrderState")],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const specialInstructionsState = atom({
@@ -89,13 +65,13 @@ export const specialInstructionsState = atom({
 export const telegramChatIdState = atom({
   key: "telegramChatIdState",
   default: "",
-  effects: [localStorageEffect("telegramChatIdState")],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const storeLangState = atom({
   key: "storeLangState",
   default: "",
-  effects: [localStorageEffect("storeLangState")],
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const manualAddressState = atom({

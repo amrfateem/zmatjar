@@ -203,7 +203,7 @@ export default async function Home({ params: { locale } }) {
   }
 
   return (
-    <main className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
+    <div className="text-center m-0 mx-auto max-w-[460px] relative border-solid border-[#dfe2e7] border-[1px]">
       <Header headerSrc={page[0].field_image} />
       <Intro
         title={page[0].title}
@@ -241,6 +241,6 @@ export default async function Home({ params: { locale } }) {
         telegramId={page[0].field_telegram_chat_id}
         storeLang={page[0].field_comm_lang}
       />
-    </main>
+    </div>
   );
 }
