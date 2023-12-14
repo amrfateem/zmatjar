@@ -5,70 +5,122 @@ import { useEffect, useState } from "react";
 import "react-phone-input-2/lib/style.css";
 import { useRecoilState, useRecoilValue } from "recoil";
 import * as turf from "@turf/turf";
-
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
-
+import { addHours, differenceInMinutes, getHours, getMinutes } from "date-fns";
 import isValidPhoneNumber from "libphonenumber-js";
 import { useTranslations } from "next-intl";
 
-function PlaceOrderBody({time}) {
+function PlaceOrderBody({ time }) {
   const t = useTranslations();
-
-  console.log(time);
   // Handling User error
   const [errorModal, setErrorModal] = useState(false);
   const [modalErrormsg, setModalErrormsg] = useState("");
-  const [warning, setWarning] = useState(false);
+  const [warning1, setWarning1] = useState(false);
+  const [warning2, setWarning2] = useState(false);
+  const [warning3, setWarning3] = useState(false);
   const minimumOrder = useRecoilValue(minimumOrderState);
   const cartError = t("place_order.order_problem_body_cart");
   const subTotalError = t("place_order.order_problem_body_subtotal");
-
   const [phoneError, setPhoneError] = useState(false);
   const [manualAddress, setManualAddress] = useRecoilState(manualAddressState);
   const bypassGeo = useRecoilValue(bypassGeoState);
 
   // States from this page
   const [selectedTime, setSelectedTime] = useState("");
-  const [deliveryTime, setDeliveryTime] = useState(`${new Date().toISOString().split("T")[0]}T${String( (new Date().getUTCHours() + 1) % 24 ).padStart(2, "0")}:${new Date() .getMinutes() .toString() .padStart(2, "0")}:00`);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [closingTime, setClosingTime] = useState(false);
+  const [minTime, setMinTime] = useState("11:00");
+  const [maxTime, setMaxTime] = useState("23:00");
+
+  const serverTime = Date(time);
+  // console.log(serverTime);
+  const currentDubaiTime = addHours(new Date(serverTime), 4);
+  const [deliveryTime, setDeliveryTime] = useState(
+    addHours(new Date(currentDubaiTime), 1)
+  );
+
+  // console.log(getHours(currentDubaiTime), getMinutes(currentDubaiTime));
 
 
-  const [minTime, setMinTime] = useState("11:00")
-  const [maxTime, setMaxTime] = useState("23:00")
 
 
-  const now = new Date();
-const utcTime = new Date(time );
-  utcTime.setHours(utcTime.getHours() + 1);
-  const currentDubaiTime = utcTime.toLocaleString("en-US", { timeZone: "Asia/Dubai", hour12: false }) .split(", ")[1] .substring(0, 5);
-
-  console.log(currentDubaiTime);
+  let dubaiTime =
+    getHours(currentDubaiTime) + ":" + getMinutes(currentDubaiTime);
 
   useEffect(() => {
     if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
       setMinTime(currentDubaiTime)
-    } else if (currentDubaiTime > "23:00" && currentDubaiTime < "00:00") {
-      setMinTime("23:00")
-      setMaxTime("11:00")
-    }
-
+    } 
     const checkTime = () => {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, "0");
-      const minutes = now.getMinutes().toString().padStart(2, "0");
-      const currentTime = `${hours}:${minutes}`;
-
-      if (currentTime >= maxTime && currentTime < minTime) {
+      const currentTime = dubaiTime;
+      if (currentTime >= maxTime || currentTime < minTime) {
         setShowTimePicker(true);
         setClosingTime(true);
-        // setWarning(true);
+        setWarning2(true)
       }
     };
 
     checkTime(); // Call the function when the component mounts
   }, []);
+
+  // Gets the correct time format and sends it back
+  const handleTimeChange = (e) => {
+
+
+    const OrderTime = new Date(`2023-01-01T${e.target.value}`);
+    const minTimeNow = new Date(`2023-01-01T${getHours(minTime)}:${getMinutes(minTime)}`);
+
+    const selectedTime = e.target.value;
+    const scheduledDateTime = OrderTime
+    
+    console.log(selectedTime > minTime);
+
+    if (differenceInMinutes( OrderTime, minTimeNow ) < -1 && selectedTime < maxTime) {
+      // If order is in late time during hours
+      setWarning1(true);
+      setWarning2(false);
+      setWarning3(false);
+    }
+    else if  (selectedTime < minTime && selectedTime < maxTime) {
+      setSelectedTime(selectedTime);
+      setWarning2(true);
+      setWarning3(true);
+    }
+    else if (selectedTime > maxTime && selectedTime < Date("00:00")) {
+      setWarning1(false);
+      setWarning2(true);
+      setWarning3(true);
+      setSelectedTime(selectedTime);
+      const year = time.getUTCFullYear();
+      const month = String(time.getUTCMonth() + 1).padStart( 2, "0" );
+      const day = String(time.getUTCDate() + 1).padStart(2, "0");
+      const hours = String( new Date(`2023-01-01T${minTime}`).getUTCHours() ).padStart(2, "0");
+      const minutes = String( new Date(`2023-01-01T${minTime}`).getUTCMinutes() ).padStart(2, "0");
+
+      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+      setDeliveryTime(formattedDateTime);
+    } else {
+      setWarning1(false);
+      setWarning2(false);
+      // setWarning3(true);
+      setSelectedTime(selectedTime);
+      const year = scheduledDateTime.getUTCFullYear();
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
+      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+      setDeliveryTime(formattedDateTime);
+    }
+  };
+
+  // Gets the current time and sends it back
+  const getCurrentTime = () => {
+    const hours = getHours(currentDubaiTime).toString().padStart(2, "0");
+    const minutes = getMinutes(currentDubaiTime).toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
 
   // Terms modal
   const [openModalTerms, setOpenModalTerms] = useState(false);
@@ -91,65 +143,6 @@ const utcTime = new Date(time );
 
   // Total calculated
   const total = parseInt(subtotal) + parseInt(charges);
-
-  // Gets the correct time format and sends it back
-  const handleTimeChange = (e) => {
-    const selectedTime1 = new Date(`2023-01-01T${e.target.value}`);
-    const minTime1 = new Date(`2023-01-01T${minTime}`);
-    // Calculate the time difference in milliseconds
-    const timeDifference = selectedTime1 - minTime1;
-    // Convert the difference to minutes or hours as needed
-    const minutesDifference = timeDifference / (1000 * 60);
-    // Display the result
-
-
-    if ((minutesDifference > -70)) { setWarning(true); } else { setWarning(false); }
-
-    const currentDate = new Date().toISOString();
-    const currentLocal = new Date();
-    const selectedTime = e.target.value;
-
-    const combinedDateTime = `${currentDate.split("T")[0]}T${selectedTime}:00`;
-    const scheduledDateTime = new Date(combinedDateTime);
-    if (selectedTime < minTime) {
-      // alert the user and trigger validation error
-      console.log(selectedTime > maxTime && selectedTime < "00:00");
-    } else if (selectedTime > maxTime && selectedTime < Date("00:00")) {
-      setSelectedTime(selectedTime);
-      const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
-      const day = String(scheduledDateTime.getUTCDate() + 1).padStart(2, "0");
-      const hours = String(new Date(`2023-01-01T${minTime}`).getUTCHours()).padStart(2, "0");
-      const minutes = String(new Date(`2023-01-01T${minTime}`).getUTCHours()).padStart(2, "0");
-      const formattedDateTime = `${year}-${month}-${day}T${hours + ":" + minutes}:00`;
-      setDeliveryTime(formattedDateTime);
-    }
-    else {
-      setSelectedTime(selectedTime);
-      const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
-      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
-      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(2, "0");
-      const formattedDateTime = `${year}-${month}-${day}T${hours + ":" + minutes}:00`;
-      setDeliveryTime(formattedDateTime);
-    }
-
-
-
-    setTimeout(() => {
-      console.log(deliveryTime);
-    }, 2000);
-
-  }
-
-  // Gets the current time and sends it back
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
-  };
 
   // Shows the time picker
   const handleCheckboxChange = () => {
@@ -353,27 +346,61 @@ const utcTime = new Date(time );
                   value={selectedTime === "" ? getCurrentTime() : selectedTime}
                   onInput={handleTimeChange}
                   {...(showTimePicker && { required: true })}
-                  className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full time-fix-input"
+                  className={`border rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full time-fix-input
+                  ${warning1 || warning2 ? "border-red-600" : "border-gray-300"}`}
                 />
-
-                <p className={`text-xs font-ITC-BK rtl:font-DIN-Bold ${!warning ? "text-red-600" : "text-black"}`}>
-                  {t("place_order.schedule_warning", {
+                { warning1 && (
+                   <p className={`text-xs font-ITC-BK rtl:font-DIN-Bold text-red-600`} >
+                   {t("place_order.schedule_warning_1")}
+                 </p>
+                )}
+                { warning2 && (
+                   <p className={`text-xs font-ITC-BK rtl:font-DIN-Bold text-red-600`} >
+                   {t("place_order.schedule_warning_2")}
+                 </p>
+                )}
+                { warning3 && (
+                   <p className={`text-xs font-ITC-BK rtl:font-DIN-Bold text-red-600`} >
+                   {t("place_order.schedule_warning_3", {
                     date:
-                      selectedTime > maxTime ?
-                        new Date().getDate() + 1 +
-                        "/" +
-                        (new Date().getMonth() + 1) :
-                        new Date().getDate() +
-                        "/" +
-                        (new Date().getMonth() + 1),
+                      selectedTime > maxTime
+                        ? new Date().getDate() +
+                          1 +
+                          "/" +
+                          (new Date().getMonth() + 1)
+                        : new Date().getDate() +
+                          "/" +
+                          (new Date().getMonth() + 1),
                     time:
                       selectedTime < maxTime && selectedTime > minTime
-                        ? new Date(`2000-01-01T${selectedTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                        : selectedTime > maxTime ? new Date(`2000-01-01T11:00:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) :new Date(`2000-01-01T${minTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        ? new Date(
+                            `2000-01-01T${selectedTime}:00`
+                          ).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })
+                        : selectedTime > maxTime
+                        ? new Date(`2000-01-01T11:00:00`).toLocaleTimeString(
+                            [],
+                            { hour: "2-digit", minute: "2-digit" }
+                          )
+                        : new Date(
+                            `2000-01-01T${minTime}:00`
+                          ).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }),
                   })}
+                 </p>
+                )}
+
+                <p
+                  className={`text-xs font-ITC-BK rtl:font-DIN-Bold ${
+                    !warning2 ? "text-red-600" : "text-black"
+                  }`}
+                >
+                  
                 </p>
-
-
               </>
             )}
           </div>

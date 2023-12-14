@@ -13,7 +13,7 @@ function PlaceOrder({ params: { locale } }) {
   unstable_setRequestLocale(locale);
   const t = useTranslations();
 
-  let time = new Date().toLocaleTimeString()
+  let time = new Date()
 
   console.log(time);
 
