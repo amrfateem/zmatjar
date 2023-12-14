@@ -40,17 +40,11 @@ function PlaceOrderBody({time}) {
 
 
   const now = new Date();
-const utcTime = new Date(
-  now.getUTCFullYear(),
-  now.getUTCMonth(),
-  now.getUTCDate(),
-  now.getUTCHours(),
-  now.getUTCMinutes(),
-  now.getUTCSeconds(),
-  now.getUTCMilliseconds()
-);
+const utcTime = new Date(time );
   utcTime.setHours(utcTime.getHours() + 1);
   const currentDubaiTime = utcTime.toLocaleString("en-US", { timeZone: "Asia/Dubai", hour12: false }) .split(", ")[1] .substring(0, 5);
+
+  console.log(currentDubaiTime);
 
   useEffect(() => {
     if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
