@@ -113,8 +113,18 @@ function PlaceOrderBody() {
 
   // Gets the correct time format and sends it back
   const handleTimeChange = (e) => {
-console.log(e.target.checkValidity());
-    if (e.target.checkValidity() ) {
+    // Convert time strings to Date objects
+    const selectedTime1 = new Date(`2023-01-01T${e.target.value}`);
+    const minTime1 = new Date(`2023-01-01T${minTime}`);
+    // Calculate the time difference in milliseconds
+    const timeDifference = selectedTime1 - minTime1;
+    // Convert the difference to minutes or hours as needed
+    const minutesDifference = timeDifference / (1000 * 60);
+    const hoursDifference = timeDifference / (1000 * 60 * 60);
+
+    // Display the result
+    console.log(e.target.checkValidity() && (minutesDifference > -65));
+    if ( (minutesDifference > -65)) {
       setWarning(true);
     } else {
       setWarning(false);
@@ -132,25 +142,22 @@ console.log(e.target.checkValidity());
       // alert the user and trigger validation error
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
-      const day = String(scheduledDateTime.getUTCDate()+1).padStart(2, "0");
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
+      const day = String(scheduledDateTime.getUTCDate() + 1).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
-      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(2, "0");
+      const formattedDateTime = `${year}-${month}-${day}T${hours + ":" + minutes}:00`;
       setDeliveryTime(formattedDateTime);
     } else {
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
-      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
-
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(2, "0");
+      const formattedDateTime = `${year}-${month}-${day}T${hours + ":" + minutes}:00`;
       setDeliveryTime(formattedDateTime);
     }
-
-
   }
 
   // Gets the current time and sends it back
@@ -366,25 +373,24 @@ console.log(e.target.checkValidity());
                   className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full time-fix-input"
                 />
 
-              <p className= {`text-xs font-ITC-BK rtl:font-DIN-Bold ${!warning ? "text-red-600" : "text-black"}`}>
-                    {t("place_order.schedule_warning", {
-                      date:
-                      selectedTime > maxTime ? 
+                <p className={`text-xs font-ITC-BK rtl:font-DIN-Bold ${!warning ? "text-red-600" : "text-black"}`}>
+                  {t("place_order.schedule_warning", {
+                    date:
+                      selectedTime > maxTime ?
                         new Date().getDate() + 1 +
                         "/" +
                         (new Date().getMonth() + 1) :
                         new Date().getDate() +
                         "/" +
                         (new Date().getMonth() + 1),
-                      time:
-                        selectedTime < maxTime && selectedTime > minTime
-                          ? new Date(`2000-01-01T${selectedTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                          :new Date(`2000-01-01T${minTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                    })}
-                    {console.log(selectedTime)}
-                  </p>
+                    time:
+                      selectedTime < maxTime && selectedTime > minTime
+                        ? new Date(`2000-01-01T${selectedTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                        : new Date(`2000-01-01T${minTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                  })}
+                </p>
 
-                 
+
               </>
             )}
           </div>
