@@ -41,7 +41,14 @@ function PlaceOrderBody() {
 
   // States from this page
   const [selectedTime, setSelectedTime] = useState("");
-  const [deliveryTime, setDeliveryTime] = useState(`${new Date().toISOString().split("T")[0]}T${String((new Date().getUTCHours() + 1) % 24).padStart(2, "0")}:${new Date().getMinutes().toString().padStart(2, "0")}:00`);
+  const [deliveryTime, setDeliveryTime] = useState(
+    `${new Date().toISOString().split("T")[0]}T${String(
+      (new Date().getUTCHours() + 1) % 24
+    ).padStart(2, "0")}:${new Date()
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:00`
+  );
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [closingTime, setClosingTime] = useState(false);
 
@@ -52,10 +59,13 @@ function PlaceOrderBody() {
   now.setHours(now.getHours() + 1);
 
   const currentUTCTime = now.toISOString().split("T")[1].substring(0, 5);
-  const currentDubaiTime = now.toLocaleString('en-US', { timeZone: 'Asia/Dubai', hour12: false }).split(", ")[1].substring(0, 5);
+  const currentDubaiTime = now
+    .toLocaleString("en-US", { timeZone: "Asia/Dubai", hour12: false })
+    .split(", ")[1]
+    .substring(0, 5);
 
   if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
-    minTime = (currentDubaiTime);
+    minTime = currentDubaiTime;
   }
 
   console.log("Current UTC Time:", currentUTCTime);
@@ -103,10 +113,17 @@ function PlaceOrderBody() {
 
   // Gets the correct time format and sends it back
   const handleTimeChange = (e) => {
+console.log(e.target.checkValidity());
+    if (!e.target.checkValidity() ) {
+      setWarning(true);
+    }
     const currentDate = new Date().toISOString();
     const currentLocal = new Date();
     const selectedTime = e.target.value;
-    const currentLocalTime = `${String(currentLocal.getHours()).padStart(2, "0")}:${String(currentLocal.getMinutes()).padStart(2, "0")}`; // 24 hour format
+    const currentLocalTime = `${String(currentLocal.getHours()).padStart(
+      2,
+      "0"
+    )}:${String(currentLocal.getMinutes()).padStart(2, "0")}`; // 24 hour format
     const combinedDateTime = `${currentDate.split("T")[0]}T${selectedTime}:00`;
     const scheduledDateTime = new Date(combinedDateTime);
     if (selectedTime > maxTime) {
@@ -114,21 +131,36 @@ function PlaceOrderBody() {
 
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(
+        2,
+        "0"
+      );
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(2, "0");
-      const formattedDateTime = `${year}-${month}-${day}T${hours + ":" + minutes}:00`;
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(
+        2,
+        "0"
+      );
+      const formattedDateTime = `${year}-${month}-${day}T${
+        hours + ":" + minutes
+      }:00`;
       setDeliveryTime(formattedDateTime);
     } else {
-      setWarning(false);
       setSelectedTime(selectedTime);
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(2, "0");
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(
+        2,
+        "0"
+      );
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(2, "0");
-      const formattedDateTime = `${year}-${month}-${day}T${hours + ":" + minutes}:00`;
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(
+        2,
+        "0"
+      );
+      const formattedDateTime = `${year}-${month}-${day}T${
+        hours + ":" + minutes
+      }:00`;
       setDeliveryTime(formattedDateTime);
     }
   };
@@ -334,23 +366,34 @@ function PlaceOrderBody() {
             </div>
 
             {showTimePicker && (
-              <input
-                type="time"
-                min={minTime}
-                max={maxTime}
-                defaultValue={getCurrentTime()}
-                value={selectedTime === "" ? getCurrentTime() : selectedTime}
-                onInput={handleTimeChange}
+              <>
+                <input
+                  type="time"
+                  min={minTime}
+                  max={maxTime}
+                  defaultValue={getCurrentTime()}
+                  value={selectedTime === "" ? getCurrentTime() : selectedTime}
+                  onInput={handleTimeChange}
+                  {...(showTimePicker && { required: true })}
+                  className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full time-fix-input"
+                />
 
-                
-                {...(showTimePicker && { required: true })}
-                className="border border-gray-300 rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full time-fix-input"
-              />
-            )}
-            {warning && (
               <p className="text-red-600 text-xs font-ITC-BK rtl:font-DIN-Bold">
-                {t("place_order.schedule_warning", { date: new Date().getDate() + "/" + (new Date().getMonth() + 1), time: selectedTime && selectedTime < minTime ? selectedTime : minTime })}
-              </p>
+                    {t("place_order.schedule_warning", {
+                      date:
+                        new Date().getDate() +
+                        "/" +
+                        (new Date().getMonth() + 1),
+                      time:
+                        selectedTime && selectedTime > minTime
+                          ? new Date(`2000-01-01T${selectedTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                          :new Date(`2000-01-01T${minTime}:00`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    })}
+                    {console.log(selectedTime)}
+                  </p>
+
+                 
+              </>
             )}
           </div>
           <div className="flex flex-col space-y-1">
