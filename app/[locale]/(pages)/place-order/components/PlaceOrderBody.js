@@ -67,8 +67,6 @@ function PlaceOrderBody({ time, locale }) {
         setShowTimePicker(true);
         setClosingTime(true);
         setWarning2(true)
-
-        
       }
     };
 
