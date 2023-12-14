@@ -65,7 +65,7 @@ function PlaceOrderBody({ time, locale }) {
       if (currentTime >= maxTime || currentTime < minTime) {
         setShowTimePicker(true);
         setClosingTime(true);
-        setWarning2(true)
+        setWarning3(true)
       }
     };
 
@@ -156,6 +156,7 @@ function PlaceOrderBody({ time, locale }) {
   // Shows the time picker
   const handleCheckboxChange = () => {
     setShowTimePicker(!showTimePicker);
+    setWarning3(true)
   };
 
   // Sends the order through
