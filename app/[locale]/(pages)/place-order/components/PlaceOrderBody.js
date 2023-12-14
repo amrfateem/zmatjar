@@ -1,17 +1,5 @@
 "use client";
-import {
-  bypassGeoState,
-  cartState,
-  chargesState,
-  countState,
-  manualAddressState,
-  minimumOrderState,
-  specialInstructionsState,
-  storeLangState,
-  sumState,
-  telegramChatIdState,
-  userLocationState,
-} from "../../../atoms";
+import { bypassGeoState, cartState, chargesState, countState, manualAddressState, minimumOrderState, specialInstructionsState, storeLangState, sumState, telegramChatIdState, userLocationState, } from "../../../atoms";
 import { Button, Modal } from "flowbite-react";
 import { useEffect, useState } from "react";
 import "react-phone-input-2/lib/style.css";
@@ -59,19 +47,8 @@ function PlaceOrderBody() {
 
   const now = new Date();
   now.setHours(now.getHours() + 1);
+  const currentDubaiTime = now .toLocaleString("en-US", { timeZone: "Asia/Dubai", hour12: false }) .split(", ")[1] .substring(0, 5);
 
-  const currentUTCTime = now.toISOString().split("T")[1].substring(0, 5);
-
-  const currentDubaiTime = now
-    .toLocaleString("en-US", { timeZone: "Asia/Dubai", hour12: false })
-    .split(", ")[1]
-    .substring(0, 5);
-
- 
-
-  // console.log("Current UTC Time:", currentUTCTime);
-  // console.log("Current Dubai Time:", currentDubaiTime);
-  // console.log("Updated Min Time:", minTime);
   useEffect(() => {
     if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
       setMinTime(currentDubaiTime)
