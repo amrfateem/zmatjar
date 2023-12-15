@@ -49,14 +49,7 @@ function PlaceOrderBody({ time, locale }) {
   const serverTime = Date(time);
   let offset = new Date(time).getTimezoneOffset();
 
-  // console.log(offset);
-  // console.log(offset/60);
-  // console.log(serverTime);
   const currentDubaiTime = addHours(new Date(serverTime), offset);
-
-  // console.log(currentDubaiTime);
-  // console.log(serverTime);
-  // console.log(currentDubaiTime);
   const [deliveryTime, setDeliveryTime] = useState(
     addHours(new Date(currentDubaiTime), 1)
   );
@@ -64,16 +57,15 @@ function PlaceOrderBody({ time, locale }) {
   // console.log(getHours(currentDubaiTime), getMinutes(currentDubaiTime));
 
   let dubaiTime =
-    getHours(currentDubaiTime) + ":" + getMinutes(currentDubaiTime);
+    String(getHours(currentDubaiTime)).padStart(2, "0") + ":" + String(getMinutes(currentDubaiTime)).padStart(2, "0");
 
   useEffect(() => {
-    if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
-      setMinTime(currentDubaiTime);
+    if (dubaiTime > minTime && dubaiTime < maxTime) {
+      setMinTime(String(dubaiTime));
     }
-    const checkTime = () => {
-      const currentTime = dubaiTime;
 
-      if (currentTime >= maxTime && currentTime < minTime) {
+    const checkTime = () => {
+      if (dubaiTime >= maxTime && dubaiTime < minTime) {
         setShowTimePicker(true);
         setClosingTime(true);
         setWarning2(true);
@@ -113,10 +105,16 @@ function PlaceOrderBody({ time, locale }) {
     let hoursFormatted = OrderTime.getHours() % 12 || 12;
 
     if (selectedTime < minTime) {
-      setWarning2(true);
+      console.log(selectedTime);
+      if (selectedTime > "11:00") {
+        setWarning1(true);
+      } else {
+        setWarning2(true);
+      }
+
       setSelectedTime(selectedTime);
       if (e.target.checkValidity()) {
-        setWarning3(true);
+        // setWarning3(true);
         setWarning4(false);
         setWarning2(false);
 
@@ -127,13 +125,7 @@ function PlaceOrderBody({ time, locale }) {
         const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
         const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
 
-        setSelectedDate({
-          hours: hoursFormatted,
-          minutes: minutes,
-          day: day,
-          month: month,
-          ampm: ampm,
-        });
+        setSelectedDate({ hours: hoursFormatted, minutes: minutes, day: day, month: month, ampm: ampm, });
         setToday(true);
         setDeliveryTime(formattedDateTime);
       } else {
@@ -142,9 +134,8 @@ function PlaceOrderBody({ time, locale }) {
     } else if (selectedTime >= minTime && selectedTime <= maxTime) {
       setSelectedTime(selectedTime);
       setWarning3(true);
-      setWarning4(false);        setWarning2(false);
-
-
+      setWarning4(false);
+      setWarning2(false);
 
       if (e.target.checkValidity()) {
         setWarning1(false);
@@ -152,11 +143,19 @@ function PlaceOrderBody({ time, locale }) {
         setWarning1(true);
       }
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(
+        2,
+        "0"
+      );
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
-      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(
+        2,
+        "0"
+      );
+      const formattedDateTime = `${year}-${month}-${day}T${
+        hours + ":" + minutes
+      }:00`;
 
       setSelectedDate({
         hours: hoursFormatted,
@@ -172,20 +171,31 @@ function PlaceOrderBody({ time, locale }) {
 
       setWarning4(true);
       setWarning3(false);
-
-    } else if (selectedTime > maxTime && selectedTime < Date("24:00") && currentTime > maxTime) {
+    } else if (
+      selectedTime > maxTime &&
+      selectedTime < Date("24:00") &&
+      currentTime > maxTime
+    ) {
       setSelectedTime(selectedTime);
-      setWarning4(false);        setWarning2(false);
-
+      setWarning4(false);
+      setWarning2(false);
 
       setWarning3(true);
 
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(
+        2,
+        "0"
+      );
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
-      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(
+        2,
+        "0"
+      );
+      const formattedDateTime = `${year}-${month}-${day}T${
+        hours + ":" + minutes
+      }:00`;
 
       setSelectedDate({
         hours: hoursFormatted,
