@@ -97,9 +97,7 @@ try {
   const response = await fetch(
     process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
       "/jsonapi/node/page?jsonapi_include=1&" +
-      queryString,{
-        cache: "no-cache",
-      }
+      queryString
   );
   if (!response.ok) {
     throw new Error("Failed to fetch data");
@@ -114,9 +112,7 @@ export async function generateMetadata({ params: { locale } }) {
   let page;
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/store-metadata.json?lang=${locale}`,{
-        cache: "no-cache",
-      }
+      `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/store-metadata.json?lang=${locale}`
     );
 
     if (!response.ok) {

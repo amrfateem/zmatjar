@@ -1,5 +1,17 @@
 "use client";
-import { bypassGeoState, cartState, chargesState, countState, manualAddressState, minimumOrderState, specialInstructionsState, storeLangState, sumState, telegramChatIdState, userLocationState, } from "../../../atoms";
+import {
+  bypassGeoState,
+  cartState,
+  chargesState,
+  countState,
+  manualAddressState,
+  minimumOrderState,
+  specialInstructionsState,
+  storeLangState,
+  sumState,
+  telegramChatIdState,
+  userLocationState,
+} from "../../../atoms";
 import { Button, Modal } from "flowbite-react";
 import { useEffect, useState } from "react";
 import "react-phone-input-2/lib/style.css";
@@ -35,8 +47,8 @@ function PlaceOrderBody({ time, locale }) {
   const [maxTime, setMaxTime] = useState("23:00");
 
   const serverTime = Date(time);
-  let offset = new Date(time).getTimezoneOffset()
-  
+  let offset = new Date(time).getTimezoneOffset();
+
   // console.log(offset);
   // console.log(offset/60);
   // console.log(serverTime);
@@ -51,88 +63,189 @@ function PlaceOrderBody({ time, locale }) {
 
   // console.log(getHours(currentDubaiTime), getMinutes(currentDubaiTime));
 
-
-
-
   let dubaiTime =
     getHours(currentDubaiTime) + ":" + getMinutes(currentDubaiTime);
 
   useEffect(() => {
     if (currentDubaiTime > minTime && currentDubaiTime < maxTime) {
-      setMinTime(currentDubaiTime)
-    } 
+      setMinTime(currentDubaiTime);
+    }
     const checkTime = () => {
       const currentTime = dubaiTime;
-      console.log(currentTime < minTime);
-      if (currentTime >= maxTime || currentTime < minTime) {
+
+      if (currentTime >= maxTime && currentTime < minTime) {
         setShowTimePicker(true);
         setClosingTime(true);
-        setWarning2(true)
+        setWarning2(true);
       }
     };
 
     checkTime(); // Call the function when the component mounts
   }, []);
 
+  const [selectedDate, setSelectedDate] = useState("");
+  const [today, setToday] = useState(false);
+
   // Gets the correct time format and sends it back
   const handleTimeChange = (e) => {
     const [minhours, minminutes] = minTime.split(":").map(String);
     const currentDate = new Date();
-    const OrderTime = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth()+ 1}-${currentDate.getDate()}T${e.target.value}`);
-    const minTimeNow = new Date(`${currentDate.getFullYear()}-${currentDate.getMonth()+ 1}-${currentDate.getDate()}T${minhours}:${minminutes}`);
+    const OrderTime = new Date(
+      `${currentDate.getFullYear()}-${
+        currentDate.getMonth() + 1
+      }-${currentDate.getDate()}T${e.target.value}`
+    );
+    const minTimeNow = new Date(
+      `${currentDate.getFullYear()}-${
+        currentDate.getMonth() + 1
+      }-${currentDate.getDate()}T${minhours}:${minminutes}`
+    );
 
     const selectedTime = e.target.value;
-    const scheduledDateTime = OrderTime
-    
+    const scheduledDateTime = OrderTime;
 
-    if (differenceInMinutes( OrderTime, minTimeNow ) > 1 && selectedTime > minTime ) {
-      // If order is in late time during hours
-      // setWarning1(true);
-      setWarning2(false);
-      setWarning3(false);
-      console.log("here");
-      setSelectedTime(selectedTime);
-      const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
-      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
-      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
-      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
-      setDeliveryTime(formattedDateTime); 
+    const currentHour = String(currentDate.getHours()).padStart(2, "0");
+    const currentMinute = String(currentDate.getMinutes()).padStart(2, "0");
 
-    }
-    else if  (selectedTime < minTime && selectedTime < maxTime) {
-      // setWarning2(true);  
-      setSelectedTime(selectedTime);
+    let currentTime = currentHour + ":" + currentMinute;
 
-      setWarning3(true);
-      console.log("here");
+    let ampm = OrderTime.getHours() >= 12 ? "PM" : "AM";
+    let hoursFormatted = OrderTime.getHours() % 12 || 12;
 
-      const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
-      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
-      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
-      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
-      setDeliveryTime(formattedDateTime);
-    }
-    else if (selectedTime > maxTime && selectedTime < Date("00:00")) {
-      setWarning1(false);
+    if (selectedTime < minTime) {
       setWarning2(true);
-      setWarning3(true);
-      setWarning4(true);
-
       setSelectedTime(selectedTime);
-      console.log("here");
+      if (e.target.checkValidity()) {
+        setWarning3(true);
+        setWarning4(false);
+        setWarning2(false);
 
+        const year = scheduledDateTime.getUTCFullYear();
+        const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+        const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
+        const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+        const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+        const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+
+        setSelectedDate({
+          hours: hoursFormatted,
+          minutes: minutes,
+          day: day,
+          month: month,
+          ampm: ampm,
+        });
+        setToday(true);
+        setDeliveryTime(formattedDateTime);
+      } else {
+        setWarning3(false);
+      }
+    } else if (selectedTime >= minTime && selectedTime <= maxTime) {
+      setSelectedTime(selectedTime);
+      setWarning3(true);
+      setWarning4(false);        setWarning2(false);
+
+
+
+      if (e.target.checkValidity()) {
+        setWarning1(false);
+      } else {
+        setWarning1(true);
+      }
       const year = scheduledDateTime.getUTCFullYear();
       const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
-      const day = String(scheduledDateTime.getUTCDate()+1).padStart(2, "0");
+      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
       const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
       const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+
+      setSelectedDate({
+        hours: hoursFormatted,
+        minutes: minutes,
+        day: day,
+        month: month,
+        ampm: ampm,
+      });
+      setToday(true);
       setDeliveryTime(formattedDateTime);
-    } 
+    } else if (currentTime < maxTime && selectedTime > maxTime) {
+      setSelectedTime(selectedTime);
+
+      setWarning4(true);
+      setWarning3(false);
+
+    } else if (selectedTime > maxTime && selectedTime < Date("24:00") && currentTime > maxTime) {
+      setSelectedTime(selectedTime);
+      setWarning4(false);        setWarning2(false);
+
+
+      setWarning3(true);
+
+      const year = scheduledDateTime.getUTCFullYear();
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
+      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+
+      setSelectedDate({
+        hours: hoursFormatted,
+        minutes: minutes,
+        day: day,
+        month: month,
+        ampm: ampm,
+      });
+      setToday(false);
+      setDeliveryTime(formattedDateTime);
+    }
+
+    // if (differenceInMinutes( OrderTime, minTimeNow ) > 1 && selectedTime > minTime ) {
+    //   // If order is in late time during hours
+    //   // setWarning1(true);
+    //   setWarning2(false);
+    //   setWarning3(false);
+    //   console.log("here");
+    //   setSelectedTime(selectedTime);
+    //   const year = scheduledDateTime.getUTCFullYear();
+    //   const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+    //   const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
+    //   const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+    //   const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+    //   const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+    //   setDeliveryTime(formattedDateTime);
+
+    // }
+    // else if  (selectedTime < minTime && selectedTime < maxTime) {
+    //   // setWarning2(true);
+    //   setSelectedTime(selectedTime);
+
+    //   setWarning3(true);
+    //   console.log("here");
+
+    //   const year = scheduledDateTime.getUTCFullYear();
+    //   const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+    //   const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
+    //   const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+    //   const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+    //   const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+    //   setDeliveryTime(formattedDateTime);
+    // }
+    // else if (selectedTime > maxTime && selectedTime < Date("00:00")) {
+    //   setWarning1(false);
+    //   setWarning2(true);
+    //   setWarning3(true);
+    //   setWarning4(true);
+
+    //   setSelectedTime(selectedTime);
+    //   console.log("here");
+
+    //   const year = scheduledDateTime.getUTCFullYear();
+    //   const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
+    //   const day = String(scheduledDateTime.getUTCDate()+1).padStart(2, "0");
+    //   const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+    //   const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+    //   const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+    //   setDeliveryTime(formattedDateTime);
+    // }
     // else {
     //   console.log("here");
     //   setWarning1(false);
@@ -181,7 +294,7 @@ function PlaceOrderBody({ time, locale }) {
   // Shows the time picker
   const handleCheckboxChange = () => {
     setShowTimePicker(!showTimePicker);
-    setWarning3(true)
+    // setWarning3(true);
   };
 
   // Sends the order through
@@ -189,106 +302,106 @@ function PlaceOrderBody({ time, locale }) {
     // setSending(true);
     e.preventDefault();
 
-    // console.log(deliveryTime);
+    console.log(deliveryTime);
 
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
+    // let headers = new Headers();
+    // headers.append("Content-Type", "application/json");
 
-    let data = JSON.stringify({
-      name: e.target.name.value,
-      phone: phone,
-      countryCode: countryCode.toLocaleUpperCase(),
-      address: e.target.address.value,
-      email: e.target.email.value,
-      paymentMethod: e.target.payment.value,
-      language: "en",
-      communcationLanguage: storeLanguage,
-      scheduledDelivery: deliveryTime,
-      order: order,
-      subtotal: subtotal.toFixed(2),
-      charges: charges,
-      total: total,
-      coordinates: bypassGeo ? "" : `${location.lat}, ${location.lng}`,
-      specialInfo: specialInfo,
-      host: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL,
-      telegramChatId: telegramChatId,
-    });
+    // let data = JSON.stringify({
+    //   name: e.target.name.value,
+    //   phone: phone,
+    //   countryCode: countryCode.toLocaleUpperCase(),
+    //   address: e.target.address.value,
+    //   email: e.target.email.value,
+    //   paymentMethod: e.target.payment.value,
+    //   language: "en",
+    //   communcationLanguage: storeLanguage,
+    //   scheduledDelivery: deliveryTime,
+    //   order: order,
+    //   subtotal: subtotal.toFixed(2),
+    //   charges: charges,
+    //   total: total,
+    //   coordinates: bypassGeo ? "" : `${location.lat}, ${location.lng}`,
+    //   specialInfo: specialInfo,
+    //   host: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL,
+    //   telegramChatId: telegramChatId,
+    // });
 
-    let requestOptions = {
-      method: "POST",
-      headers: headers,
-      body: data,
-      redirect: "follow",
-    };
+    // let requestOptions = {
+    //   method: "POST",
+    //   headers: headers,
+    //   body: data,
+    //   redirect: "follow",
+    // };
 
-    const polygonCoords = [
-      [55.14743, 25.1245014],
-      [55.0018611, 25.0025914],
-      [55.0046077, 24.8955094],
-      [55.1309505, 24.7833473],
-      [55.3589168, 24.8132671],
-      [55.6473079, 24.8780687],
-      [55.8999934, 25.1443936],
-      [55.9247127, 25.3232768],
-      [55.836822, 25.5935836],
-      [55.6198421, 25.6282578],
-      [55.4715266, 25.5242049],
-      [55.3232112, 25.4225424],
-      [55.2133479, 25.2711297],
-      [55.1501765, 25.196595],
-      [55.14743, 25.1245014],
-    ];
+    // const polygonCoords = [
+    //   [55.14743, 25.1245014],
+    //   [55.0018611, 25.0025914],
+    //   [55.0046077, 24.8955094],
+    //   [55.1309505, 24.7833473],
+    //   [55.3589168, 24.8132671],
+    //   [55.6473079, 24.8780687],
+    //   [55.8999934, 25.1443936],
+    //   [55.9247127, 25.3232768],
+    //   [55.836822, 25.5935836],
+    //   [55.6198421, 25.6282578],
+    //   [55.4715266, 25.5242049],
+    //   [55.3232112, 25.4225424],
+    //   [55.2133479, 25.2711297],
+    //   [55.1501765, 25.196595],
+    //   [55.14743, 25.1245014],
+    // ];
 
-    const currentLocation = [location.lng, location.lat];
-    const isWithinPolygon = turf.booleanPointInPolygon(
-      turf.point(currentLocation),
-      turf.polygon([polygonCoords])
-    );
+    // const currentLocation = [location.lng, location.lat];
+    // const isWithinPolygon = turf.booleanPointInPolygon(
+    //   turf.point(currentLocation),
+    //   turf.polygon([polygonCoords])
+    // );
 
-    if (Object.keys(order).length == 0) {
-      setErrorModal(true);
-      setModalErrormsg(cartError);
-      setSending(false);
-    } else if (subtotal.toFixed(2) < minimumOrder) {
-      setErrorModal(true);
-      setModalErrormsg(subTotalError);
-      setSending(false);
-    } else if (!bypassGeo && !isWithinPolygon) {
-      setErrorModal(true);
-      setModalErrormsg("We are sorry, we don't deliver to your location");
-      setSending(false);
-    } else if (!isValidPhoneNumber(phone).isValid()) {
-      setPhoneError(true);
-      setSending(false);
-    } else {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/place-order`,
-          requestOptions
-        );
+    // if (Object.keys(order).length == 0) {
+    //   setErrorModal(true);
+    //   setModalErrormsg(cartError);
+    //   setSending(false);
+    // } else if (subtotal.toFixed(2) < minimumOrder) {
+    //   setErrorModal(true);
+    //   setModalErrormsg(subTotalError);
+    //   setSending(false);
+    // } else if (!bypassGeo && !isWithinPolygon) {
+    //   setErrorModal(true);
+    //   setModalErrormsg("We are sorry, we don't deliver to your location");
+    //   setSending(false);
+    // } else if (!isValidPhoneNumber(phone).isValid()) {
+    //   setPhoneError(true);
+    //   setSending(false);
+    // } else {
+    //   try {
+    //     const response = await fetch(
+    //       `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/place-order`,
+    //       requestOptions
+    //     );
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+    //     if (!response.ok) {
+    //       throw new Error(`HTTP error! Status: ${response.status}`);
+    //     }
 
-        const responseData = await response.json();
-        console.log("Success:", responseData);
-        setOrder([]);
-        setSubtotal(0);
-        setSum(0);
-        setCount(0);
-        setSending(false);
-        router.push(`/${locale}/thank-you`, undefined, { shallow: true });
-      } catch (error) {
-        setOrder([]);
-        setSubtotal(0);
-        setSum(0);
-        setCount(0);
-        console.error("Error:", error);
-        setSending(false);
-        router.push(`/${locale}/thank-you`, undefined, { shallow: true });
-      }
-    }
+    //     const responseData = await response.json();
+    //     console.log("Success:", responseData);
+    //     setOrder([]);
+    //     setSubtotal(0);
+    //     setSum(0);
+    //     setCount(0);
+    //     setSending(false);
+    //     router.push(`/${locale}/thank-you`, undefined, { shallow: true });
+    //   } catch (error) {
+    //     setOrder([]);
+    //     setSubtotal(0);
+    //     setSum(0);
+    //     setCount(0);
+    //     console.error("Error:", error);
+    //     setSending(false);
+    //     router.push(`/${locale}/thank-you`, undefined, { shallow: true });
+    //   }
+    // }
   };
   return (
     <div>
@@ -384,63 +497,57 @@ function PlaceOrderBody({ time, locale }) {
                   onInput={handleTimeChange}
                   {...(showTimePicker && { required: true })}
                   className={`border rounded-md px-3 py-2 focus:ring-secondry outline-none focus:border-secondry w-full time-fix-input
-                  ${warning1 || warning2 ? "border-red-600" : "border-gray-300"}`}
+                  ${
+                    warning1 || warning2 ? "border-red-600" : "border-gray-300"
+                  }`}
                 />
-                { warning1 && (
-                   <p className={`text-xs font-ITC-BK rtl:font-DIN-Bold text-red-600`} >
-                   {t("place_order.schedule_warning_1")}
-                 </p>
+                {warning1 && (
+                  <p
+                    className={`text-xs font-ITC-BK rtl:font-DIN-Bold text-red-600`}
+                  >
+                    {t("place_order.schedule_warning_1")}
+                  </p>
                 )}
-                { warning2 && (
-                   <p className={`text-xs font-ITC-BK rtl:font-DIN-Bold text-red-600`} >
-                   {t("place_order.schedule_warning_2")}
-                 </p>
+                {warning2 && (
+                  <p
+                    className={`text-xs font-ITC-BK rtl:font-DIN-Bold text-red-600`}
+                  >
+                    {t("place_order.schedule_warning_2")}
+                  </p>
                 )}
-                { warning3 && (
-                   <p className={`text-xs font-ITC-BK rtl:font-DIN-Bold  ${warning1 || warning2 ? "text-red-600" : "text-black"} `} >
-                   {t("place_order.schedule_warning_3", {
-                    day:  selectedTime > maxTime
-                    ? t("place_order.tomorrow")
-                    : t("place_order.today"),
-                    date:
-                      selectedTime > maxTime
-                        ? new Date().getDate() +
-                          1 +
-                          "/" +
-                          (new Date().getMonth() + 1)
-                        : new Date().getDate() +
-                          "/" +
-                          (new Date().getMonth() + 1),
-                    time:
-                      selectedTime < maxTime && selectedTime > minTime
-                        ? new Date(
-                            `2000-01-01T${selectedTime}:00`
-                          ).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })
-                        : selectedTime > maxTime
-                        ? new Date(`2000-01-01T11:00:00`).toLocaleTimeString(
-                            [],
-                            { hour: "2-digit", minute: "2-digit" }
-                          )
-                        : new Date(
-                            `2000-01-01T${minTime}:00`
-                          ).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          }),
-                  })}
-                 </p>
+                {warning4 && (
+                  <p
+                    className={`text-xs font-ITC-BK rtl:font-DIN-Bold text-red-600`}
+                  >
+                    {t("place_order.schedule_warning_4")}
+                  </p>
+                )}
+                {warning3 && (
+                  <p
+                    className={`text-xs font-ITC-BK rtl:font-DIN-Bold  ${
+                      warning1 || warning2 ? "text-red-600" : "text-black"
+                    } `}
+                  >
+                    {t("place_order.schedule_warning_3", {
+                      day: today
+                        ? t("place_order.today")
+                        : t("place_order.tomorrow"),
+                      date: selectedDate.day + "/" + selectedDate.month,
+                      time:
+                        selectedDate.hours +
+                        ":" +
+                        selectedDate.minutes +
+                        " " +
+                        selectedDate.ampm,
+                    })}
+                  </p>
                 )}
 
                 <p
                   className={`text-xs font-ITC-BK rtl:font-DIN-Bold ${
                     !warning2 ? "text-red-600" : "text-black"
                   }`}
-                >
-                  
-                </p>
+                ></p>
               </>
             )}
           </div>
