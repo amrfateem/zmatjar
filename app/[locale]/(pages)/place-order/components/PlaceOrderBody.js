@@ -57,7 +57,6 @@ function PlaceOrderBody({ time, locale, serverTimeIncoimng }) {
 
   let utc = addMilliseconds(serverTimeCal , offsetCal)
 
-  console.log(utc);
 
   
 
