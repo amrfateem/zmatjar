@@ -19,7 +19,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import * as turf from "@turf/turf";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
-import { addHours, differenceInMinutes, getHours, getMinutes } from "date-fns";
+import { addHours, addMilliseconds, differenceInMinutes, getHours, getMinutes } from "date-fns";
 import isValidPhoneNumber from "libphonenumber-js";
 import { useTranslations } from "next-intl";
 
@@ -47,11 +47,16 @@ function PlaceOrderBody({ time, locale }) {
   const [maxTime, setMaxTime] = useState("23:00");
 
   const serverTime = Date(time);
+  const serverTimeCal = new Date(time).getTime()
   let offset = new Date(time).getTimezoneOffset();
+  let offsetCal = new Date(time).getTimezoneOffset()* 60000;
 
-  console.log(offset);
+  let utc = addMilliseconds(serverTimeCal , offsetCal)
 
-  const currentDubaiTime = addHours(new Date(serverTime), offset);
+  
+
+  const currentDubaiTime = addHours(new Date(utc), 4);
+
 
   const [deliveryTime, setDeliveryTime] = useState(
     addHours(new Date(currentDubaiTime), 1)
