@@ -67,10 +67,7 @@ export default async function Home({ params: { locale } }) {
 
     const itemPrice = parseFloat(product.field_price);
     const itemDescription = product.body?.value || "";
-    const itemImage = product.field_image?.uri?.url
-      ? process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + product.field_image?.uri.url
-      : "/svg/img-placeholder.svg";
-
+    const itemImage = product.field_image?.uri?.url ? process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + product.field_image?.uri.url : "/svg/img-placeholder.svg";
     let itemOutOfStock;
 
     if (product.field_out_of_stock === null) {

@@ -57,7 +57,9 @@ function PlaceOrderBody({ time, locale }) {
   // console.log(getHours(currentDubaiTime), getMinutes(currentDubaiTime));
 
   let dubaiTime =
-    String(getHours(currentDubaiTime)).padStart(2, "0") + ":" + String(getMinutes(currentDubaiTime)).padStart(2, "0");
+    String(getHours(currentDubaiTime)+1).padStart(2, "0") + ":" + String(getMinutes(currentDubaiTime)).padStart(2, "0");
+    const [selectedDate, setSelectedDate] = useState("");
+    const [today, setToday] = useState(false);
 
   useEffect(() => {
     if (dubaiTime > minTime && dubaiTime < maxTime) {
@@ -72,11 +74,27 @@ function PlaceOrderBody({ time, locale }) {
       }
     };
 
+    
+
+    const hours = (getHours(currentDubaiTime)+1).toString().padStart(2, "0");
+    const minutes = getMinutes(currentDubaiTime).toString().padStart(2, "0");
+
+    let ampm = hours >= 12 ? "PM" : "AM";
+    let hoursFormatted = hours % 12 || 12;
+
+    const now = new Date()
+
+    // const year = now.getUTCFullYear();
+        const month = String(now.getUTCMonth() + 1).padStart( 2, "0" );
+        const day = String(now.getUTCDate()).padStart(2, "0");
+
+
+    setSelectedDate({ hours: Number(hoursFormatted), minutes: minutes, day: day, month: month, ampm: ampm, });
+    setToday(true);
+
     checkTime(); // Call the function when the component mounts
   }, []);
 
-  const [selectedDate, setSelectedDate] = useState("");
-  const [today, setToday] = useState(false);
 
   // Gets the correct time format and sends it back
   const handleTimeChange = (e) => {
@@ -105,7 +123,7 @@ function PlaceOrderBody({ time, locale }) {
     let hoursFormatted = OrderTime.getHours() % 12 || 12;
 
     if (selectedTime < minTime) {
-      console.log(selectedTime);
+      setWarning4(false);
       if (selectedTime > "11:00") {
         setWarning1(true);
         setWarning2(false);
@@ -127,7 +145,7 @@ function PlaceOrderBody({ time, locale }) {
         const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
         const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
 
-        setSelectedDate({ hours: Number(hoursFormatted)+1, minutes: minutes, day: day, month: month, ampm: ampm, });
+        setSelectedDate({ hours: Number(hoursFormatted), minutes: minutes, day: day, month: month, ampm: ampm, });
         setToday(true);
         setDeliveryTime(formattedDateTime);
       } else {
@@ -150,33 +168,29 @@ function PlaceOrderBody({ time, locale }) {
       const hours = String(scheduledDateTime.getUTCHours()+1).padStart(2, "0");
       const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
       const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
-      setSelectedDate({ hours: Number(hoursFormatted)+1, minutes: minutes, day: day, month: month, ampm: ampm, });
+      setSelectedDate({ hours: Number(hoursFormatted), minutes: minutes, day: day, month: month, ampm: ampm, });
       setToday(true);
       setDeliveryTime(formattedDateTime);
+
+
     } else if (currentTime < maxTime && selectedTime > maxTime) {
       setSelectedTime(selectedTime);
-
       setWarning4(true);
       setWarning3(false);
-    } else if (
-      selectedTime > maxTime &&
-      selectedTime < Date("24:00") &&
-      currentTime > maxTime
-    ) {
+    } else if ( selectedTime > maxTime && selectedTime < Date("24:00") && currentTime > maxTime ) {
       setSelectedTime(selectedTime);
       setWarning4(false);
       setWarning2(false);
-
       setWarning3(true);
 
       const year = scheduledDateTime.getUTCFullYear();
       const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
-      const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
+      const day = String(scheduledDateTime.getUTCDate()+1).padStart(2, "0");
       const hours = String(scheduledDateTime.getUTCHours()+1).padStart(2, "0");
       const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
       const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
 
-      setSelectedDate({ hours: Number(hoursFormatted)+1, minutes: minutes, day: day, month: month, ampm: ampm, });
+      setSelectedDate({ hours: Number(hoursFormatted), minutes: minutes, day: day, month: month, ampm: ampm, });
       setToday(false);
       setDeliveryTime(formattedDateTime);
     }
@@ -247,8 +261,19 @@ function PlaceOrderBody({ time, locale }) {
 
   // Gets the current time and sends it back
   const getCurrentTime = () => {
-    const hours = getHours(currentDubaiTime).toString().padStart(2, "0");
+    let hours;
+    if (getHours(currentDubaiTime) >= 23) {
+      hours = (getHours(currentDubaiTime)).toString().padStart(2, "0");
+
+    } else { 
+      hours = (getHours(currentDubaiTime)+1).toString().padStart(2, "0");
+
+
+    }
     const minutes = getMinutes(currentDubaiTime).toString().padStart(2, "0");
+
+    console.log(hours+":"+minutes);
+
     return `${hours}:${minutes}`;
   };
 
@@ -277,7 +302,7 @@ function PlaceOrderBody({ time, locale }) {
   // Shows the time picker
   const handleCheckboxChange = () => {
     setShowTimePicker(!showTimePicker);
-    // setWarning3(true);
+    setWarning3(true);
   };
 
   // Sends the order through
