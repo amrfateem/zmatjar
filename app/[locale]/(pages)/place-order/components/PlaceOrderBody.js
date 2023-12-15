@@ -108,8 +108,10 @@ function PlaceOrderBody({ time, locale }) {
       console.log(selectedTime);
       if (selectedTime > "11:00") {
         setWarning1(true);
+        setWarning2(false);
       } else {
         setWarning2(true);
+        setWarning1(false);
       }
 
       setSelectedTime(selectedTime);
@@ -121,11 +123,11 @@ function PlaceOrderBody({ time, locale }) {
         const year = scheduledDateTime.getUTCFullYear();
         const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
         const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
-        const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
+        const hours = String(scheduledDateTime.getUTCHours()+1).padStart(2, "0");
         const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
         const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
 
-        setSelectedDate({ hours: hoursFormatted, minutes: minutes, day: day, month: month, ampm: ampm, });
+        setSelectedDate({ hours: Number(hoursFormatted)+1, minutes: minutes, day: day, month: month, ampm: ampm, });
         setToday(true);
         setDeliveryTime(formattedDateTime);
       } else {
@@ -143,27 +145,12 @@ function PlaceOrderBody({ time, locale }) {
         setWarning1(true);
       }
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(
-        2,
-        "0"
-      );
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
-      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(
-        2,
-        "0"
-      );
-      const formattedDateTime = `${year}-${month}-${day}T${
-        hours + ":" + minutes
-      }:00`;
-
-      setSelectedDate({
-        hours: hoursFormatted,
-        minutes: minutes,
-        day: day,
-        month: month,
-        ampm: ampm,
-      });
+      const hours = String(scheduledDateTime.getUTCHours()+1).padStart(2, "0");
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
+      setSelectedDate({ hours: Number(hoursFormatted)+1, minutes: minutes, day: day, month: month, ampm: ampm, });
       setToday(true);
       setDeliveryTime(formattedDateTime);
     } else if (currentTime < maxTime && selectedTime > maxTime) {
@@ -183,27 +170,13 @@ function PlaceOrderBody({ time, locale }) {
       setWarning3(true);
 
       const year = scheduledDateTime.getUTCFullYear();
-      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart(
-        2,
-        "0"
-      );
+      const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
       const day = String(scheduledDateTime.getUTCDate()).padStart(2, "0");
-      const hours = String(scheduledDateTime.getUTCHours()).padStart(2, "0");
-      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart(
-        2,
-        "0"
-      );
-      const formattedDateTime = `${year}-${month}-${day}T${
-        hours + ":" + minutes
-      }:00`;
+      const hours = String(scheduledDateTime.getUTCHours()+1).padStart(2, "0");
+      const minutes = String(scheduledDateTime.getUTCMinutes()).padStart( 2, "0" );
+      const formattedDateTime = `${year}-${month}-${day}T${ hours + ":" + minutes }:00`;
 
-      setSelectedDate({
-        hours: hoursFormatted,
-        minutes: minutes,
-        day: day,
-        month: month,
-        ampm: ampm,
-      });
+      setSelectedDate({ hours: Number(hoursFormatted)+1, minutes: minutes, day: day, month: month, ampm: ampm, });
       setToday(false);
       setDeliveryTime(formattedDateTime);
     }
