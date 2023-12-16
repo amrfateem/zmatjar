@@ -1,17 +1,5 @@
 "use client";
-import {
-  bypassGeoState,
-  cartState,
-  chargesState,
-  countState,
-  manualAddressState,
-  minimumOrderState,
-  specialInstructionsState,
-  storeLangState,
-  sumState,
-  telegramChatIdState,
-  userLocationState,
-} from "../../../atoms";
+import { bypassGeoState, cartState, chargesState, countState, manualAddressState, minimumOrderState, specialInstructionsState, storeLangState, sumState, telegramChatIdState, userLocationState, } from "../../../atoms";
 import { Button, Modal } from "flowbite-react";
 import { useEffect, useState } from "react";
 import "react-phone-input-2/lib/style.css";
@@ -80,7 +68,7 @@ function PlaceOrderBody({ time, locale, serverTimeIncoimng }) {
     }
 
     const checkTime = () => {
-      if (dubaiTime >= maxTime && dubaiTime < minTime) {
+      if (dubaiTime >= maxTime || dubaiTime < minTime) {
         setShowTimePicker(true);
         setClosingTime(true);
         setWarning2(true);
@@ -190,11 +178,14 @@ function PlaceOrderBody({ time, locale, serverTimeIncoimng }) {
       setSelectedTime(selectedTime);
       setWarning4(true);
       setWarning3(false);
+      setWarning1(false);
+
     } else if ( selectedTime > maxTime && selectedTime < Date("24:00") && currentTime > maxTime ) {
       setSelectedTime(selectedTime);
       setWarning4(false);
       setWarning2(false);
       setWarning3(true);
+      setWarning1(false);
 
       const year = scheduledDateTime.getUTCFullYear();
       const month = String(scheduledDateTime.getUTCMonth() + 1).padStart( 2, "0" );
