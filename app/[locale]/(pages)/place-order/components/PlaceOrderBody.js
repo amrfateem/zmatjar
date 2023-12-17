@@ -10,12 +10,14 @@ import "react-intl-tel-input/dist/main.css";
 import { addHours, addMilliseconds, getHours, getMinutes } from "date-fns";
 import isValidPhoneNumber from "libphonenumber-js";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 
 
 function PlaceOrderBody({ time, locale, serverTimeIncoimng }) {
   const t = useTranslations();
   // Handling User error
+  const router = useRouter();
   const [errorModal, setErrorModal] = useState(false);
   const [modalErrormsg, setModalErrormsg] = useState("");
   const [warning1, setWarning1] = useState(false);
