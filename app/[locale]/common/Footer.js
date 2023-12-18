@@ -6,7 +6,7 @@ import { chargesState, countState, minimumOrderState, storeLangState, sumState, 
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 
-function Footer({ charges, location, whatsapp, phone, minimum, telegramId, storeLang,setView }) {
+function Footer({ charges, location, whatsapp, phone, minimum, telegramId, storeLang, }) {
   const router = useRouter();
   const locale = useLocale();
   const [offsetTop, setOffsetTop] = useState(0);
@@ -55,7 +55,7 @@ function Footer({ charges, location, whatsapp, phone, minimum, telegramId, store
       setIsOverMinimum(true);
     } else {
       setIsOverMinimum(false);
-      setView("cart");
+      router.push(`/${locale}/cart`, undefined, { shallow: true });
     }
   };
 
