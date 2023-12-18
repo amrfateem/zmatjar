@@ -51,7 +51,7 @@ function PlaceOrderBody({ time, locale }) {
 
 
   const [deliveryTime, setDeliveryTime] = useState(
-    addHours(new Date(currentDubaiTime), 1)
+    addHours(new Date(utc), 1)
   );
 
   // console.log(getHours(currentDubaiTime), getMinutes(currentDubaiTime));
