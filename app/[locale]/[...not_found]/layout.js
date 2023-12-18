@@ -3,9 +3,9 @@ export const metadata = {
   description: '404 Page',
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, params: { locale } }) {
  return (
-    <html lang="en">
+    <html lang={locale}>
       <body>{children}</body>
     </html>
   )
