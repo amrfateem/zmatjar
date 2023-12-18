@@ -108,44 +108,44 @@ try {
   console.error(error);
 }
 
-export async function generateMetadata({ params: { locale } }) {
-  let page;
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/store-metadata.json?lang=${locale}`
-    );
+// export async function generateMetadata({ params: { locale } }) {
+//   let page;
+//   try {
+//     const response = await fetch(
+//       `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/store-metadata.json?lang=${locale}`
+//     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await response.json();
-    page = data[0];
-  } catch (error) {
-    console.error(error);
-  }
+//     if (!response.ok) {
+//       throw new Error("Failed to fetch data");
+//     }
+//     const data = await response.json();
+//     page = data[0];
+//   } catch (error) {
+//     console.error(error);
+//   }
 
-  return {
-    title: page.title,
-    description: page.body,
-    icons: {
-      icon: [
-        {
-          url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
-        },
-        new URL(
-          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
-          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo
-        ),
-      ],
-      shortcut: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
-      apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
-      other: {
-        rel: "apple-touch-icon-precomposed",
-        url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
-      },
-    },
-  };
-}
+//   return {
+//     title: page.title,
+//     description: page.body,
+//     icons: {
+//       icon: [
+//         {
+//           url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+//         },
+//         new URL(
+//           process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+//           process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo
+//         ),
+//       ],
+//       shortcut: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+//       apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+//       other: {
+//         rel: "apple-touch-icon-precomposed",
+//         url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+//       },
+//     },
+//   };
+// }
 
 export default function RootLayout({ children, params: { locale } }) {
   const messages = useMessages();

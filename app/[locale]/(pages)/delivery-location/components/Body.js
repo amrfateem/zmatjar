@@ -18,7 +18,7 @@ import { useLocale, useTranslations } from "next-intl";
 const Map = dynamic(() => import("./map.js"), {
   ssr: false,
 });
-function Body() {
+function Body({setView}) {
   const router = useRouter();
   const locale = useLocale();
 
@@ -169,7 +169,7 @@ function Body() {
 
   const handleConfirmLocation = () => {
     if (isWithinPolygon) {
-      router.push(`/${locale}/place-order`, undefined, { shallow: true });
+      setView("checkout");
     } else {
       setShowModal(true);
     }
@@ -178,7 +178,7 @@ function Body() {
   const handleManualLocation = () => {
     if (manualAddressValue) {
       setBypassGeo(true);
-      router.push(`/${locale}/place-order`, undefined, { shallow: true });
+      setView("checkout");
     }
   };
 

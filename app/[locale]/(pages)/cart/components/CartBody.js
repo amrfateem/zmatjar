@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Button } from "flowbite-react";
 import { useRouter } from "next/navigation";
 
-function CartBody() {
+function CartBody({setView}) {
   const t = useTranslations();
   const [cart, setCart] = useRecoilState(cartState || []);
   const [count, setCount] = useRecoilState(countState || 0);
@@ -77,7 +77,7 @@ function CartBody() {
       setIsOverMinimum(true);
     } else {
       setIsOverMinimum(false);
-      router.push(`/${locale}/delivery-location`, undefined, { shallow: true });
+      setView("delivery");
     }
   };
 

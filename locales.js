@@ -1,7 +1,7 @@
 
     module.exports = {
       defaultLocale: "en",
-      locales: ["ar","en"],
-      defaultMapLocation: "25.2048,55.2708"
+      locales: ["en"],
+      defaultMapLocation: "25.0830831,55.1409334"
     };
   
