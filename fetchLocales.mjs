@@ -54,7 +54,23 @@ export const fetchLocales = async () => {
 
   const mergedResponses = Object.assign({}, ...metaData);
 
-  console.log(mergedResponses);
+  const pageData = await Promise.all(
+    locales.map(async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/node/page?jsonapi_include=1&fields[node--page]=field_logo,field_primary_color,field_telegram_chat_id,field_communication_language,field_metatags,field_image,field_gtm_id&include=field_logo,field_image`,
+        {
+          method: "GET",
+          headers: {
+            "Cache-Control": "no-store", // Specify cache control header
+          },
+        }
+      );
+      const responseData = await response.json();
+      return { responseData };
+    })
+  );
+
+  const pageRespo = Object.assign({}, ...pageData);
 
   // Determine the current directory dynamically
   const filePath = path.join("./", "locales.js");
@@ -65,16 +81,36 @@ export const fetchLocales = async () => {
       locales: ${JSON.stringify(locales)},
       defaultMapLocation: ${JSON.stringify(defaultMapLocation)},
       ${Object.entries(mergedResponses)
-        .map(
-          ([locale, response]) => `${locale}Meta: { 
+      .map(
+        ([locale, response]) => `${locale}Meta: { 
             title: ${JSON.stringify(response[0].title)},
             body: ${JSON.stringify(response[0].body)},
             logo: ${JSON.stringify(response[0].logo)},
-          }`
-        )
-        .join(",\n")}
-    };
-  `;
+          },`
+      )
+      .join(",\n")}
+pageData: { 
+           gtm: ${JSON.stringify(pageRespo.responseData.data[0].field_gtm_id)},
+            primaryColor: ${JSON.stringify(
+        pageRespo.responseData.data[0].field_primary_color
+      )},
+            telegramChatId: ${JSON.stringify(
+        pageRespo.responseData.data[0].field_telegram_chat_id
+      )},
+            communicationLanguage: ${JSON.stringify(
+        pageRespo.responseData.data[0].field_communication_language
+      )},
+            metatags: ${JSON.stringify(
+        pageRespo.responseData.data[0].field_metatags.robots
+      )},
+            image: ${JSON.stringify(
+        pageRespo.responseData.data[0].field_image.uri.url
+      )},
+            logo: ${JSON.stringify(
+        pageRespo.responseData.data[0].field_logo.uri.url
+      )},
+            
+          }}`;
 
   try {
     fs.writeFileSync(filePath, content, "utf8");

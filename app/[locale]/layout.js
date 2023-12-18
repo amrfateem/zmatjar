@@ -12,6 +12,7 @@ const inter = Inter({ subsets: ["latin"] });
 import { locales } from "@/i18nconfig";
 import { unstable_setRequestLocale } from "next-intl/server";
 import Script from "next/script";
+import { pageData } from "@/locales.js";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -74,40 +75,6 @@ function setCookie(name, value, days) {
   document.cookie = cookie; // Set the cookie in the browser environment
 }
 
-const param21 = new DrupalJsonApiParams()
-  .addInclude(["field_logo", "field_image"])
-  .addFields("node--page", [
-    "title",
-    "field_primary_color",
-    "field_primary_color",
-    "field_logo",
-    "field_telegram_chat_id",
-    "field_communication_language",
-    "field_metatags",
-    "field_image",
-    "field_gtm_id",
-    "body",
-  ]);
-
-let pageData;
-
-const queryString = param21.getQueryString({ encode: false });
-
-try {
-  const response = await fetch(
-    process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-      "/jsonapi/node/page?jsonapi_include=1&" +
-      queryString
-  );
-  if (!response.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  const data = await response.json();
-  pageData = data.data;
-} catch (error) {
-  console.error(error);
-}
-
 export async function generateMetadata({ params: { locale } }) {
   const { [locale + "Meta"]: dynamicMeta } = await import("@/locales");
   return {
@@ -141,32 +108,23 @@ export default function RootLayout({ children, params: { locale } }) {
   return (
     <html lang={locale} dir={dir}>
       <head>
-        <meta name="robots" content={pageData[0].field_metatags?.robots} />
+        <meta name="robots" content={pageData.metatags} />
         <link rel="canonical" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
         <link rel="shortlink" href={process.env.NEXT_PUBLIC_MAIN_SITE} />
         <link
           rel="icon"
-          href={
-            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-            pageData[0].field_logo.uri.url
-          }
+          href={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData?.logo}
           type="image/x-icon"
         />
         <meta
           name="msapplication-TileColor"
-          content={`#${pageData[0].field_primary_color}`}
+          content={`#${pageData.primaryColor}`}
         />
-        <meta
-          name="theme-color"
-          content={`#${pageData[0].field_primary_color}`}
-        />
+        <meta name="theme-color" content={`#${pageData.primaryColor}`} />
         <meta property="og:url" content={process.env.NEXT_PUBLIC_MAIN_SITE} />
         <meta
           property="og:image"
-          content={
-            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL +
-            pageData[0].field_image.uri.url
-          }
+          content={process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + pageData?.image}
         />
 
         <Script
@@ -177,7 +135,7 @@ export default function RootLayout({ children, params: { locale } }) {
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer',"${pageData[0].field_gtm_id}");
+            })(window,document,'script','dataLayer',"${pageData.gtm}");
           `,
           }}
         />
@@ -185,7 +143,7 @@ export default function RootLayout({ children, params: { locale } }) {
       <body className={inter.className}>
         <noscript>
           <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${pageData[0].field_gtm_id}`}
+            src={`https://www.googletagmanager.com/ns.html?id=${pageData.gtm}`}
             height="0"
             width="0"
             style={{ display: "none", visibility: "hidden" }}
@@ -193,7 +151,7 @@ export default function RootLayout({ children, params: { locale } }) {
         </noscript>
         <style
           dangerouslySetInnerHTML={{
-            __html: ` :root { --brand-color:  #${pageData[0]?.field_primary_color}; --brand-color-bg:  #${pageData[0]?.field_primary_color}45; }`,
+            __html: ` :root { --brand-color:  #${pageData.primaryColor}; --brand-color-bg:  #${pageData.primaryColor}45; }`,
           }}
         />
 
