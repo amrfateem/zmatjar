@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 
 
 
-function PlaceOrderBody({ time, locale, serverTimeIncoimng }) {
+function PlaceOrderBody({ time, locale }) {
   const t = useTranslations();
   // Handling User error
   const router = useRouter();
