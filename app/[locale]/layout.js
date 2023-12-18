@@ -130,16 +130,14 @@ export async function generateMetadata({ params: { locale } }) {
     icons: {
       icon: [
         {
-          url:
-            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+          url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
         },
         new URL(
           process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
           process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo
         ),
       ],
-      shortcut:
-        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+      shortcut: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
       apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
       other: {
         rel: "apple-touch-icon-precomposed",
