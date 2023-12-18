@@ -109,41 +109,25 @@ try {
 }
 
 export async function generateMetadata({ params: { locale } }) {
-  let page;
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/store-metadata.json?lang=${locale}`
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await response.json();
-    page = data[0];
-  } catch (error) {
-    console.error(error);
-  }
-
+  const { [locale + "Meta"]: dynamicMeta } = await import("@/locales");
   return {
-    title: page.title,
-    description: page.body,
+    title: dynamicMeta.title,
+    description: dynamicMeta.body,
     icons: {
       icon: [
         {
-          url:
-            process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+          url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + dynamicMeta.logo,
         },
         new URL(
-          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
-          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo
+          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + dynamicMeta.logo,
+          process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + dynamicMeta.logo
         ),
       ],
-      shortcut:
-        process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
-      apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+      shortcut: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + dynamicMeta.logo,
+      apple: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + dynamicMeta.logo,
       other: {
         rel: "apple-touch-icon-precomposed",
-        url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + page.logo,
+        url: process.env.NEXT_PUBLIC_DRUPAL_BASE_URL + dynamicMeta.logo,
       },
     },
   };

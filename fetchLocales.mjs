@@ -27,13 +27,34 @@ export const fetchLocales = async () => {
       }
     ),
   ]);
-  
+
   const [data, data2] = await Promise.all([res.json(), res2.json()]);
-  
+
   const defaultMapLocation = data2.data[0].field_default_location;
   const defaultLocale = data.data[0].field_default_language;
   const locales = data.data[0].field_slanguages;
-  
+
+  // ${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/store-metadata.json?lang=${locale}
+
+  const metaData = await Promise.all(
+    locales.map(async (locale) => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/store-metadata.json?lang=${locale}`,
+        {
+          method: "GET",
+          headers: {
+            "Cache-Control": "no-store", // Specify cache control header
+          },
+        }
+      );
+      const responseData = await response.json();
+      return { [locale]: responseData };
+    })
+  );
+
+  const mergedResponses = Object.assign({}, ...metaData);
+
+  console.log(mergedResponses);
 
   // Determine the current directory dynamically
   const filePath = path.join("./", "locales.js");
@@ -42,7 +63,16 @@ export const fetchLocales = async () => {
     module.exports = {
       defaultLocale: "${defaultLocale}",
       locales: ${JSON.stringify(locales)},
-      defaultMapLocation: ${JSON.stringify(defaultMapLocation)}
+      defaultMapLocation: ${JSON.stringify(defaultMapLocation)},
+      ${Object.entries(mergedResponses)
+        .map(
+          ([locale, response]) => `${locale}Meta: { 
+            title: ${JSON.stringify(response[0].title)},
+            body: ${JSON.stringify(response[0].body)},
+            logo: ${JSON.stringify(response[0].logo)},
+          }`
+        )
+        .join(",\n")}
     };
   `;
 
