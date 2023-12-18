@@ -348,7 +348,7 @@ function PlaceOrderBody({ time, locale }) {
 
   // Sends the order through
   const handlePlaceOrder = async (e) => {
-    // setSending(true);
+    setSending(true);
     e.preventDefault();
 
     // console.log(deliveryTime);
@@ -439,7 +439,6 @@ function PlaceOrderBody({ time, locale }) {
         setSubtotal(0);
         setSum(0);
         setCount(0);
-        setSending(false);
         router.push(`/${locale}/thank-you`, undefined, { shallow: true });
       } catch (error) {
         setOrder([]);
@@ -447,7 +446,6 @@ function PlaceOrderBody({ time, locale }) {
         setSum(0);
         setCount(0);
         console.error("Error:", error);
-        setSending(false);
         router.push(`/${locale}/thank-you`, undefined, { shallow: true });
       }
     }
