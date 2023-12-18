@@ -20,7 +20,7 @@ function Cart({ params: { locale } }) {
         <h2 className="p-3  w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold h-full">
           {t("cart.head")}
         </h2>
-        <Link href={`/${locale}`}>
+        <Link shallow={true} href={`/${locale}`}>
           <button
             color={"bg-secondry"}
             theme={{

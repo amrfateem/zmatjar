@@ -10,7 +10,7 @@ function page() {
         <h2 className="px-3 py-2  w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold">
           404 Page Not found
         </h2>
-        <Link href="/">
+        <Link shallow={true} href="/">
           <Button
             theme={{
               size: "text-sm p-3",
@@ -37,7 +37,7 @@ function page() {
       </div>
 
       <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0 shadow-custom-up ">
-        <Link href="/">
+        <Link shallow={true} href="/">
           <Button
             type="submit"
             className="uppercase w-full bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent"

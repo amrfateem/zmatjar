@@ -83,7 +83,7 @@ export const fetchLocales = async () => {
       ${Object.entries(mergedResponses)
       .map(
         ([locale, response]) => `${locale}Meta: { 
-            title: ${JSON.stringify(response[0].title)},
+            title: ${JSON.stringify(response[0].title.replace(/&amp;/g, '&'))},
             body: ${JSON.stringify(response[0].body)},
             logo: ${JSON.stringify(response[0].logo)},
           },`

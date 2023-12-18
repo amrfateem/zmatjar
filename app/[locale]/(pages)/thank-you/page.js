@@ -19,7 +19,7 @@ function Page({ params: { locale } }) {
         <h2 className="px-3 py-2  w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold">
           {t("thank_you.head")}
         </h2>
-        <Link href={`/${locale}`}>
+        <Link shallow={true} href={`/${locale}`}>
           <button
             theme={{
               size: "text-sm p-3",
@@ -56,7 +56,7 @@ function Page({ params: { locale } }) {
       </div>
 
       <div className="button-checkout w-full max-w-[458px] p-4 h-auto flex flex-col justify-end bg-white fixed bottom-0 shadow-custom-up ">
-        <Link href={`/${locale}`}>
+        <Link  shallow={true} href={`/${locale}`}>
           <button
             type="submit"
             className="uppercase w-full p-3 rounded-md bg-secondry text-white font-ITC-BK rtl:font-DIN-Bold focus: focus:ring-secondry focus:border-transparent"
