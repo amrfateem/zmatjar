@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "trans": "node ./fetchLocales.mjs",
-    "dev": "npm run trans && next dev",
-    "build": "npm run trans && next build",
-    "start": "npm run trans && next start",
+    "dev": "npm run trans && next dev --force",
+    "build": "npm run trans && next build --force",
+    "start": "npm run trans && next start --force",
     "lint": "next lint"
   },
   "dependencies": {
