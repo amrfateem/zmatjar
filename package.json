@@ -24,7 +24,6 @@
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "libphonenumber-js": "^1.10.51",
     "next": "^13.5.6",
-    "next-drupal": "^1.6.0",
     "next-intl": "^3.3.2",
     "node-fetch": "^3.3.2",
     "react": "^18",

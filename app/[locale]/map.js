@@ -1,15 +1,15 @@
 "use client";
-import { MapContainer, TileLayer, Marker, Popup, useMap, Tooltip, } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap, Tooltip, } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 import { useRecoilState } from "recoil";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { userLocationState } from "./atoms";
 import L from "leaflet";
 import { useTranslations } from "next-intl";
 
-const Map = ({grant}) => {
+const Map = () => {
   const [userLocation, setUserLocation] = useRecoilState(userLocationState);
   const [draggedPosition, setDraggedPosition] = useState(null);
 
