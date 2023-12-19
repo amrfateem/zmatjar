@@ -2,7 +2,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import RecoidContextProvider from "./recoilContextProvider";
-import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { isRtlLang } from "rtl-detect";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -101,9 +100,10 @@ export async function generateMetadata({ params: { locale } }) {
 }
 
 export default function RootLayout({ children, params: { locale } }) {
+  unstable_setRequestLocale(locale);
+
   const messages = useMessages();
   const dir = isRtlLang(locale) ? "rtl" : "ltr";
-  unstable_setRequestLocale(locale);
 
   return (
     <html lang={locale} dir={dir}>

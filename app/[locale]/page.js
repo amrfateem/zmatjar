@@ -2,10 +2,6 @@ import Contacts from "./common/Contacts";
 import Footer from "./common/Footer";
 import Header from "./common/Header";
 import Intro from "./common/Intro";
-import MainItems from "./common/MainItems";
-import MostSelling from "./common/MostSelling";
-import NavBar from "./common/NavBar";
-import Offers from "./common/Offers";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
@@ -71,12 +67,6 @@ export default async function Home({ params: { locale } }) {
       {/* End Contacts */}
       {/* 
       <Offers /> */}
-
-      {/* {mostSellingProducts.length > 0 && (
-        <MostSelling mostSelling={mostSellingProducts} />
-      )}
-
-      <MainItems data={sortedCategorizedMenu} /> */}
 
       <Products locale={locale} />
 
