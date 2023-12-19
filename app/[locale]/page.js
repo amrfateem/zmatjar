@@ -1,7 +1,5 @@
-import Contacts from "./common/Contacts";
-import Footer from "./common/Footer";
-import Header from "./common/Header";
-import Intro from "./common/Intro";
+
+import dynamic from 'next/dynamic'
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
@@ -9,6 +7,11 @@ import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { unstable_setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18nconfig";
 import Products from "./common/Products";
+
+const Contacts = dynamic(() => import('./common/Contacts'));
+const Footer = dynamic(() => import('./common/Footer'));
+const Header = dynamic(() => import('./common/Header'));
+const Intro = dynamic(() => import('./common/Intro'));
 
 
 export function generateStaticParams() {
