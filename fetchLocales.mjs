@@ -86,10 +86,10 @@ export const fetchLocales = async () => {
             title: ${JSON.stringify(response[0].title.replace(/&amp;/g, '&'))},
             body: ${JSON.stringify(response[0].body)},
             logo: ${JSON.stringify(response[0].logo)},
-          },`
+          }`
       )
       .join(",\n")}
-pageData: { 
+      ,pageData: { 
            gtm: ${JSON.stringify(pageRespo.responseData.data[0].field_gtm_id)},
             primaryColor: ${JSON.stringify(
         pageRespo.responseData.data[0].field_primary_color
