@@ -24,7 +24,7 @@ function PlaceOrder({ params: { locale } }) {
           <h2 className="px-3 py-2 w-full text-base font-semibold rtl:font-extrabold font-ITC-BK rtl:font-DIN-Bold">
             {t("place_order.head")}
           </h2>
-          <Link href={`/${locale}`}>
+          <Link shallow={true} href={`/${locale}`}>
             <button
               theme={{
                 size: "text-sm p-3",

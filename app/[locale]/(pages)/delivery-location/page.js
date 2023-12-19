@@ -20,7 +20,7 @@ function DeliveryLocation({ params: { locale } }) {
         <h2 className="py-2  w-full text-base font-semibold rtl:font-extrabold text font-ITC-BK rtl:font-DIN-Bold">
           {t("delivery.head")}
         </h2>
-        <Link href={`/${locale}`}>
+        <Link shallow={true} href={`/${locale}`}>
           <button
             color={"bg-secondry"}
             theme={{ size: "text-sm p-3" }}
