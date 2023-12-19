@@ -101,9 +101,10 @@ export async function generateMetadata({ params: { locale } }) {
 }
 
 export default function RootLayout({ children, params: { locale } }) {
+  unstable_setRequestLocale(locale);
+
   const messages = useMessages();
   const dir = isRtlLang(locale) ? "rtl" : "ltr";
-  unstable_setRequestLocale(locale);
 
   return (
     <html lang={locale} dir={dir}>

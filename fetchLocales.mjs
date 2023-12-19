@@ -71,6 +71,7 @@ export const fetchLocales = async () => {
   );
 
   const pageRespo = Object.assign({}, ...pageData);
+  
 
   // Determine the current directory dynamically
   const filePath = path.join("./", "locales.js");

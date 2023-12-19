@@ -1,11 +1,5 @@
-import Contacts from "./common/Contacts";
-import Footer from "./common/Footer";
-import Header from "./common/Header";
-import Intro from "./common/Intro";
-import MainItems from "./common/MainItems";
-import MostSelling from "./common/MostSelling";
-import NavBar from "./common/NavBar";
-import Offers from "./common/Offers";
+
+import dynamic from 'next/dynamic'
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
@@ -13,6 +7,12 @@ import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 import { unstable_setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18nconfig";
 import Products from "./common/Products";
+
+const Contacts = dynamic(() => import('./common/Contacts'));
+const Footer = dynamic(() => import('./common/Footer'));
+const Header = dynamic(() => import('./common/Header'));
+const Intro = dynamic(() => import('./common/Intro'));
+
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -25,7 +25,26 @@ export default async function Home({ params: { locale } }) {
 
   const param21 = new DrupalJsonApiParams()
     .addInclude(["field_logo", "field_image", "field_branch", "field_business"])
-    .addFields("node--page", [ "title", "field_primary_color", "field_logo", "field_telegram_chat_id", "field_communication_language", "field_metatags", "field_image", "field_location", "field_gtm_id", "field_image", "field_business", "field_logo", "field_branch", "field_whatsapp", "field_phone", "field_delivery_charges", "field_minimum_order", "body", ]);
+    .addFields("node--page", [
+      "title",
+      "field_primary_color",
+      "field_logo",
+      "field_telegram_chat_id",
+      "field_communication_language",
+      "field_metatags",
+      "field_image",
+      "field_location",
+      "field_gtm_id",
+      "field_image",
+      "field_business",
+      "field_logo",
+      "field_branch",
+      "field_whatsapp",
+      "field_phone",
+      "field_delivery_charges",
+      "field_minimum_order",
+      "body",
+    ]);
   let page;
 
   const pageQuery = param21.getQueryString({ encode: false });
@@ -68,15 +87,6 @@ export default async function Home({ params: { locale } }) {
           phone={page[0].field_phone}
         />
       </div>
-      {/* End Contacts */}
-      {/* 
-      <Offers /> */}
-
-      {/* {mostSellingProducts.length > 0 && (
-        <MostSelling mostSelling={mostSellingProducts} />
-      )}
-
-      <MainItems data={sortedCategorizedMenu} /> */}
 
       <Products locale={locale} />
 
