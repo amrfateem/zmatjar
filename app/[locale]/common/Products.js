@@ -5,7 +5,18 @@ import { DrupalJsonApiParams } from "drupal-jsonapi-params";
 
 async function Products({ locale }) {
   const params1 = new DrupalJsonApiParams()
-    .addFields("node--product", [ "path", "title", "body", "field_price", "field_category", "field_image", "drupal_internal__nid", "body", "field_out_of_stock", "field_path" ])
+    .addFields("node--product", [
+      "path",
+      "title",
+      "body",
+      "field_price",
+      "field_category",
+      "field_image",
+      "drupal_internal__nid",
+      "body",
+      "field_out_of_stock",
+      "field_path",
+    ])
     .addInclude(["field_category", "field_image"])
     .addFilter("langcode", locale)
     .addPageLimit(200);
